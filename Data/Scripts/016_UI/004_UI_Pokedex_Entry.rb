@@ -376,9 +376,9 @@ class PokemonPokedexInfo_Scene
         shadowColor = shadowCustom
       else
         if $PokemonSystem.use_generated_dex_entries && species_data.is_a?(GameData::FusedSpecies)
-          @randomEntryText = species_data.get_random_dex_entry if !reloading
+          @randomEntryText = getAIDexEntry(species_data.id,species_data.name)#species_data.get_random_dex_entry if !reloading
           entryText = @randomEntryText
-          shadowColor = shadow
+          shadowColor = shadowAI
         else
           entryText = "No custom Pokédex entry available for this Pokémon. Please consider submitting an entry for this Pokémon on the game's Discord."
           shadowColor = shadow
