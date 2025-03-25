@@ -1711,7 +1711,7 @@ def failAllIncompleteRocketQuests()
 end
 
 def qmarkMaskCheck()
-  if $Trainer.seen_qmarks_sprite
+  if $Trainer.seen_qmarks_sprite || $game_temp.corrupted_map
     unless hasHat?(HAT_QMARKS)
       obtainHat(HAT_QMARKS)
       obtainClothes(CLOTHES_GLITCH)

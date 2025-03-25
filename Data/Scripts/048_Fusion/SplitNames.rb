@@ -502,7 +502,7 @@ module GameData
     ["Pig", "ignite"],
     ["Emb", "boar"],
     ["Osha", "awott"],
-    ["De", "ewott"],
+    ["???", "???"],
     ["Samu", "rott"],
     ["Pat", "rat"],
     ["Watch", "hog"],

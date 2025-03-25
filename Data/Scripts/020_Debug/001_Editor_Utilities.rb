@@ -124,7 +124,7 @@ def pbChooseSpeciesList(default = nil,max=nil)
   params = ChooseNumberParams.new
 
   max = max ? max : PBSpecies.maxValue
-  params.setRange(1,max)
+  params.setRange(-1,max)
   params.setInitialValue(defaultNumber)
   dexNum = pbMessageChooseNumber("dex number?",params)
   return GameData::Species.get(dexNum)

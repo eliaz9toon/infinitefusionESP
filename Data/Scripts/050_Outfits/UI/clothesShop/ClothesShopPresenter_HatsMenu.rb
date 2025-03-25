@@ -77,6 +77,17 @@ class ClothesShopPresenter < PokemonMartScreen
 
     playOutfitChangeAnimation()
     pbMessage(_INTL("You put on the hat(s)!\\wtnp[30]"))
+
+    if hasHat?(HAT_CLOWN) && !isWearingHat(HAT_CLOWN)
+      $game_temp.corrupted_map=true
+      pbBGMPlay("corrupted")
+      updateTilesets
+    else
+      $game_temp.corrupted_map=false
+      pbBGMStop
+      pbBGMPlay($game_map.map.bgm)
+      updateTilesets
+    end
   end
 
   def dyeOptions(secondary_hat=false,item)

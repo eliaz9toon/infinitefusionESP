@@ -389,7 +389,7 @@ module Compiler
       pbEachFileSection(f) { |contents, species_number|
         FileLineData.setSection(species_number, "header", nil)   # For error reporting
         # Raise an error if a species number is invalid or used twice
-        if species_number == 0
+        if species_number< 0
           raise _INTL("A Pokémon species can't be numbered 0 ({1}).", path)
         elsif GameData::Species::DATA[species_number]
           raise _INTL("Species ID number '{1}' is used twice.\r\n{2}", species_number, FileLineData.linereport)

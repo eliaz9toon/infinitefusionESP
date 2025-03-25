@@ -53,6 +53,7 @@ def pbBGMPlay(param,volume=nil,pitch=nil)
   return if !param
   param=pbResolveAudioFile(param,volume,pitch)
   param = pbResolveAudioFile("ultra_metropolis", volume, pitch) if darknessEffectOnCurrentMap() && !$PokemonTemp.during_battle
+  param = pbResolveAudioFile("corrupted", volume, pitch) if $game_temp.corrupted_map
   if param.name && param.name!=""
     if $game_system && $game_system.respond_to?("bgm_play")
       $game_system.bgm_play(param)

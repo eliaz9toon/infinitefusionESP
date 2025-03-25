@@ -5,6 +5,7 @@
 #  functions. Refer to "$game_map" for the instance of this class.
 #==============================================================================
 class Game_Map
+  attr_accessor :map
   attr_accessor :map_id
   attr_accessor :tileset_name # tileset file name
   attr_accessor :autotile_names # autotile file name
@@ -89,7 +90,13 @@ class Game_Map
 
   def updateTileset
     tileset = $data_tilesets[@map.tileset_id]
+
+    tileset_corrupt = $data_tilesets[TILESET_CORRUPTED] if $game_temp.corrupted_map
+
+
     @tileset_name = tileset.tileset_name
+    @tileset_name = tileset_corrupt.tileset_name if tileset_corrupt
+
     @autotile_names = tileset.autotile_names
     @panorama_name = tileset.panorama_name
     @panorama_hue = tileset.panorama_hue

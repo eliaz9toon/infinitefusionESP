@@ -2355,9 +2355,9 @@ thesemoves=[]
           maxValue=[maxValue,currentmap].max
           sectionDisplay=currentmap.to_s
           next if hash[key][0]<0
-          if currentmap==0
-            raise _INTL("A Pokemon species can't be numbered 0 (PBS/pokemon.txt)")
-          end
+          #if currentmap==0
+          #  raise _INTL("A Pokemon species can't be numbered 0 (PBS/pokemon.txt)")
+          #end
           if !lastsection[key] || lastsection[key]==""
             raise _INTL("Required entry {1} is missing or empty in section {2} (PBS/pokemon.txt)",key,sectionDisplay) if hash==requiredtypes
             next

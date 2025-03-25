@@ -426,7 +426,7 @@ module Compiler
           end
         when "v"   # Positive integer
           field = csvPosInt!(rec,lineno)
-          raise _INTL("Field '{1}' must be greater than 0\r\n{2}",field,FileLineData.linereport) if field==0
+          #raise _INTL("Field '{1}' must be greater than 0\r\n{2}",field,FileLineData.linereport) if field==0
           record.push(field)
         when "V"   # Optional positive integer
           field = csvfield!(rec)

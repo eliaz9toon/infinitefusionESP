@@ -30,6 +30,7 @@ class Game_Temp
   attr_accessor :loading_screen
   attr_accessor :custom_sprites_list
   attr_accessor :base_sprites_list
+  attr_accessor :corrupted_map
 
   #-----------------------------------------------------------------------------
   # * Object Initialization
@@ -59,7 +60,7 @@ class Game_Temp
     @mart_prices            = {}
     @custom_sprites_list    ={}
     @base_sprites_list    ={}
-
+    @corrupted_map         = false
   end
 
   def clear_mart_prices

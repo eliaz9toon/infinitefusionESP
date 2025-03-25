@@ -51,9 +51,9 @@ end
 
 def loadDateSpecificChanges()
   current_date = Time.new
-  if (current_date.day == 1 && current_date.month == 4)
+  #if (current_date.day == 1 && current_date.month == 4)
     $Trainer.hat2=HAT_CLOWN if $Trainer.unlocked_hats.include?(HAT_CLOWN)
-  end
+  #end
 end
 
 def onStartingNewGame() end

@@ -10,8 +10,8 @@ class PIFSprite
   # :AUTOGEN, :CUSTOM, :BASE
   def initialize(type, head_id, body_id, alt_letter = "")
     @type = type
-    @head_id = head_id
-    @body_id = body_id
+    @head_id = get_national_dex_number(head_id)
+    @body_id = get_national_dex_number(body_id)
     @alt_letter = alt_letter
     @local_path = nil
   end
@@ -44,47 +44,59 @@ class PIFSprite
     echoln path
     return path
   end
-end
 
-def equals(other_pif_sprite)
-  return @type == other_pif_sprite.type &&
-    @head_id == other_pif_sprite.head_id &&
-    @body_id == other_pif_sprite.body_id &&
-    @alt_letter == other_pif_sprite.alt_letter &&
-    @local_path == other_pif_sprite.local_path
-end
-
-# little hack for old methods that expect a filename for a sprite
-def to_filename()
-  case @type
-  when :CUSTOM
-    return "#{@head_id}.#{@body_id}#{@alt_letter}.png"
-  when :AUTOGEN
-    return "#{@head_id}.#{@body_id}.png"
-  when :BASE
-    return "#{@head_id}#{@alt_letter}.png"
+  def equals(other_pif_sprite)
+    return @type == other_pif_sprite.type &&
+      @head_id == other_pif_sprite.head_id &&
+      @body_id == other_pif_sprite.body_id &&
+      @alt_letter == other_pif_sprite.alt_letter &&
+      @local_path == other_pif_sprite.local_path
   end
-end
 
-def setup_from_spritename(spritename, type)
-  @type = type
-  cleaned_name = spritename.gsub(".png", "")
-  if cleaned_name =~ /(\d+)\.(\d+)([a-zA-Z]*)/
-    head_id = $1
-    body_id = $2
-    alt_letter = $3
+  # little hack for old methods that expect a filename for a sprite
+  def to_filename()
+    case @type
+    when :CUSTOM
+      return "#{@head_id}.#{@body_id}#{@alt_letter}.png"
+    when :AUTOGEN
+      return "#{@head_id}.#{@body_id}.png"
+    when :BASE
+      return "#{@head_id}#{@alt_letter}.png"
+    end
   end
-  @head_id = head_id
-  @body_id = body_id
-  @alt_letter = alt_letter
+
+  def setup_from_spritename(spritename, type)
+    @type = type
+    cleaned_name = spritename.gsub(".png", "")
+    if cleaned_name =~ /(\d+)\.(\d+)([a-zA-Z]*)/
+      head_id = $1
+      body_id = $2
+      alt_letter = $3
+    end
+    @head_id = head_id
+    @body_id = body_id
+    @alt_letter = alt_letter
+  end
+
+  def self.from_spritename(spritename, type)
+    obj = allocate
+    obj.send(:setup_from_spritename, spritename, type)
+    obj
+  end
+
 end
 
-def self.from_spritename(spritename, type)
-  obj = allocate
-  obj.send(:setup_from_spritename, spritename, type)
-  obj
+#todo: use NAT_DEX_MAPPING once everything is converted
+NAT_DEX_MAPPING_TEMP = {
+  502 => 0,
+}
+NAT_DEX_MAPPING_TEMP
+def get_national_dex_number(internal_dex_number)
+  if NAT_DEX_MAPPING_TEMP.include?(internal_dex_number)
+    return NAT_DEX_MAPPING_TEMP[internal_dex_number]
+  end
+  return internal_dex_number
 end
-
 
 
 def new_pif_sprite_from_dex_num(type, dexNum, alt_letter)

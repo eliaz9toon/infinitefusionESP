@@ -61,6 +61,24 @@ Events.onMapChange += proc { |sender, e|
 }
 
 
+Events.onStepTaken += proc { |sender, e|
+  next if !$scene.is_a?(Scene_Map)
+  next if !$game_temp.corrupted_map
+  steps_chance=255
+  minimum_steps=14
+
+  steps_nb = rand(steps_chance)
+  steps_nb = minimum_steps if steps_nb<minimum_steps
+  next if $PokemonGlobal.stepcount % steps_nb != 0
+  $PokemonTemp.pbClearSilhouetteEvents
+  spawnMissingno()
+}
+Events.onMapChange += proc { |sender, e|
+  next if $PokemonTemp.tempEvents.empty?
+  $PokemonTemp.pbClearTempEvents()
+}
+
+
 def getRandomPositionOnPerimeter(width, height, center_x, center_y, variance=0,edge=nil)
   half_width = width / 2.0
   half_height = height / 2.0
@@ -115,6 +133,14 @@ def generate_silhouette_event(id)
   return new_event
 end
 
+def generate_missingno_event(id)
+  template_event = $MapFactory.getMap(MAP_TEMPLATE_EVENTS,false).events[TEMPLATE_EVENT_MISSINGNO]
+  new_event= template_event.event.dup
+  new_event.name = "temp_missingno"
+  new_event.id = id
+  return new_event
+end
+
 def spawnSilhouette()
   found_available_position = false
   max_tries = 10
@@ -143,5 +169,37 @@ def spawnSilhouette()
   sprite = Sprite_Character.new(Spriteset_Map.viewport, $game_map.events[key_id])
    $scene.spritesets[$game_map.map_id] = Spriteset_Map.new($game_map) if $scene.spritesets[$game_map.map_id] == nil
    $scene.spritesets[$game_map.map_id].character_sprites.push(sprite)
+  #$PokemonTemp.addTempEvent($game_map.map_id, gameEvent)
+end
+
+
+def spawnMissingno()
+  found_available_position = false
+  max_tries = 10
+  current_try = 0
+  while !found_available_position
+    x, y = getRandomPositionOnPerimeter(15, 11, $game_player.x, $game_player.y, 2)
+    found_available_position = true if $game_map.passable?(x, y, $game_player.direction)
+    current_try += 1
+    return if current_try > max_tries
+  end
+  key_id = ($game_map.events.keys.max || -1) + 1
+  rpgEvent = generate_missingno_event(key_id)
+  #rpgEvent = RPG::Event.new(x,y)
+
+  gameEvent = Game_Event.new($game_map.map_id, rpgEvent, $game_map)
+  direction = DIRECTION_DOWN #[2,4,6,8].sample
+  gameEvent.direction = direction
+  $PokemonTemp.silhouetteDirection = direction
+  $game_map.events[key_id] = gameEvent
+
+
+  gameEvent.moveto(x, y)
+  #-------------------------------------------------------------------------
+  #updating the sprites
+
+  sprite = Sprite_Character.new(Spriteset_Map.viewport, $game_map.events[key_id])
+  $scene.spritesets[$game_map.map_id] = Spriteset_Map.new($game_map) if $scene.spritesets[$game_map.map_id] == nil
+  $scene.spritesets[$game_map.map_id].character_sprites.push(sprite)
   #$PokemonTemp.addTempEvent($game_map.map_id, gameEvent)
 end

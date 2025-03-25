@@ -119,6 +119,8 @@ end
 
 # Sets up various battle parameters and applies special rules.
 def pbPrepareBattle(battle)
+  $PokemonGlobal.nextBattleBack = "cyber" if $game_temp.corrupted_map
+
   battleRules = $PokemonTemp.battleRules
   # The size of the battle, i.e. how many Pokémon on each side (default: "single")
   battle.setBattleMode(battleRules["size"]) if !battleRules["size"].nil? || $game_switches[SWITCH_NEW_GAME_PLUS]
