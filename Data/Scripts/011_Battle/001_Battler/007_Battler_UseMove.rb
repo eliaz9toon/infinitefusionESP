@@ -614,8 +614,7 @@ class PokeBattle_Battler
     end
     playChangeFormAnimation(animation)
   end
-
-
+  
 
   # def changeUnfusedSpecies(pokemon, newSpecies, animation = "UltraBurst2")
   #

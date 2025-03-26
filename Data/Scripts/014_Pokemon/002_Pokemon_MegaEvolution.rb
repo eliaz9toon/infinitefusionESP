@@ -41,6 +41,7 @@ class Pokemon
     self.form = unmegaForm if unmegaForm >= 0
   end
 
+
   def megaName
     formName = species_data.form_name
     return (formName && !formName.empty?) ? formName : _INTL("Mega {1}", species_data.name)

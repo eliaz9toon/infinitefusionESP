@@ -112,6 +112,7 @@ class Pokemon
   attr_accessor :size_category #the size attribute for scaling the sprite (used only for gourgeist/pumpkaboo)
 
   attr_accessor :force_disobey
+  attr_accessor :tempSpeciesChange_originalSpecies
 
   # Max total IVs
   IV_STAT_LIMIT = 31

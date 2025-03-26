@@ -857,17 +857,12 @@ def replaceFusionSpecies(pokemon, speciesToChange, newSpecies)
   should_update_body = currentBody == speciesToChange
   should_update_head = currentHead == speciesToChange
 
-  echoln speciesToChange
-  echoln currentBody
-  echoln currentHead
-
   return if !should_update_body && !should_update_head
 
   newSpeciesBody = should_update_body ? newSpecies : currentBody
   newSpeciesHead = should_update_head ? newSpecies : currentHead
 
   newSpecies = getFusionSpecies(newSpeciesBody, newSpeciesHead)
-  echoln newSpecies.id_number
   pokemon.species = newSpecies
 end
 

@@ -1504,6 +1504,48 @@ BattleHandlers::TargetAbilityOnHit.add(:JUSTIFIED,
   }
 )
 
+BattleHandlers::TargetAbilityOnHit.add(:CORRUPTION,
+                                       proc { |ability,user,target,move,battle|
+                                         next if user.fainted?
+                                         next if user.ability == :CORRUPTION
+                                         oldAbil = nil
+
+                                         #next if user.unstoppableAbility? || user.ability == ability
+                                         if move.specialMove?
+                                           user.pokemon.tempSpeciesChange_originalSpecies = user.pokemon.species if !user.pokemon.tempSpeciesChange_originalSpecies
+                                           user.pokemon.species = user.pokemon.tempSpeciesChange_originalSpecies
+                                           battle.pbShowAbilitySplash(target) if user.opposes?(target)
+                                           body_species_number = GameData::Species.get(user.pokemon.species).get_body_species
+                                           body_species = GameData::Species.get(body_species_number).id
+                                           oldAbil = user.ability
+                                           user.ability = ability
+
+                                           user.changeSpecies(user.pokemon, body_species, :MISSINGNO, "Paralysis")
+                                           user.pbUpdate(true)
+                                           battle.scene.pbChangePokemon(user,user.pokemon)
+                                           battle.scene.pbRefreshOne(user.index)
+                                         elsif move.physicalMove?
+                                           user.pokemon.tempSpeciesChange_originalSpecies = user.pokemon.species if !user.pokemon.tempSpeciesChange_originalSpecies
+                                           user.pokemon.species = user.pokemon.tempSpeciesChange_originalSpecies
+
+                                           battle.pbShowAbilitySplash(target) if user.opposes?(target)
+                                           head_species_number = GameData::Species.get(user.pokemon.species).get_head_species
+                                           head_species = GameData::Species.get(head_species_number).id
+
+
+                                           user.changeSpecies(user.pokemon, head_species, :MISSINGNO, "Paralysis")
+                                           user.pbUpdate(true)
+                                           oldAbil = user.ability
+                                           user.ability = ability
+                                           battle.scene.pbChangePokemon(user,user.pokemon)
+                                           battle.scene.pbRefreshOne(user.index)
+                                         end
+                                         user.pbOnAbilityChanged(oldAbil) if oldAbil != nil
+                                         battle.pbHideAbilitySplash(target) if user.opposes?(target)
+                                       }
+)
+
+
 BattleHandlers::TargetAbilityOnHit.add(:MUMMY,
   proc { |ability,user,target,move,battle|
     next if !move.pbContactMove?(user)
