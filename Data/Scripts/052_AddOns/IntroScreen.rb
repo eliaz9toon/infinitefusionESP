@@ -226,6 +226,9 @@ class GenOneStyle
     @sprites["2poke"].x = -150
     @sprites["2poke"].y = 100
 
+    @fusion_head = random_fusion_head
+    @fusion_body = random_fusion_body
+
     @sprites["fpoke"] = Sprite.new(@viewport)
 
     fusedPoke = @spriteLoader.load_pif_sprite(random_fusion)
@@ -367,6 +370,7 @@ class GenOneStyle
 
     if @sprites["poke"].x < 175 #150
       makeShineEffect()
+      GameData::Species.play_fusion_cry(@fusion_head,@fusion_body) if @fusion_head && @fusion_body
     end
     #update_selector_position()
     if @sprites["poke"].x > @sprites["2poke"].x
@@ -397,6 +401,9 @@ class GenOneStyle
       random_fusion = getRandomFusionForIntro()
       random_fusion_body = random_fusion.body_id
       random_fusion_head = random_fusion.head_id
+
+      @fusion_head = random_fusion_head
+      @fusion_body = random_fusion_body
 
       @prevPoke1 = random_fusion_body
       @prevPoke2 = random_fusion_head
