@@ -376,8 +376,8 @@ class PokemonEvolutionScene
       alpha += alphaDiff
     end
     totaltempo   = 0
-    currenttempo = 25
-    maxtempo = 7*Graphics.frame_rate
+    currenttempo = 100
+    maxtempo = 34*Graphics.frame_rate
     while totaltempo<maxtempo
       for j in 0...currenttempo
         if alpha<255
