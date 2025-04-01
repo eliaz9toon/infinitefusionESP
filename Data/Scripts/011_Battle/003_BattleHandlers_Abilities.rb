@@ -1507,7 +1507,7 @@ BattleHandlers::TargetAbilityOnHit.add(:JUSTIFIED,
 BattleHandlers::TargetAbilityOnHit.add(:CORRUPTION,
                                        proc { |ability,user,target,move,battle|
                                          next if user.fainted?
-                                         next if user.ability == :CORRUPTION
+                                         next if user.species == :MISSINGNO
                                          oldAbil = nil
 
                                          #next if user.unstoppableAbility? || user.ability == ability

@@ -718,6 +718,7 @@ def pbAfterBattle(decision,canLose)
     pkmn.makeUnmega
     pkmn.makeUnprimal
     pkmn.species = pkmn.tempSpeciesChange_originalSpecies if pkmn.tempSpeciesChange_originalSpecies
+    pkmn.tempSpeciesChange_originalSpecies=nil
   end
   if $PokemonGlobal.partner
     $Trainer.heal_party
