@@ -203,41 +203,41 @@ module Settings
   #   * :areas - A hash of map IDs that determine where this Pokémon roams. Used
   #              instead of ROAMING_AREAS above. Optional.
   ROAMING_SPECIES = [
-    {
-      :species        => :LATIAS,
-      :level          => 30,
-      :icon           => "pin_latias",
-      :game_switch    => 53,
-      :encounter_type => :all,
-      :bgm            => "Battle roaming"
-    },
-    {
-      :species        => :LATIOS,
-      :level          => 30,
-      :icon           => "pin_latios",
-      :game_switch    => 53,
-      :encounter_type => :all,
-      :bgm            => "Battle roaming"
-    },
-    {
-      :species        => :KYOGRE,
-      :level          => 40,
-      :game_switch    => 54,
-      :encounter_type => :surfing,
-      :areas          => {
-        2  => [   21, 31    ],
-        21 => [2,     31, 69],
-        31 => [2, 21,     69],
-        69 => [   21, 31    ]
-      }
-    },
-    {
-      :species        => :ENTEI,
-      :level          => 40,
-      :icon           => "pin_entei",
-      :game_switch    => 55,
-      :encounter_type => :land
-    }
+    # {
+    #   :species        => :LATIAS,
+    #   :level          => 30,
+    #   :icon           => "pin_latias",
+    #   :game_switch    => 53,
+    #   :encounter_type => :all,
+    #   :bgm            => "Battle roaming"
+    # },
+    # {
+    #   :species        => :LATIOS,
+    #   :level          => 30,
+    #   :icon           => "pin_latios",
+    #   :game_switch    => 53,
+    #   :encounter_type => :all,
+    #   :bgm            => "Battle roaming"
+    # },
+    # {
+    #   :species        => :KYOGRE,
+    #   :level          => 40,
+    #   :game_switch    => 54,
+    #   :encounter_type => :surfing,
+    #   :areas          => {
+    #     2  => [   21, 31    ],
+    #     21 => [2,     31, 69],
+    #     31 => [2, 21,     69],
+    #     69 => [   21, 31    ]
+    #   }
+    # },
+    # {
+    #   :species        => :ENTEI,
+    #   :level          => 40,
+    #   :icon           => "pin_entei",
+    #   :game_switch    => 55,
+    #   :encounter_type => :land
+    # }
   ]
 
   #-----------------------------------------------------------------------------
