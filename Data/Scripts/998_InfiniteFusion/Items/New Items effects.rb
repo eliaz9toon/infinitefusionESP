@@ -12,7 +12,7 @@ ItemHandlers::UseFromBag.add(:LANTERN, proc { |item|
 })
 
 ItemHandlers::UseInField.add(:LANTERN, proc { |item|
-  Kernel.pbMessage(_INTL("#{$Trainer.name} used the lantern."))
+  Kernel.pbMessage(_INTL("#{$player.name} used the lantern."))
   if useLantern()
     next 1
   else
@@ -56,7 +56,7 @@ ItemHandlers::UseInField.add(:TELEPORTER, proc { |item|
 
 def useTeleporter()
   if HiddenMoveHandlers.triggerCanUseMove(:TELEPORT, 0, true)
-    Kernel.pbMessage(_INTL("Teleport to where?", $Trainer.name))
+    Kernel.pbMessage(_INTL("Teleport to where?", $player.name))
     ret = pbBetterRegionMap(-1, true, true)
     return false unless ret
     ###############################################
@@ -74,7 +74,7 @@ def useTeleporter()
   if !$PokemonTemp.flydata
     return false
   else
-    Kernel.pbMessage(_INTL("{1} used the teleporter!", $Trainer.name))
+    Kernel.pbMessage(_INTL("{1} used the teleporter!", $player.name))
     pbFadeOutIn(99999) {
       Kernel.pbCancelVehicles
       $game_temp.player_new_map_id = $PokemonTemp.flydata[0]
@@ -285,7 +285,7 @@ def useSleepingBag()
   pbSet(UnrealTime::EXTRA_SECONDS, currentSecondsValue + timeAdded)
   pbSEPlay("Sleep", 100)
   pbFadeOutIn {
-    Kernel.pbMessage(_INTL("{1} slept for a while...", $Trainer.name))
+    Kernel.pbMessage(_INTL("{1} slept for a while...", $player.name))
   }
   time = pbGetTimeNow.strftime("%I:%M %p")
   newDay = getDayOfTheWeek()
@@ -384,31 +384,31 @@ def useFavoriteOutfit()
     switchToFavoriteOutfit()
   elsif options[choice] == cmd_mark_favorite
     pbSEPlay("shiny", 80, 100)
-    $Trainer.favorite_clothes= $Trainer.clothes
-    $Trainer.favorite_hat = $Trainer.hat
-    $Trainer.favorite_hat2=$Trainer.hat2
+    $player.favorite_clothes= $player.clothes
+    $player.favorite_hat = $player.hat
+    $player.favorite_hat2=$player.hat2
     pbMessage(_INTL("Your favorite outfit was updated!"))
   end
 end
 
 def switchToFavoriteOutfit()
-  if !$Trainer.favorite_clothes && !$Trainer.favorite_hat && !$Trainer.favorite_hat2
+  if !$player.favorite_clothes && !$player.favorite_hat && !$player.favorite_hat2
     pbMessage(_INTL("You can mark clothes and hats as your favorites in the outfits menu and use this to quickly switch to them!"))
     return 0
   end
 
   if isWearingFavoriteOutfit()
     if (Kernel.pbConfirmMessage("Remove your favorite outfit?"))
-      last_worn_clothes_is_favorite = $Trainer.last_worn_outfit == $Trainer.favorite_clothes
-      last_worn_hat_is_favorite = $Trainer.last_worn_hat == $Trainer.favorite_hat
-      last_worn_hat2_is_favorite = $Trainer.last_worn_hat2 == $Trainer.favorite_hat2
+      last_worn_clothes_is_favorite = $player.last_worn_outfit == $player.favorite_clothes
+      last_worn_hat_is_favorite = $player.last_worn_hat == $player.favorite_hat
+      last_worn_hat2_is_favorite = $player.last_worn_hat2 == $player.favorite_hat2
       if (last_worn_clothes_is_favorite && last_worn_hat_is_favorite && last_worn_hat2_is_favorite)
-        $Trainer.last_worn_outfit = getDefaultClothes()
+        $player.last_worn_outfit = getDefaultClothes()
       end
       playOutfitChangeAnimation()
-      putOnClothes($Trainer.last_worn_outfit, true) #if $Trainer.favorite_clothes
-      putOnHat($Trainer.last_worn_hat, true,false) #if $Trainer.favorite_hat
-      putOnHat($Trainer.last_worn_hat2, true,true) #if $Trainer.favorite_hat2
+      putOnClothes($player.last_worn_outfit, true) #if $player.favorite_clothes
+      putOnHat($player.last_worn_hat, true,false) #if $player.favorite_hat
+      putOnHat($player.last_worn_hat2, true,true) #if $player.favorite_hat2
 
     else
       return 0
@@ -416,12 +416,12 @@ def switchToFavoriteOutfit()
 
   else
     if (Kernel.pbConfirmMessage("Put on your favorite outfit?"))
-      echoln "favorite clothes: #{$Trainer.favorite_clothes}, favorite hat: #{$Trainer.favorite_hat}, favorite hat2: #{$Trainer.favorite_hat2}"
+      echoln "favorite clothes: #{$player.favorite_clothes}, favorite hat: #{$player.favorite_hat}, favorite hat2: #{$player.favorite_hat2}"
 
       playOutfitChangeAnimation()
-      putOnClothes($Trainer.favorite_clothes, true) if $Trainer.favorite_clothes
-      putOnHat($Trainer.favorite_hat, true, false) if $Trainer.favorite_hat
-      putOnHat($Trainer.favorite_hat2, true, true) if $Trainer.favorite_hat2
+      putOnClothes($player.favorite_clothes, true) if $player.favorite_clothes
+      putOnHat($player.favorite_hat, true, false) if $player.favorite_hat
+      putOnHat($player.favorite_hat2, true, true) if $player.favorite_hat2
     else
       return 0
     end
@@ -432,12 +432,12 @@ def useRocketUniform()
   return 0 if !$game_switches[SWITCH_JOINED_TEAM_ROCKET]
   if isWearingTeamRocketOutfit()
     if (Kernel.pbConfirmMessage("Remove the Team Rocket uniform?"))
-      if ($Trainer.last_worn_outfit == CLOTHES_TEAM_ROCKET_MALE || $Trainer.last_worn_outfit == CLOTHES_TEAM_ROCKET_FEMALE) && $Trainer.last_worn_hat == HAT_TEAM_ROCKET
-        $Trainer.last_worn_outfit = getDefaultClothes()
+      if ($player.last_worn_outfit == CLOTHES_TEAM_ROCKET_MALE || $player.last_worn_outfit == CLOTHES_TEAM_ROCKET_FEMALE) && $player.last_worn_hat == HAT_TEAM_ROCKET
+        $player.last_worn_outfit = getDefaultClothes()
       end
       playOutfitChangeAnimation()
-      putOnClothes($Trainer.last_worn_outfit, true)
-      putOnHat($Trainer.last_worn_hat, true)
+      putOnClothes($player.last_worn_outfit, true)
+      putOnHat($player.last_worn_hat, true)
     else
       return 0
     end
@@ -600,10 +600,10 @@ end
 
 def useSplicerFromField(item)
   scene = PokemonParty_Scene.new
-  scene.pbStartScene($Trainer.party, "Select a Pokémon")
-  screen = PokemonPartyScreen.new(scene, $Trainer.party)
+  scene.pbStartScene($player.party, "Select a Pokémon")
+  screen = PokemonPartyScreen.new(scene, $player.party)
   chosen = screen.pbChoosePokemon("Select a Pokémon")
-  pokemon = $Trainer.party[chosen]
+  pokemon = $player.party[chosen]
   fusion_success = pbDNASplicing(pokemon, scene, item)
   screen.pbEndScene
   scene.dispose
@@ -686,11 +686,11 @@ ItemHandlers::UseOnPokemon.add(:INFINITEREVERSERS, proc { |item, pokemon, scene|
 # def pbDNASplicing(pokemon, scene, supersplicers = false, superSplicer = false)
 #   if (pokemon.species <= NB_POKEMON)
 #     if pokemon.fused != nil
-#       if $Trainer.party.length >= 6
+#       if $player.party.length >= 6
 #         scene.pbDisplay(_INTL("Your party is full! You can't unfuse {1}.", pokemon.name))
 #         return false
 #       else
-#         $Trainer.party[$Trainer.party.length] = pokemon.fused
+#         $player.party[$player.party.length] = pokemon.fused
 #         pokemon.fused = nil
 #         pokemon.form = 0
 #         scene.pbHardRefresh
@@ -700,7 +700,7 @@ ItemHandlers::UseOnPokemon.add(:INFINITEREVERSERS, proc { |item, pokemon, scene|
 #     else
 #       chosen = scene.pbChoosePokemon(_INTL("Fuse with which Pokémon?"))
 #       if chosen >= 0
-#         poke2 = $Trainer.party[chosen]
+#         poke2 = $player.party[chosen]
 #         if (poke2.species <= NB_POKEMON) && poke2 != pokemon
 #           #check if fainted
 #           if pokemon.hp == 0 || poke2.hp == 0
@@ -735,7 +735,7 @@ ItemHandlers::UseOnPokemon.add(:INFINITEREVERSERS, proc { |item, pokemon, scene|
 #   #pcPosition [x,x] : unfusing from pc
 #   #
 #
-#   if (pokemon.obtain_method == 2 || pokemon.ot != $Trainer.name) # && !canunfuse
+#   if (pokemon.obtain_method == 2 || pokemon.ot != $player.name) # && !canunfuse
 #     scene.pbDisplay(_INTL("You can't unfuse a Pokémon obtained in a trade!"))
 #     return false
 #   else
@@ -743,7 +743,7 @@ ItemHandlers::UseOnPokemon.add(:INFINITEREVERSERS, proc { |item, pokemon, scene|
 #       if pokemon.species > (NB_POKEMON * NB_POKEMON) + NB_POKEMON #triple fusion
 #         scene.pbDisplay(_INTL("{1} cannot be unfused.", pokemon.name))
 #         return false
-#       elsif $Trainer.party.length >= 6 && !pcPosition
+#       elsif $player.party.length >= 6 && !pcPosition
 #         scene.pbDisplay(_INTL("Your party is full! You can't unfuse {1}.", pokemon.name))
 #         return false
 #       else
@@ -771,8 +771,8 @@ ItemHandlers::UseOnPokemon.add(:INFINITEREVERSERS, proc { |item, pokemon, scene|
 #           poke2.exp = exp_head
 #         end
 #
-#         #poke1 = PokeBattle_Pokemon.new(bodyPoke, lev, $Trainer)
-#         #poke2 = PokeBattle_Pokemon.new(headPoke, lev, $Trainer)
+#         #poke1 = PokeBattle_Pokemon.new(bodyPoke, lev, $player)
+#         #poke2 = PokeBattle_Pokemon.new(headPoke, lev, $player)
 #
 #         if pcPosition == nil
 #           box = pcPosition[0]
@@ -782,10 +782,10 @@ ItemHandlers::UseOnPokemon.add(:INFINITEREVERSERS, proc { |item, pokemon, scene|
 #           Kernel.pbAddPokemonSilent(poke2, poke2.level)
 #         end
 #         #On ajoute l'autre dans le pokedex aussi
-#         $Trainer.seen[poke1.species] = true
-#         $Trainer.owned[poke1.species] = true
-#         $Trainer.seen[poke2.species] = true
-#         $Trainer.owned[poke2.species] = true
+#         $player.seen[poke1.species] = true
+#         $player.owned[poke1.species] = true
+#         $player.seen[poke2.species] = true
+#         $player.owned[poke2.species] = true
 #
 #         pokemon.species = poke1.species
 #         pokemon.level = poke1.level

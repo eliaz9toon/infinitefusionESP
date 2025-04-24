@@ -21,8 +21,8 @@ end
 
 def changeSpeciesSpecific(pokemon, newSpecies)
   pokemon.species = newSpecies
-  $Trainer.pokedex.set_seen(newSpecies)
-  $Trainer.pokedex.set_owned(newSpecies)
+  $player.pokedex.set_seen(newSpecies)
+  $player.pokedex.set_owned(newSpecies)
 end
 
 
@@ -163,8 +163,8 @@ def changeOricorioForm(pokemon, form = nil)
   body_number = getDexNumberForSpecies(body_id)
 
   newForm = pokemon.isFusion? ? getSpeciesIdForFusion(head_number, body_number) : head_id
-  $Trainer.pokedex.set_seen(newForm)
-  $Trainer.pokedex.set_owned(newForm)
+  $player.pokedex.set_seen(newForm)
+  $player.pokedex.set_owned(newForm)
 
   pokemon.species = newForm
   return true
@@ -182,7 +182,7 @@ def changeOricorioFlower(form = 1)
       $PokemonGlobal.stepcount += 1
     end
   end
-  return if !($Trainer.has_species_or_fusion?(:ORICORIO_1) || $Trainer.has_species_or_fusion?(:ORICORIO_2) || $Trainer.has_species_or_fusion?(:ORICORIO_3) || $Trainer.has_species_or_fusion?(:ORICORIO_4))
+  return if !($player.has_species_or_fusion?(:ORICORIO_1) || $player.has_species_or_fusion?(:ORICORIO_2) || $player.has_species_or_fusion?(:ORICORIO_3) || $player.has_species_or_fusion?(:ORICORIO_4))
   message = ""
   form_name = ""
   if form == 1
@@ -210,7 +210,7 @@ def changeOricorioFlower(form = 1)
                           Kernel.isPartPokemon(poke, :ORICORIO_4))
                     })
     if (pbGet(1) != -1)
-      poke = $Trainer.party[pbGet(1)]
+      poke = $player.party[pbGet(1)]
       if changeOricorioForm(poke, form)
         pbMessage(_INTL("{1} switched to the {2} style", poke.name, form_name))
         pbSet(1, poke.name)
@@ -231,17 +231,17 @@ def oricorioEventPickFlower(flower_color)
     $game_switches[SWITCH_ORICORIO_QUEST_PINK] = true
     pbMessage(_INTL("It's a flower with pink nectar."))
     pbSEPlay("MiningAllFound")
-    pbMessage(_INTL("{1} picked some of the pink flowers.", $Trainer.name))
+    pbMessage(_INTL("{1} picked some of the pink flowers.", $player.name))
   elsif flower_color == :RED && quest_progression == 1
     $game_switches[SWITCH_ORICORIO_QUEST_RED] = true
     pbMessage(_INTL("It's a flower with red nectar."))
     pbSEPlay("MiningAllFound")
-    pbMessage(_INTL("{1} picked some of the red flowers.", $Trainer.name))
+    pbMessage(_INTL("{1} picked some of the red flowers.", $player.name))
   elsif flower_color == :BLUE && quest_progression == 2
     $game_switches[SWITCH_ORICORIO_QUEST_BLUE] = true
     pbMessage(_INTL("It's a flower with blue nectar."))
     pbSEPlay("MiningAllFound")
-    pbMessage(_INTL("{1} picked some of the blue flowers.", $Trainer.name))
+    pbMessage(_INTL("{1} picked some of the blue flowers.", $player.name))
   end
 
 end

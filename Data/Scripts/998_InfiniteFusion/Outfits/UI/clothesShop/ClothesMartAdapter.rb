@@ -3,9 +3,9 @@ class ClothesMartAdapter < OutfitsMartAdapter
   DEFAULT_NAME = "[unknown]"
   DEFAULT_DESCRIPTION = "A piece of clothing that trainers can wear."
   def toggleEvent(item)
-    if !isShop? && $Trainer.clothes_color != 0
+    if !isShop? && $player.clothes_color != 0
       if pbConfirmMessage(_INTL("Would you like to remove the dye?"))
-        $Trainer.clothes_color = 0
+        $player.clothes_color = 0
       end
     end
   end
@@ -41,7 +41,7 @@ class ClothesMartAdapter < OutfitsMartAdapter
   def updateTrainerPreview(item, previewWindow)
     return if !item
     previewWindow.clothes = item.id
-    $Trainer.clothes = item.id
+    $player.clothes = item.id
     set_dye_color(item,previewWindow)
 
     pbRefreshSceneMap
@@ -50,26 +50,26 @@ class ClothesMartAdapter < OutfitsMartAdapter
 
   def get_dye_color(item_id)
     return 0 if isShop?
-    $Trainer.dyed_clothes= {} if ! $Trainer.dyed_clothes
-    if $Trainer.dyed_clothes.include?(item_id)
-      return $Trainer.dyed_clothes[item_id]
+    $player.dyed_clothes= {} if ! $player.dyed_clothes
+    if $player.dyed_clothes.include?(item_id)
+      return $player.dyed_clothes[item_id]
     end
     return 0
   end
 
   def set_dye_color(item,previewWindow)
     if !isShop?
-      $Trainer.dyed_clothes= {} if ! $Trainer.dyed_clothes
-      if $Trainer.dyed_clothes.include?(item.id)
-        dye_color = $Trainer.dyed_clothes[item.id]
-        $Trainer.clothes_color = dye_color
+      $player.dyed_clothes= {} if ! $player.dyed_clothes
+      if $player.dyed_clothes.include?(item.id)
+        dye_color = $player.dyed_clothes[item.id]
+        $player.clothes_color = dye_color
         previewWindow.clothes_color = dye_color
       else
-        $Trainer.clothes_color=0
+        $player.clothes_color=0
         previewWindow.clothes_color=0
       end
     else
-      $Trainer.clothes_color=0
+      $player.clothes_color=0
       previewWindow.clothes_color=0
     end
   end
@@ -82,16 +82,16 @@ class ClothesMartAdapter < OutfitsMartAdapter
   end
 
   def get_current_clothes()
-    return $Trainer.clothes
+    return $player.clothes
   end
 
   def player_changed_clothes?()
-    $Trainer.clothes != @worn_clothes
+    $player.clothes != @worn_clothes
   end
 
   def putOnSelectedOutfit()
-    putOnClothes($Trainer.clothes)
-    @worn_clothes = $Trainer.clothes
+    putOnClothes($player.clothes)
+    @worn_clothes = $player.clothes
   end
 
   def putOnOutfit(item)
@@ -100,12 +100,12 @@ class ClothesMartAdapter < OutfitsMartAdapter
   end
 
   def reset_player_clothes()
-    $Trainer.clothes = @worn_clothes
-    $Trainer.clothes_color = $Trainer.dyed_clothes[@worn_clothes] if  $Trainer.dyed_clothes && $Trainer.dyed_clothes[@worn_clothes]
+    $player.clothes = @worn_clothes
+    $player.clothes_color = $player.dyed_clothes[@worn_clothes] if  $player.dyed_clothes && $player.dyed_clothes[@worn_clothes]
   end
 
   def get_unlocked_items_list()
-    return $Trainer.unlocked_clothes
+    return $player.unlocked_clothes
   end
 
   def isWornItem?(item)

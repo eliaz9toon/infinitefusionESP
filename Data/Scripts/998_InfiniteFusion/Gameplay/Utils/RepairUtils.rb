@@ -74,7 +74,7 @@ def fixFinishedRocketQuests()
 end
 
 def fix_broken_TR_quests()
-  for trainer_quest in $Trainer.quests
+  for trainer_quest in $player.quests
     if trainer_quest.id == 0 # tr quests were all set to ID 0 instead of their real ID in v 6.4.0
       for rocket_quest_id in TR_QUESTS.keys
         rocket_quest = TR_QUESTS[rocket_quest_id]
@@ -88,7 +88,7 @@ def fix_broken_TR_quests()
 end
 
 def failAllIncompleteRocketQuests()
-  for trainer_quest in $Trainer.quests
+  for trainer_quest in $player.quests
     finishTRQuest("tr_cerulean_1", :FAILURE) if trainer_quest.id == "tr_cerulean_1" && !pbCompletedQuest?("tr_cerulean_1")
     finishTRQuest("tr_cerulean_2", :FAILURE) if trainer_quest.id == "tr_cerulean_2" && !pbCompletedQuest?("tr_cerulean_2")
     finishTRQuest("tr_cerulean_3", :FAILURE) if trainer_quest.id == "tr_cerulean_3" && !pbCompletedQuest?("tr_cerulean_3")

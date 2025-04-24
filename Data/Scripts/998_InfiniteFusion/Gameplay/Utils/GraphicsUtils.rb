@@ -26,7 +26,7 @@ end
 
 
 def playPokeFluteAnimation
-  # return if $Trainer.outfit != 0
+  # return if $player.outfit != 0
   # $game_player.setDefaultCharName("players/pokeflute", 0, false)
   # Graphics.update
   # Input.update
@@ -34,7 +34,7 @@ def playPokeFluteAnimation
 end
 
 def restoreDefaultCharacterSprite(charset_number = 0)
-  meta = GameData::Metadata.get_player($Trainer.character_ID)
+  meta = GameData::Metadata.get_player($player.character_ID)
   $game_player.setDefaultCharName(nil, 0, false)
   $game_player.character_name = meta[1]
   Graphics.update

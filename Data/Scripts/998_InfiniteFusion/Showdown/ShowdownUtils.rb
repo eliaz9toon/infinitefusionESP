@@ -80,7 +80,7 @@ end
 
 def exportTeamForShowdown()
   message = ""
-  for pokemon in $Trainer.party
+  for pokemon in $player.party
     message << exportFusedPokemonForShowdown(pokemon)
     message << "\n"
   end

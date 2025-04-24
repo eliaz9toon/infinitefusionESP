@@ -62,32 +62,32 @@ def get_current_outfit_position(currentOutfit_id, available_outfits)
 end
 
 def setHairColor(hue_shift)
-  $Trainer.hair_color = hue_shift
+  $player.hair_color = hue_shift
   refreshPlayerOutfit()
 end
 
 def shiftHatColor(incr,secondary_hat=false)
   if secondary_hat
-    $Trainer.hat2_color = 0 if !$Trainer.hat2_color
-    $Trainer.hat2_color += incr
+    $player.hat2_color = 0 if !$player.hat2_color
+    $player.hat2_color += incr
   else
-    $Trainer.hat_color = 0 if !$Trainer.hat_color
-    $Trainer.hat_color += incr
+    $player.hat_color = 0 if !$player.hat_color
+    $player.hat_color += incr
   end
 
   refreshPlayerOutfit()
 end
 
 def shiftClothesColor(incr)
-  $Trainer.clothes_color = 0 if !$Trainer.clothes_color
-  $Trainer.clothes_color += incr
+  $player.clothes_color = 0 if !$player.clothes_color
+  $player.clothes_color += incr
   refreshPlayerOutfit()
 end
 
 def shiftHairColor(incr)
-  $Trainer.hair_color = 0 if !$Trainer.hair_color
-  $Trainer.hair_color += incr
-  echoln "Hair color: #{$Trainer.hair_color}"
+  $player.hair_color = 0 if !$player.hair_color
+  $player.hair_color += incr
+  echoln "Hair color: #{$player.hair_color}"
   refreshPlayerOutfit()
 end
 
@@ -101,11 +101,11 @@ def pbLoadOutfitBitmap(outfitFileName)
 end
 
 def setOutfit(outfit_id)
-  $Trainer.clothes = outfit_id
+  $player.clothes = outfit_id
 end
 
 def setHat(hat_id)
-  $Trainer.hat = hat_id
+  $player.hat = hat_id
 end
 
 def getEasterEggHeldItem()
@@ -134,7 +134,7 @@ end
 def getCurrentPokeball(allowEasterEgg=true)
   otherItem = getEasterEggHeldItem() if allowEasterEgg
   return otherItem if otherItem
-  firstPokemon = $Trainer.party[0]
+  firstPokemon = $player.party[0]
   return firstPokemon.poke_ball if firstPokemon
   return nil
 end
@@ -152,19 +152,19 @@ def generate_front_trainer_sprite_bitmap(allowEasterEgg=true, pokeball = nil,
                                          skin_tone_id = nil, hair_color = nil, hat_color = nil, clothes_color = nil,
                                          hat2_color = nil)
 
-  clothes_id = $Trainer.clothes if !clothes_id
-  hat_id = $Trainer.hat if !hat_id
-  hat2_id = $Trainer.hat2 if !hat2_id
+  clothes_id = $player.clothes if !clothes_id
+  hat_id = $player.hat if !hat_id
+  hat2_id = $player.hat2 if !hat2_id
 
-  hair_id = $Trainer.hair if !hair_id
-  skin_tone_id = $Trainer.skin_tone if !skin_tone_id
-  hair_color = $Trainer.hair_color if !hair_color
-  hat_color = $Trainer.hat_color if !hat_color
-  hat2_color = $Trainer.hat2_color if !hat2_color
-  clothes_color = $Trainer.clothes_color if !clothes_color
+  hair_id = $player.hair if !hair_id
+  skin_tone_id = $player.skin_tone if !skin_tone_id
+  hair_color = $player.hair_color if !hair_color
+  hat_color = $player.hat_color if !hat_color
+  hat2_color = $player.hat2_color if !hat2_color
+  clothes_color = $player.clothes_color if !clothes_color
 
-  hairFilename = getTrainerSpriteHairFilename(hair_id) #_INTL(Settings::PLAYER_GRAPHICS_FOLDER + Settings::PLAYER_HAIR_FOLDER + "/hair_trainer_{1}", $Trainer.hair)
-  outfitFilename = getTrainerSpriteOutfitFilename(clothes_id) #_INTL(Settings::PLAYER_GRAPHICS_FOLDER + Settings::PLAYER_CLOTHES_FOLDER + "/clothes_trainer_{1}", $Trainer.clothes)
+  hairFilename = getTrainerSpriteHairFilename(hair_id) #_INTL(Settings::PLAYER_GRAPHICS_FOLDER + Settings::PLAYER_HAIR_FOLDER + "/hair_trainer_{1}", $player.hair)
+  outfitFilename = getTrainerSpriteOutfitFilename(clothes_id) #_INTL(Settings::PLAYER_GRAPHICS_FOLDER + Settings::PLAYER_CLOTHES_FOLDER + "/clothes_trainer_{1}", $player.clothes)
 
   hatFilename = getTrainerSpriteHatFilename(hat_id)
   hat2Filename = getTrainerSpriteHatFilename(hat2_id)

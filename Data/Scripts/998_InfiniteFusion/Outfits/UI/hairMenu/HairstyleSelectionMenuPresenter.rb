@@ -16,14 +16,14 @@ class HairstyleSelectionMenuPresenter
 
   def initialize(view)
     @view = view
-    @hairstyle_full_id = $Trainer.hair
+    @hairstyle_full_id = $player.hair
 
     hairstyle_split = getSplitHairFilenameAndVersionFromID(@hairstyle_full_id)
     @hairstyle = hairstyle_split[0] if hairstyle_split[0]
     @hair_version = hairstyle_split[1] if hairstyle_split[1]
-    @hairColor = $Trainer.hair_color
+    @hairColor = $player.hair_color
 
-    @available_styles= $Trainer.unlocked_hairstyles
+    @available_styles= $player.unlocked_hairstyles
     @selected_hairstyle_index = 0
 
     echoln @available_styles
@@ -74,8 +74,8 @@ class HairstyleSelectionMenuPresenter
 
 
   def applyAllSelectedValues
-    $Trainer.hair = getFullHairId(@hairstyle,@hair_version)
-    $Trainer.hair_color = @hairColor
+    $player.hair = getFullHairId(@hairstyle,@hair_version)
+    $player.hair_color = @hairColor
   end
 
   def getOptionIndex(option_name)
@@ -182,6 +182,6 @@ class HairstyleSelectionMenuPresenter
     hairstyle = @hairstyle
     hair_version =@hair_version
     hairId = getFullHairId(hairstyle,hair_version)
-    $Trainer.hair = hairId
+    $player.hair = hairId
   end
 end

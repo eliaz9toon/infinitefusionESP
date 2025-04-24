@@ -24,9 +24,9 @@ end
 
 # Get difficulty for displaying in-game
 def getDisplayDifficulty
-  if $game_switches[SWITCH_GAME_DIFFICULTY_EASY] || $Trainer.lowest_difficulty <= 0
+  if $game_switches[SWITCH_GAME_DIFFICULTY_EASY] || $player.lowest_difficulty <= 0
     return getDisplayDifficultyFromIndex(0)
-  elsif $Trainer.lowest_difficulty <= 1
+  elsif $player.lowest_difficulty <= 1
     return getDisplayDifficultyFromIndex(1)
   elsif $game_switches[SWITCH_GAME_DIFFICULTY_HARD]
     return getDisplayDifficultyFromIndex(2)
@@ -81,7 +81,7 @@ end
 
 
 def setDifficulty(index)
-  $Trainer.selected_difficulty = index
+  $player.selected_difficulty = index
   case index
   when 0 # EASY
     $game_switches[SWITCH_GAME_DIFFICULTY_EASY] = true

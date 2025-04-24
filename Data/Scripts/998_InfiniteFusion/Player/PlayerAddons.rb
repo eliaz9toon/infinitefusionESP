@@ -137,8 +137,8 @@ class Player < Trainer
 
   def clothes_color=(value)
     @clothes_color = value
-    $Trainer.dyed_clothes = {} if !$Trainer.dyed_clothes
-    $Trainer.dyed_clothes[@clothes] = value if value
+    $player.dyed_clothes = {} if !$player.dyed_clothes
+    $player.dyed_clothes[@clothes] = value if value
     refreshPlayerOutfit()
   end
 
@@ -148,25 +148,25 @@ class Player < Trainer
     else
       @hat_color = value
     end
-    $Trainer.dyed_hats = {} if !$Trainer.dyed_hats
+    $player.dyed_hats = {} if !$player.dyed_hats
     worn_hat = is_secondary ? @hat2 : @hat
-    $Trainer.dyed_hats[worn_hat] = value if value
+    $player.dyed_hats[worn_hat] = value if value
     refreshPlayerOutfit()
   end
 
   def hat_color=(value)
     @hat_color = value
-    $Trainer.dyed_hats = {} if !$Trainer.dyed_hats
+    $player.dyed_hats = {} if !$player.dyed_hats
     worn_hat = @hat
-    $Trainer.dyed_hats[worn_hat] = value if value
+    $player.dyed_hats[worn_hat] = value if value
     refreshPlayerOutfit()
   end
 
   def hat2_color=(value)
     @hat2_color = value
-    $Trainer.dyed_hats = {} if !$Trainer.dyed_hats
+    $player.dyed_hats = {} if !$player.dyed_hats
     worn_hat = @hat2
-    $Trainer.dyed_hats[worn_hat] = value if value
+    $player.dyed_hats[worn_hat] = value if value
     refreshPlayerOutfit()
   end
 
@@ -218,7 +218,7 @@ class Player < Trainer
     outfit_preview = PictureWindow.new(filepath)
     outfit_preview.x = Graphics.width / 4
     musicEffect = "Key item get"
-    pbMessage(_INTL("{1} obtained \\C[{2}]{3}\\C[0]!\\me[{4}]", $Trainer.name, color, name, musicEffect))
+    pbMessage(_INTL("{1} obtained \\C[{2}]{3}\\C[0]!\\me[{4}]", $player.name, color, name, musicEffect))
     outfit_preview.dispose
   end
 

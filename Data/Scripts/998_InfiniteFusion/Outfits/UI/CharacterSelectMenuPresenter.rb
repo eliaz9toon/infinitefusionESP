@@ -114,8 +114,8 @@ class CharacterSelectMenuPresenter
     applyGender(@gender)
     echoln @age
     pbSet(VAR_TRAINER_AGE, @age)
-    $Trainer.skin_tone = @skinTone
-    $Trainer.name = @name
+    $player.skin_tone = @skinTone
+    $player.name = @name
   end
 
   def getOptionIndex(option_name)
@@ -201,7 +201,7 @@ class CharacterSelectMenuPresenter
     @skinTone += incr
     @skinTone = MIN_SKIN_COLOR if @skinTone > MAX_SKIN_COLOR
     @skinTone = MAX_SKIN_COLOR if @skinTone < MIN_SKIN_COLOR
-    $Trainer.skin_tone = @skinTone
+    $player.skin_tone = @skinTone
     label = SKIN_COLOR_IDS[@skinTone - 1]
     @view.displayText(SKIN_TEXT_ID, label, current_index)
   end
@@ -219,7 +219,7 @@ class CharacterSelectMenuPresenter
     applyHairEasterEggs()
     hairColorId = HAIR_COLOR_IDS[@hairColor]
     hairId = hairColorId.to_s + "_" + @hairstyle.to_s
-    $Trainer.hair = hairId
+    $player.hair = hairId
   end
 
   def applyHairEasterEggs()
@@ -236,9 +236,9 @@ class CharacterSelectMenuPresenter
     outfitId = get_outfit_id_from_index(gender_index)
     @hairstyle = outfitId
     applyHair()
-    #$Trainer.hair = outfitId
-    $Trainer.clothes = outfitId
-    $Trainer.hat = outfitId
+    #$player.hair = outfitId
+    $player.clothes = outfitId
+    $player.hat = outfitId
   end
 
   def get_outfit_id_from_index(gender_index)

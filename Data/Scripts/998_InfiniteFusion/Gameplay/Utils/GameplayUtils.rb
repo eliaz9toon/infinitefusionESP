@@ -54,7 +54,7 @@ def isOutdoor()
 end
 
 def qmarkMaskCheck()
-  if $Trainer.seen_qmarks_sprite
+  if $player.seen_qmarks_sprite
     unless hasHat?(HAT_QMARKS)
       obtainHat(HAT_QMARKS)
       obtainClothes(CLOTHES_GLITCH)
@@ -77,7 +77,7 @@ def giveJigglypuffScribbles(possible_versions = [1,2,3,4])
   return if !scribbles_id
 
   if !hasHat?(scribbles_id)
-    $Trainer.unlocked_hats << scribbles_id
+    $player.unlocked_hats << scribbles_id
   end
   putOnHat(scribbles_id,true,true)
 end
@@ -481,7 +481,7 @@ def Kernel.setRocketPassword(variableNum)
 end
 
 def obtainBadgeMessage(badgeName)
-  Kernel.pbMessage(_INTL("\\me[Badge get]{1} obtained the {2}!", $Trainer.name, badgeName))
+  Kernel.pbMessage(_INTL("\\me[Badge get]{1} obtained the {2}!", $player.name, badgeName))
 end
 
 

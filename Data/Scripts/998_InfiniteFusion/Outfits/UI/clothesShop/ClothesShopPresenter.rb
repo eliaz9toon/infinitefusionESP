@@ -15,7 +15,7 @@ class ClothesShopPresenter < PokemonMartScreen
 
 
   def dyeClothes()
-    original_color = $Trainer.clothes_color
+    original_color = $player.clothes_color
     options = ["Shift up", "Shift down", "Reset", "Confirm", "Never Mind"]
     previous_input = 0
     ret = false
@@ -33,12 +33,12 @@ class ClothesShopPresenter < PokemonMartScreen
         ret = true
       when 2 #Reset
         pbSEPlay("GUI storage pick up", 80, 100)
-        $Trainer.clothes_color = 0
+        $player.clothes_color = 0
         ret = false
       when 3 #Confirm
         break
       else
-        $Trainer.clothes_color = original_color
+        $player.clothes_color = original_color
         ret = false
         break
       end
@@ -60,7 +60,7 @@ class ClothesShopPresenter < PokemonMartScreen
 
     if options[choice] == cmd_wear
       putOnClothes(item,false)
-      $Trainer.clothes_color = @adapter.get_dye_color(item.id)
+      $player.clothes_color = @adapter.get_dye_color(item.id)
       return true
     elsif options[choice] == cmd_dye
       dyeClothes()

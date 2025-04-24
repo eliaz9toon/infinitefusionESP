@@ -13,7 +13,7 @@ def obtainHat(outfit_id,secondary=false)
     pbMessage(_INTL("The hat #{outfit_id} is invalid."))
     return
   end
-  $Trainer.unlocked_hats << outfit_id if !$Trainer.unlocked_hats.include?(outfit_id)
+  $player.unlocked_hats << outfit_id if !$player.unlocked_hats.include?(outfit_id)
   obtainOutfitMessage(outfit)
   if pbConfirmMessage("Would you like to put it on right now?")
     putOnHat(outfit_id, false, false) if !secondary
@@ -31,7 +31,7 @@ def obtainClothes(outfit_id)
     return
   end
   return if !outfit
-  $Trainer.unlocked_clothes << outfit_id if !$Trainer.unlocked_clothes.include?(outfit_id)
+  $player.unlocked_clothes << outfit_id if !$player.unlocked_clothes.include?(outfit_id)
   obtainOutfitMessage(outfit)
   if pbConfirmMessage("Would you like to put it on right now?")
     putOnClothes(outfit_id)
@@ -50,16 +50,16 @@ def obtainNewHairstyle(full_outfit_id)
 end
 
 def putOnClothes(outfit_id, silent = false)
-  $Trainer.dyed_clothes= {} if ! $Trainer.dyed_clothes
-  $Trainer.last_worn_outfit = $Trainer.clothes
+  $player.dyed_clothes= {} if ! $player.dyed_clothes
+  $player.last_worn_outfit = $player.clothes
   outfit = get_clothes_by_id(outfit_id)
-  $Trainer.clothes = outfit_id
+  $player.clothes = outfit_id
 
-  dye_color = $Trainer.dyed_clothes[outfit_id]
+  dye_color = $player.dyed_clothes[outfit_id]
   if dye_color
-    $Trainer.clothes_color = dye_color
+    $player.clothes_color = dye_color
   else
-    $Trainer.clothes_color = nil
+    $player.clothes_color = nil
   end
 
   $game_map.update
@@ -68,19 +68,19 @@ def putOnClothes(outfit_id, silent = false)
 end
 
 def putOnHat(outfit_id, silent = false, is_secondary=false)
-  $Trainer.dyed_hats= {} if ! $Trainer.dyed_hats
-  $Trainer.set_last_worn_hat($Trainer.hat,is_secondary)
+  $player.dyed_hats= {} if ! $player.dyed_hats
+  $player.set_last_worn_hat($player.hat,is_secondary)
   outfit = get_hat_by_id(outfit_id)
 
-  $Trainer.set_hat(outfit_id,is_secondary)
+  $player.set_hat(outfit_id,is_secondary)
 
-  dye_color = $Trainer.dyed_hats[outfit_id]
+  dye_color = $player.dyed_hats[outfit_id]
   if dye_color
-    $Trainer.hat_color = dye_color if !is_secondary
-    $Trainer.hat2_color = dye_color if is_secondary
+    $player.hat_color = dye_color if !is_secondary
+    $player.hat2_color = dye_color if is_secondary
   else
-    $Trainer.hat_color = nil if !is_secondary
-    $Trainer.hat2_color = nil if is_secondary
+    $player.hat_color = nil if !is_secondary
+    $player.hat2_color = nil if is_secondary
   end
 
   $game_map.refreshPlayerOutfit()
@@ -91,7 +91,7 @@ end
 def putOnHairFullId(full_outfit_id)
   outfit_id = getSplitHairFilenameAndVersionFromID(full_outfit_id)[1]
   outfit = get_hair_by_id(outfit_id)
-  $Trainer.hair = full_outfit_id
+  $player.hair = full_outfit_id
   $game_map.update
   refreshPlayerOutfit()
   putOnOutfitMessage(outfit)
@@ -101,7 +101,7 @@ def putOnHair(outfit_id, version)
   full_id = getFullHairId(outfit_id, version)
   putOnHairFullId(full_id)
   #outfit = get_hair_by_id(outfit_id)
-  #$Trainer.hair =
+  #$player.hair =
   #putOnOutfitMessage(outfit)
 end
 
@@ -173,15 +173,15 @@ def findLastHairVersion(hairId)
 end
 
 def isWearingClothes(outfitId)
-  return $Trainer.clothes == outfitId
+  return $player.clothes == outfitId
 end
 
 def isWearingHat(outfitId)
-  return $Trainer.hat == outfitId || $Trainer.hat2 == outfitId
+  return $player.hat == outfitId || $player.hat2 == outfitId
 end
 
 def isWearingHairstyle(outfitId, version = nil)
-  current_hair_split_id = getSplitHairFilenameAndVersionFromID($Trainer.hair)
+  current_hair_split_id = getSplitHairFilenameAndVersionFromID($player.hair)
   current_id = current_hair_split_id.length >= 1 ? current_hair_split_id[1] : nil
   current_version = current_hair_split_id[0]
   if version
@@ -209,11 +209,11 @@ def getDefaultClothes()
 end
 
 def hasClothes?(outfit_id)
-  return $Trainer.unlocked_clothes.include?(outfit_id)
+  return $player.unlocked_clothes.include?(outfit_id)
 end
 
 def hasHat?(outfit_id)
-  return $Trainer.unlocked_hats.include?(outfit_id)
+  return $player.unlocked_hats.include?(outfit_id)
 end
 
 def getOutfitForPokemon(pokemonSpecies)
@@ -249,16 +249,16 @@ def getOutfitForPokemon(pokemonSpecies)
 end
 
 def hatUnlocked?(hatId)
-  return $Trainer.unlocked_hats.include?(hatId)
+  return $player.unlocked_hats.include?(hatId)
 end
 
 def export_current_outfit()
-  skinTone = $Trainer.skin_tone ? $Trainer.skin_tone : 0
-  hat = $Trainer.hat ? $Trainer.hat : "nil"
-  hair_color = $Trainer.hair_color || 0
-  clothes_color = $Trainer.clothes_color || 0
-  hat_color = $Trainer.hat_color || 0
-  exportedString = "TrainerAppearance.new(#{skinTone},\"#{hat}\",\"#{$Trainer.clothes}\",\"#{$Trainer.hair}\",#{hair_color},#{clothes_color},#{hat_color})"
+  skinTone = $player.skin_tone ? $player.skin_tone : 0
+  hat = $player.hat ? $player.hat : "nil"
+  hair_color = $player.hair_color || 0
+  clothes_color = $player.clothes_color || 0
+  hat_color = $player.hat_color || 0
+  exportedString = "TrainerAppearance.new(#{skinTone},\"#{hat}\",\"#{$player.clothes}\",\"#{$player.hair}\",#{hair_color},#{clothes_color},#{hat_color})"
   Input.clipboard = exportedString
 end
 
@@ -287,30 +287,30 @@ def setEventAppearance(event_id, trainerAppearance)
 end
 
 def getPlayerAppearance()
-  return TrainerAppearance.new($Trainer.skin_tone,$Trainer.hat,$Trainer.clothes, $Trainer.hair,
-                               $Trainer.hair_color, $Trainer.clothes_color, $Trainer.hat_color)
+  return TrainerAppearance.new($player.skin_tone,$player.hat,$player.clothes, $player.hair,
+                               $player.hair_color, $player.clothes_color, $player.hat_color)
 end
 
 def randomizePlayerOutfitUnlocked()
-  $Trainer.hat = $Trainer.unlocked_hats.sample
-  $Trainer.hat2 = $Trainer.unlocked_hats.sample
-  $Trainer.clothes = $Trainer.unlocked_clothes.sample
+  $player.hat = $player.unlocked_hats.sample
+  $player.hat2 = $player.unlocked_hats.sample
+  $player.clothes = $player.unlocked_clothes.sample
 
   dye_hat = rand(2)==0
   dye_hat2 = rand(2)==0
   dye_clothes = rand(2)==0
   dye_hair = rand(2)==0
-  $Trainer.hat2 = nil if rand(3)==0
+  $player.hat2 = nil if rand(3)==0
 
-  $Trainer.hat_color = dye_hat ? rand(255) : 0
-  $Trainer.hat2_color = dye_hat2 ? rand(255) : 0
+  $player.hat_color = dye_hat ? rand(255) : 0
+  $player.hat2_color = dye_hat2 ? rand(255) : 0
 
-  $Trainer.clothes_color = dye_clothes ? rand(255) : 0
-  $Trainer.hair_color =  dye_hair ? rand(255) : 0
+  $player.clothes_color = dye_clothes ? rand(255) : 0
+  $player.hair_color =  dye_hair ? rand(255) : 0
 
   hair_id = $PokemonGlobal.hairstyles_data.keys.sample
   hair_color = [1,2,3,4].sample
-  $Trainer.hair = getFullHairId(hair_id,hair_color)
+  $player.hair = getFullHairId(hair_id,hair_color)
 
 end
 
@@ -389,21 +389,21 @@ def get_random_appearance()
 end
 
 def randomizePlayerOutfit()
-  $Trainer.hat = $PokemonGlobal.hats_data.keys.sample
-  $Trainer.hat2 = $PokemonGlobal.hats_data.keys.sample
-  $Trainer.hat2 = nil if(rand(3)==0)
+  $player.hat = $PokemonGlobal.hats_data.keys.sample
+  $player.hat2 = $PokemonGlobal.hats_data.keys.sample
+  $player.hat2 = nil if(rand(3)==0)
 
-  $Trainer.clothes = $PokemonGlobal.clothes_data.keys.sample
-  $Trainer.hat_color = rand(2)==0 ? rand(255) : 0
-  $Trainer.hat2_color = rand(2)==0 ? rand(255) : 0
+  $player.clothes = $PokemonGlobal.clothes_data.keys.sample
+  $player.hat_color = rand(2)==0 ? rand(255) : 0
+  $player.hat2_color = rand(2)==0 ? rand(255) : 0
 
-  $Trainer.clothes_color = rand(2)==0 ? rand(255) : 0
-  $Trainer.hair_color =  rand(2)==0 ? rand(255) : 0
+  $player.clothes_color = rand(2)==0 ? rand(255) : 0
+  $player.hair_color =  rand(2)==0 ? rand(255) : 0
 
   hair_id = $PokemonGlobal.hairstyles_data.keys.sample
   hair_color = [1,2,3,4].sample
-  $Trainer.skin_tone = [1,2,3,4,5,6].sample
-  $Trainer.hair = getFullHairId(hair_id,hair_color)
+  $player.skin_tone = [1,2,3,4,5,6].sample
+  $player.hair = getFullHairId(hair_id,hair_color)
 
 end
 

@@ -9,31 +9,31 @@ class ClothesShopPresenter < PokemonMartScreen
   def wearAsHat1(item)
     @adapter.set_secondary_hat(false)
     putOnClothes(item)
-    $Trainer.set_hat_color(@adapter.get_dye_color(item.id),false)
+    $player.set_hat_color(@adapter.get_dye_color(item.id),false)
   end
   def wearAsHat2(item)
     @adapter.set_secondary_hat(true)
     putOnClothes(item)
-    $Trainer.set_hat_color(@adapter.get_dye_color(item.id),true)
+    $player.set_hat_color(@adapter.get_dye_color(item.id),true)
   end
 
   def removeDye(item)
     if pbConfirm(_INTL("Are you sure you want to remove the dye from the {1}?", item.name))
-      $Trainer.set_hat_color(0,@adapter.is_secondary_hat)
+      $player.set_hat_color(0,@adapter.is_secondary_hat)
     end
   end
 
   def swapHats()
-    echoln "hat 1: #{$Trainer.hat}"
-    echoln "hat 2: #{$Trainer.hat2}"
+    echoln "hat 1: #{$player.hat}"
+    echoln "hat 2: #{$player.hat2}"
 
 
-    $Trainer.hat, $Trainer.hat2 = $Trainer.hat2, $Trainer.hat
+    $player.hat, $player.hat2 = $player.hat2, $player.hat
 
     pbSEPlay("GUI naming tab swap start")
-    new_selected_hat = @adapter.is_secondary_hat ? $Trainer.hat2 : $Trainer.hat
-    echoln "hat 1: #{$Trainer.hat}"
-    echoln "hat 2: #{$Trainer.hat2}"
+    new_selected_hat = @adapter.is_secondary_hat ? $player.hat2 : $player.hat
+    echoln "hat 1: #{$player.hat}"
+    echoln "hat 2: #{$player.hat2}"
     echoln "new selected hat: #{new_selected_hat}"
 
     @scene.select_specific_item(new_selected_hat,true)
@@ -69,18 +69,18 @@ class ClothesShopPresenter < PokemonMartScreen
 
 
   def putOnHats()
-    @adapter.worn_clothes = $Trainer.hat
-    @adapter.worn_clothes2 = $Trainer.hat2
+    @adapter.worn_clothes = $player.hat
+    @adapter.worn_clothes2 = $player.hat2
 
-    putOnHat($Trainer.hat,true,false)
-    putOnHat($Trainer.hat2,true,true)
+    putOnHat($player.hat,true,false)
+    putOnHat($player.hat2,true,true)
 
     playOutfitChangeAnimation()
     pbMessage(_INTL("You put on the hat(s)!\\wtnp[30]"))
   end
 
   def dyeOptions(secondary_hat=false,item)
-    original_color = secondary_hat ? $Trainer.hat2_color : $Trainer.hat_color
+    original_color = secondary_hat ? $player.hat2_color : $player.hat_color
     options = ["Shift up", "Shift down", "Reset", "Confirm", "Never Mind"]
     previous_input = 0
     while (true)
@@ -97,14 +97,14 @@ class ClothesShopPresenter < PokemonMartScreen
         ret = true
       when 2 #Reset
         pbSEPlay("GUI storage put down", 80, 100)
-        $Trainer.hat_color = 0 if !secondary_hat
-        $Trainer.hat2_color = 0 if secondary_hat
+        $player.hat_color = 0 if !secondary_hat
+        $player.hat2_color = 0 if secondary_hat
         ret = false
       when 3 #Confirm
         break
       else
-        $Trainer.hat_color = original_color if !secondary_hat
-        $Trainer.hat2_color = original_color if secondary_hat
+        $player.hat_color = original_color if !secondary_hat
+        $player.hat2_color = original_color if secondary_hat
         ret = false
         break
       end
@@ -117,8 +117,8 @@ class ClothesShopPresenter < PokemonMartScreen
   def confirmPutClothes(item)
     if @adapter.is_a?(HatsMartAdapter)
       putOnHats()
-      $Trainer.hat_color = @adapter.get_dye_color($Trainer.hat)
-      $Trainer.hat2_color = @adapter.get_dye_color($Trainer.hat2)
+      $player.hat_color = @adapter.get_dye_color($player.hat)
+      $player.hat2_color = @adapter.get_dye_color($player.hat2)
     else
       putOnClothes(item,false)
     end

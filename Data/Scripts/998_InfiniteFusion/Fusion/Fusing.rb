@@ -1,6 +1,6 @@
 def getPokemonPositionInParty(pokemon)
-  for i in 0..$Trainer.party.length
-    if $Trainer.party[i] == pokemon
+  for i in 0..$player.party.length
+    if $player.party[i] == pokemon
       return i
     end
   end
@@ -15,11 +15,11 @@ def pbDNASplicing(pokemon, scene, item = :DNASPLICERS)
   dexNumber = pokemon.species_data.id_number
   if (pokemon.species_data.id_number <= NB_POKEMON)
     if pokemon.fused != nil
-      if $Trainer.party.length >= 6
+      if $player.party.length >= 6
         scene.pbDisplay(_INTL("Your party is full! You can't unfuse {1}.", pokemon.name))
         return false
       else
-        $Trainer.party[$Trainer.party.length] = pokemon.fused
+        $player.party[$player.party.length] = pokemon.fused
         pokemon.fused = nil
         pokemon.form = 0
         scene.pbHardRefresh
@@ -29,7 +29,7 @@ def pbDNASplicing(pokemon, scene, item = :DNASPLICERS)
     else
       chosen = scene.pbChoosePokemon(_INTL("Fuse with which Pokémon?"))
       if chosen >= 0
-        poke2 = $Trainer.party[chosen]
+        poke2 = $player.party[chosen]
         if (poke2.species_data.id_number <= NB_POKEMON) && poke2 != pokemon
           # check if fainted
 
@@ -152,13 +152,13 @@ def pbUnfuse(pokemon, scene, supersplicers, pcPosition = nil)
   bodyPoke = getBasePokemonID(pokemon.species_data.id_number, true)
   headPoke = getBasePokemonID(pokemon.species_data.id_number, false)
 
-  if (pokemon.foreign?($Trainer)) # && !canunfuse
+  if (pokemon.foreign?($player)) # && !canunfuse
     scene.pbDisplay(_INTL("You can't unfuse a Pokémon obtained in a trade!"))
     return false
   else
     if Kernel.pbConfirmMessageSerious(_INTL("Should {1} be unfused?", pokemon.name))
       keepInParty = 0
-      if $Trainer.party.length >= 6 && !pcPosition
+      if $player.party.length >= 6 && !pcPosition
 
         message = "Your party is full! Keep which Pokémon in party?"
         message = "Your party is full! Keep which Pokémon in party? The other will be released." if isOnPinkanIsland()
@@ -249,7 +249,7 @@ def pbUnfuse(pokemon, scene, supersplicers, pcPosition = nil)
         poke2.debug_shiny = false
       end
 
-      if $Trainer.party.length >= 6
+      if $player.party.length >= 6
         if (keepInParty == 0)
           if isOnPinkanIsland()
             scene.pbDisplay(_INTL("{1} was released.", poke2.name))
@@ -289,10 +289,10 @@ def pbUnfuse(pokemon, scene, supersplicers, pcPosition = nil)
       end
 
       # On ajoute les poke au pokedex
-      $Trainer.pokedex.set_seen(poke1.species)
-      $Trainer.pokedex.set_owned(poke1.species)
-      $Trainer.pokedex.set_seen(poke2.species)
-      $Trainer.pokedex.set_owned(poke2.species)
+      $player.pokedex.set_seen(poke1.species)
+      $player.pokedex.set_owned(poke1.species)
+      $player.pokedex.set_seen(poke2.species)
+      $player.pokedex.set_owned(poke2.species)
 
       pokemon.species = poke1.species
       pokemon.level = poke1.level

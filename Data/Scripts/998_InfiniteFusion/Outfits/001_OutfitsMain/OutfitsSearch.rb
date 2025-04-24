@@ -6,7 +6,7 @@ def search_clothes(matching_tags = [], only_unlocked = false)
 
   full_data_list = $PokemonGlobal.clothes_data
   existing_files_list = selector.parse_clothes_folder()
-  unlocked_list = $Trainer.unlocked_clothes
+  unlocked_list = $player.unlocked_clothes
   return search_outfits_by_tag(full_data_list, matching_tags, existing_files_list, unlocked_list, only_unlocked)
 end
 
@@ -16,14 +16,14 @@ def filter_clothes(filter_tags = [], only_unlocked = false)
 
   full_data_list = $PokemonGlobal.hats_data
   existing_files_list = selector.parse_hats_folder()
-  unlocked_list = $Trainer.unlocked_hats
+  unlocked_list = $player.unlocked_hats
   return filter_outfits_by_tag(full_data_list, filter_tags, existing_files_list, unlocked_list, only_unlocked)
 end
 
 def filter_clothes_only_not_owned(clothes_ids_list)
   filtered_list = []
   clothes_ids_list.each do|clothe_id|
-    filtered_list << clothe_id if !$Trainer.unlocked_clothes.include?(clothe_id)
+    filtered_list << clothe_id if !$player.unlocked_clothes.include?(clothe_id)
   end
   return filtered_list
 end
@@ -31,7 +31,7 @@ end
 def filter_clothes_only_owned(clothes_ids_list)
   filtered_list = []
   clothes_ids_list.each do|clothe_id|
-    filtered_list << clothe_id if $Trainer.unlocked_clothes.include?(clothe_id)
+    filtered_list << clothe_id if $player.unlocked_clothes.include?(clothe_id)
   end
   return filtered_list
 end
@@ -45,7 +45,7 @@ def search_hats(matching_tags = [],excluding_tags=[], only_unlocked = false)
 
   full_data_list = $PokemonGlobal.hats_data
   existing_files_list = selector.parse_hats_folder()
-  unlocked_list = $Trainer.unlocked_hats
+  unlocked_list = $player.unlocked_hats
   return search_outfits_by_tag(full_data_list, matching_tags, existing_files_list, unlocked_list, only_unlocked,excluding_tags)
 end
 
@@ -55,14 +55,14 @@ def filter_hats(filter_tags = [], only_unlocked = false)
 
   full_data_list = $PokemonGlobal.hats_data
   existing_files_list = selector.parse_hats_folder()
-  unlocked_list = $Trainer.unlocked_hats
+  unlocked_list = $player.unlocked_hats
   return filter_outfits_by_tag(full_data_list, filter_tags, existing_files_list, unlocked_list, only_unlocked)
 end
 
 def filter_hats_only_not_owned(hats_ids_list)
   filtered_list = []
   hats_ids_list.each do|hat_id|
-    filtered_list << hat_id if !$Trainer.unlocked_hats.include?(hat_id)
+    filtered_list << hat_id if !$player.unlocked_hats.include?(hat_id)
   end
   return filtered_list
 end
@@ -70,7 +70,7 @@ end
 def filter_hats_only_owned(hats_ids_list)
   filtered_list = []
   hats_ids_list.each do|hat_id|
-    filtered_list << hat_id if $Trainer.unlocked_hats.include?(hat_id)
+    filtered_list << hat_id if $player.unlocked_hats.include?(hat_id)
   end
   return filtered_list
 end

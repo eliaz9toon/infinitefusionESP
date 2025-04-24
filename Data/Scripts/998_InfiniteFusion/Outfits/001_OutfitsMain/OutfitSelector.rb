@@ -134,39 +134,39 @@ class OutfitSelector
   end
 
   def changeToNextClothes(incr,all_unlocked=false)
-    $Trainer.unlocked_clothes = [] if !$Trainer.unlocked_clothes
+    $player.unlocked_clothes = [] if !$player.unlocked_clothes
 
 
-    currentOutfit = $Trainer.clothes
+    currentOutfit = $player.clothes
     currentOutfit = 0 if !currentOutfit
-    nextOutfit = selectNextOutfit(currentOutfit, incr, @clothes_list, [], false,nil,$Trainer.unlocked_clothes,all_unlocked)
-    $Trainer.clothes = nextOutfit
-    $Trainer.clothes_color = 0
-    echoln $Trainer.clothes
+    nextOutfit = selectNextOutfit(currentOutfit, incr, @clothes_list, [], false,nil,$player.unlocked_clothes,all_unlocked)
+    $player.clothes = nextOutfit
+    $player.clothes_color = 0
+    echoln $player.clothes
 
   end
 
   def changeToNextHat(incr,all_unlocked=false)
-    $Trainer.unlocked_hats = [] if !$Trainer.unlocked_hats
+    $player.unlocked_hats = [] if !$player.unlocked_hats
 
-    currentHat = $Trainer.hat
+    currentHat = $player.hat
     currentHat = 0 if !currentHat
-    nextOutfit = selectNextOutfit(currentHat, incr, @hats_list, [], true, "hat",$Trainer.unlocked_hats,all_unlocked)
-    $Trainer.hat = nextOutfit
-    $Trainer.hat_color = 0
-    echoln $Trainer.hat
+    nextOutfit = selectNextOutfit(currentHat, incr, @hats_list, [], true, "hat",$player.unlocked_hats,all_unlocked)
+    $player.hat = nextOutfit
+    $player.hat_color = 0
+    echoln $player.hat
 
   end
 
   def changeToNextHairstyle(incr,all_unlocked=false)
-    $Trainer.unlocked_hairstyles = [] if !$Trainer.unlocked_hairstyles
+    $player.unlocked_hairstyles = [] if !$player.unlocked_hairstyles
 
-    currentHair = $Trainer.hair
+    currentHair = $player.hair
     currentHair = 0 if !currentHair
-    nextOutfit = selectNextOutfit(currentHair, incr, @hairstyles_list, ["a", "b", "c", "d"], true,nil,$Trainer.unlocked_hairstyles,all_unlocked)
-    $Trainer.hair_color = 0
-    $Trainer.hair = nextOutfit
-    echoln $Trainer.hair
+    nextOutfit = selectNextOutfit(currentHair, incr, @hairstyles_list, ["a", "b", "c", "d"], true,nil,$player.unlocked_hairstyles,all_unlocked)
+    $player.hair_color = 0
+    $player.hair = nextOutfit
+    echoln $player.hair
 
   end
 

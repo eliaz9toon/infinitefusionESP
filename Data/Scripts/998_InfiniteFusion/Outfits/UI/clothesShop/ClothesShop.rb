@@ -61,10 +61,10 @@ def hatShop(outfits_list = [], free=false, customMessage=nil)
 end
 
 def hairShop(outfits_list = [],free=false, customMessage=nil)
-  currentHair = getSimplifiedHairIdFromFullID($Trainer.hair)
+  currentHair = getSimplifiedHairIdFromFullID($player.hair)
   stock = [:SWAP_COLOR]
   #always add current hairstyle as first option (in case the player just wants to swap the color)
-  stock << get_hair_by_id(currentHair) if $Trainer.hair
+  stock << get_hair_by_id(currentHair) if $player.hair
   outfits_list.each { |outfit_id|
     next if outfit_id == currentHair
     outfit = get_hair_by_id(outfit_id)
@@ -74,15 +74,15 @@ def hairShop(outfits_list = [],free=false, customMessage=nil)
 end
 
 def switchHatsPosition()
-  hat1 = $Trainer.hat
-  hat2 = $Trainer.hat2
-  hat1_color = $Trainer.hat_color
-  hat2_color = $Trainer.hat2_color
+  hat1 = $player.hat
+  hat2 = $player.hat2
+  hat1_color = $player.hat_color
+  hat2_color = $player.hat2_color
 
-  $Trainer.hat = hat2
-  $Trainer.hat2 = hat1
-  $Trainer.hat_color = hat1_color
-  $Trainer.hat_color = hat2_color
+  $player.hat = hat2
+  $player.hat2 = hat1
+  $player.hat_color = hat1_color
+  $player.hat_color = hat2_color
 
   pbSEPlay("GUI naming tab swap start")
 end
@@ -108,7 +108,7 @@ end
 
 def changeClothesMenu()
   stock = []
-  $Trainer.unlocked_clothes.each { |outfit_id|
+  $player.unlocked_clothes.each { |outfit_id|
     outfit = get_clothes_by_id(outfit_id)
     stock << outfit if outfit
   }
@@ -117,7 +117,7 @@ end
 
 def changeHatMenu(is_secondary_hat = false)
   stock = []
-  $Trainer.unlocked_hats.each { |outfit_id|
+  $player.unlocked_hats.each { |outfit_id|
     outfit = get_hat_by_id(outfit_id)
     stock << outfit if outfit
   }

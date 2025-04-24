@@ -326,9 +326,9 @@ def addNewTripleFusion(pokemon1, pokemon2, pokemon3, level = 1)
 
   pokemon = TripleFusion.new(pokemon1, pokemon2, pokemon3, level)
   pokemon.calc_stats
-  pbMessage(_INTL("{1} obtained {2}!\\me[Pkmn get]\\wtnp[80]\1", $Trainer.name, pokemon.name))
+  pbMessage(_INTL("{1} obtained {2}!\\me[Pkmn get]\\wtnp[80]\1", $player.name, pokemon.name))
   pbNicknameAndStore(pokemon)
-  #$Trainer.pokedex.register(pokemon)
+  #$player.pokedex.register(pokemon)
   return true
 end
 

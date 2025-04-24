@@ -58,25 +58,25 @@ def purchaseDyeKitMenu(hats_kit_price=0,clothes_kit_price=0)
   choice = optionsMenu(commands,commands.length)
   case commands[choice]
   when command_hats
-    if $Trainer.money < hats_kit_price
+    if $player.money < hats_kit_price
       pbCallBub(2,@event_id)
       pbMessage("Oh, you don't have enough money...")
       return
     end
     pbMessage("\\G\\PN purchased the dye kit.")
-    $Trainer.money -= hats_kit_price
+    $player.money -= hats_kit_price
     pbSEPlay("SlotsCoin")
     Kernel.pbReceiveItem(:HATSDYEKIT)
     pbCallBub(2,@event_id)
     pbMessage("\\GHere you go! Have fun dyeing your hats!")
   when command_clothes
-    if $Trainer.money < clothes_kit_price
+    if $player.money < clothes_kit_price
       pbCallBub(2,@event_id)
       pbMessage("Oh, you don't have enough money...")
       return
     end
     pbMessage("\\G\\PN purchased the dye kit.")
-    $Trainer.money -= clothes_kit_price
+    $player.money -= clothes_kit_price
     pbSEPlay("SlotsCoin")
     Kernel.pbReceiveItem(:CLOTHESDYEKIT)
     pbCallBub(2,@event_id)
@@ -89,7 +89,7 @@ end
 
 def promptCaughtPokemonAction(pokemon)
   pickedOption = false
-  return pbStorePokemon(pokemon) if !$Trainer.party_full?
+  return pbStorePokemon(pokemon) if !$player.party_full?
   return promptKeepOrRelease(pokemon) if isOnPinkanIsland() && !$game_switches[SWITCH_PINKAN_FINISHED]
   while !pickedOption
     command = pbMessage(_INTL("\\ts[]Your team is full!"),
@@ -137,13 +137,13 @@ def swapCaughtPokemon(caughtPokemon)
                   })
   index = pbGet(1)
   return false if index == -1
-  $PokemonStorage.pbStoreCaught($Trainer.party[index])
+  $PokemonStorage.pbStoreCaught($player.party[index])
   pbRemovePokemonAt(index)
   pbStorePokemon(caughtPokemon)
 
-  tmp = $Trainer.party[index]
-  $Trainer.party[index] = $Trainer.party[-1]
-  $Trainer.party[-1] = tmp
+  tmp = $player.party[index]
+  $player.party[index] = $player.party[-1]
+  $player.party[-1] = tmp
   return true
 end
 
@@ -155,13 +155,13 @@ def swapReleaseCaughtPokemon(caughtPokemon)
                   })
   index = pbGet(1)
   return false if index == -1
-  releasedPokemon = $Trainer.party[index]
+  releasedPokemon = $player.party[index]
   pbMessage("#{releasedPokemon.name} was released.")
   pbRemovePokemonAt(index)
   pbStorePokemon(caughtPokemon)
 
-  tmp = $Trainer.party[index]
-  $Trainer.party[index] = $Trainer.party[-1]
-  $Trainer.party[-1] = tmp
+  tmp = $player.party[index]
+  $player.party[index] = $player.party[-1]
+  $player.party[-1] = tmp
   return true
 end

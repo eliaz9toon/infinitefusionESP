@@ -27,7 +27,7 @@ class HatShopView < ClothesShopView
 
   def switchItemVersion(itemwindow)
     @adapter.switchVersion(itemwindow.item, 1)
-    new_selected_hat = @adapter.is_secondary_hat ? $Trainer.hat2 : $Trainer.hat
+    new_selected_hat = @adapter.is_secondary_hat ? $player.hat2 : $player.hat
     select_specific_item(new_selected_hat,true)
     updateTrainerPreview()
   end
@@ -39,7 +39,7 @@ class HatShopView < ClothesShopView
   end
 
   def handleHatlessLayerIcons(selected_item)
-    other_hat = @adapter.is_secondary_hat ? $Trainer.hat : $Trainer.hat2
+    other_hat = @adapter.is_secondary_hat ? $player.hat : $player.hat2
     if !selected_item.is_a?(Hat)
       if @adapter.is_secondary_hat
         @sprites["wornHat_layer2"].bitmap=nil
@@ -59,12 +59,12 @@ class HatShopView < ClothesShopView
   def displayLayerIcons(selected_item=nil)
     handleHatlessLayerIcons(selected_item)
 
-    hat1Filename = getOverworldHatFilename($Trainer.hat)
-    hat2Filename = getOverworldHatFilename($Trainer.hat2)
+    hat1Filename = getOverworldHatFilename($player.hat)
+    hat2Filename = getOverworldHatFilename($player.hat2)
 
 
-    hat_color_shift = $Trainer.dyed_hats[$Trainer.hat]
-    hat2_color_shift = $Trainer.dyed_hats[$Trainer.hat2]
+    hat_color_shift = $player.dyed_hats[$player.hat]
+    hat2_color_shift = $player.dyed_hats[$player.hat2]
 
     hatBitmapWrapper = AnimatedBitmap.new(hat1Filename, hat_color_shift) if pbResolveBitmap(hat1Filename)
     hat2BitmapWrapper = AnimatedBitmap.new(hat2Filename, hat2_color_shift) if pbResolveBitmap(hat2Filename)

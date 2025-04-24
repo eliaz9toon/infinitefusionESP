@@ -8,9 +8,9 @@ class HairMartAdapter < OutfitsMartAdapter
     super
 
     @version = getCurrentHairVersion().to_i
-    @worn_hair = $Trainer.hair
-    @worn_hat = $Trainer.hat
-    @worn_hat2 = $Trainer.hat2
+    @worn_hair = $player.hair
+    @worn_hat = $player.hat
+    @worn_hat2 = $player.hat2
 
     @hat_visible = false
     @removable = true
@@ -34,7 +34,7 @@ class HairMartAdapter < OutfitsMartAdapter
   end
 
   def player_changed_clothes?()
-    $Trainer.hairstyle != @worn_hair
+    $player.hairstyle != @worn_hair
   end
 
   #player can't "own" hairstyles
@@ -85,7 +85,7 @@ class HairMartAdapter < OutfitsMartAdapter
 
   def getCurrentHairVersion()
     begin
-      return getSplitHairFilenameAndVersionFromID($Trainer.hair)[0]
+      return getSplitHairFilenameAndVersionFromID($player.hair)[0]
     rescue
       return 1
     end
@@ -96,7 +96,7 @@ class HairMartAdapter < OutfitsMartAdapter
   end
 
   def getName(item)
-    echoln $Trainer.hair
+    echoln $player.hair
     return item.id
   end
 
@@ -121,12 +121,12 @@ class HairMartAdapter < OutfitsMartAdapter
     previewWindow.hat = displayed_hat
     previewWindow.hat2 = displayed_hat2
 
-    $Trainer.hat = displayed_hat
-    $Trainer.hat2 = displayed_hat2
+    $player.hat = displayed_hat
+    $player.hat2 = displayed_hat2
 
     itemId = getCurrentHairId(item.id)
     previewWindow.hair = itemId
-    $Trainer.hair = itemId
+    $player.hair = itemId
     pbRefreshSceneMap
     previewWindow.updatePreview()
   end
@@ -139,7 +139,7 @@ class HairMartAdapter < OutfitsMartAdapter
   end
 
   def get_current_clothes()
-    return $Trainer.hair
+    return $player.hair
   end
 
   def putOnOutfit(item)
@@ -152,19 +152,19 @@ class HairMartAdapter < OutfitsMartAdapter
     # can change hair color for free if not changing the style
     if getVersionFromFullID(@worn_hair) != @version
       worn_id = getSimplifiedHairIdFromFullID(@worn_hair)
-      if getSimplifiedHairIdFromFullID($Trainer.hair) == worn_id
+      if getSimplifiedHairIdFromFullID($player.hair) == worn_id
         @worn_hair = getFullHairId(worn_id,@version)
       end
     end
 
-    $Trainer.hair = @worn_hair
-    $Trainer.hat = @worn_hat
-    $Trainer.hat2 = @worn_hat2
+    $player.hair = @worn_hair
+    $player.hat = @worn_hat
+    $player.hat2 = @worn_hat2
 
   end
 
   def get_unlocked_items_list()
-    return $Trainer.unlocked_hairstyles
+    return $player.unlocked_hairstyles
   end
 
 

@@ -29,15 +29,15 @@ class TrainerClothesPreview
   end
 
   def resetOutfits()
-    @clothes = $Trainer.clothes
-    @hat = $Trainer.hat
-    @hat2 = $Trainer.hat2
-    @hair = $Trainer.hair
-    @skin_tone = $Trainer.skin_tone
-    @hair_color = $Trainer.hair_color
-    @hat_color = $Trainer.hat_color
-    @hat2_color = $Trainer.hat2_color
-    @clothes_color = $Trainer.clothes_color
+    @clothes = $player.clothes
+    @hat = $player.hat
+    @hat2 = $player.hat2
+    @hair = $player.hair
+    @skin_tone = $player.skin_tone
+    @hair_color = $player.hair_color
+    @hat_color = $player.hat_color
+    @hat2_color = $player.hat2_color
+    @clothes_color = $player.clothes_color
   end
 
   def show()

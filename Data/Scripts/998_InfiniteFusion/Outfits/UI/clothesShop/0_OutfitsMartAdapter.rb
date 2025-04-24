@@ -19,8 +19,8 @@ class OutfitsMartAdapter < PokemonMartAdapter
     @worn_clothes = get_current_clothes()
     @isShop = isShop
     @version = nil
-    $Trainer.dyed_hats = {} if !$Trainer.dyed_hats
-    $Trainer.dyed_clothes = {} if !$Trainer.dyed_clothes
+    $player.dyed_hats = {} if !$player.dyed_hats
+    $player.dyed_clothes = {} if !$player.dyed_clothes
 
     #todo: refactor to get the list from the first search when
     # setting the stock instead of searching twice
