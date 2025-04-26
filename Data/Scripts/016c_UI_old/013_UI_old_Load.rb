@@ -171,7 +171,7 @@ class PokemonLoad_Scene
       filename = pbGetPlayerCharset(meta.walk_charset, trainer, true)
       @sprites["player"] = TrainerWalkingCharSprite.new(filename, @viewport)
       if !@sprites["player"].bitmap
-        raise _INTL("Player character {1}'s walking charset was not found (filename: \"{2}\").", trainer.character_ID, filename)
+        raise _INTL("Overrides character {1}'s walking charset was not found (filename: \"{2}\").", trainer.character_ID, filename)
       end
       charwidth  = @sprites["player"].bitmap.width
       charheight = @sprites["player"].bitmap.height

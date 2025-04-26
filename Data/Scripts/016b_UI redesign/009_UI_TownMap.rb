@@ -115,7 +115,7 @@ class UI::TownMapVisuals < UI::BaseVisuals
         create_pin(key, @pins_pos[key][0], @pins_pos[key][1], graphics_folder + roamer[:icon], 80)
       end
     end
-    # Player's head showing their current location
+    # Overrides's head showing their current location
     if !@pins_pos[:player]
       create_pin(:player, 0, 0, GameData::TrainerType.player_map_icon_filename($player.trainer_type), 100)
     end
@@ -403,7 +403,7 @@ class UI::TownMapVisuals < UI::BaseVisuals
 
   def update_pin_positions_while_zooming
     @sprites[:cursor].x, @sprites[:cursor].y = point_to_screen(@cursor_pos[:x], @cursor_pos[:y])
-    # Player, roamers, markings
+    # Overrides, roamers, markings
     @pins_pos.each_pair do |key, pos|
       @sprites[key].x, @sprites[key].y = point_to_screen(*pos)
     end

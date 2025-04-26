@@ -186,11 +186,11 @@ class Battle
           end
           pbRecallAndReplace(idxBattler, idxPartyNew)
           switched.push(idxBattler)
-        elsif trainerBattle?   # Player switches in in a trainer battle
+        elsif trainerBattle?   # Overrides switches in in a trainer battle
           idxPlayerPartyNew = pbGetReplacementPokemonIndex(idxBattler)   # Owner chooses
           pbRecallAndReplace(idxBattler, idxPlayerPartyNew)
           switched.push(idxBattler)
-        else   # Player's Pokémon has fainted in a wild battle
+        else   # Overrides's Pokémon has fainted in a wild battle
           switch = false
           if pbDisplayConfirm(_INTL("Use next Pokémon?"))
             switch = true

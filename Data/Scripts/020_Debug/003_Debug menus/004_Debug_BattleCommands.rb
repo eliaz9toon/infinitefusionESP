@@ -9,7 +9,7 @@ MenuHandlers.add(:battle_debug_menu, :battlers, {
 })
 
 MenuHandlers.add(:battle_debug_menu, :list_player_battlers, {
-  "name"        => _INTL("Player-side battlers"),
+  "name"        => _INTL("Overrides-side battlers"),
   "parent"      => :battlers,
   "description" => _INTL("Edit Pokémon on the player's side of battle."),
   "effect"      => proc { |battle|
@@ -103,7 +103,7 @@ MenuHandlers.add(:battle_debug_menu, :pokemon_teams, {
         first_index = player_party_starts[i]
         last_index = (i < player_party_starts.length - 1) ? player_party_starts[i + 1] : battle.pbParty(0).length
         num_pkmn = last_index - first_index
-        if i == 0   # Player
+        if i == 0   # Overrides
           commands.push(_INTL("You: {1} ({2} Pokémon)", trainer.full_name, num_pkmn))
         else
           commands.push(_INTL("Ally {1}: {2} ({3} Pokémon)", i, trainer.full_name, num_pkmn))
@@ -162,7 +162,7 @@ MenuHandlers.add(:battle_debug_menu, :trainer_items, {
       end
       if battle.player.length > 1
         battle.player.each_with_index do |trainer, i|
-          next if i == 0   # Player
+          next if i == 0   # Overrides
           items = battle.ally_items ? battle.ally_items[i].clone : []
           commands.push(_INTL("Ally {1}: {2} ({3} items)", i, trainer.full_name, items.length))
           item_arrays.push(items)
@@ -436,7 +436,7 @@ MenuHandlers.add(:battle_debug_menu, :set_field_effects, {
 })
 
 MenuHandlers.add(:battle_debug_menu, :player_side, {
-  "name"        => _INTL("Player's side effects..."),
+  "name"        => _INTL("Overrides's side effects..."),
   "parent"      => :field,
   "description" => _INTL("Effects that apply to the side the player is on."),
   "effect"      => proc { |battle|

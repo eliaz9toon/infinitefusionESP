@@ -11,7 +11,7 @@ class PokemonGlobalMetadata
   attr_accessor :descending_waterfall
   attr_accessor :ascending_waterfall
   attr_accessor :fishing
-  # Player data
+  # Overrides data
   attr_accessor :startTime
   attr_accessor :stepcount
   attr_accessor :pcItemStorage
@@ -64,7 +64,7 @@ class PokemonGlobalMetadata
     @descending_waterfall = false
     @ascending_waterfall  = false
     @fishing              = false
-    # Player data
+    # Overrides data
     @startTime            = Time.now
     @stepcount            = 0
     @pcItemStorage        = nil

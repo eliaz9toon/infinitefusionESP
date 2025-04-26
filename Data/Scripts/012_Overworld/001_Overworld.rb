@@ -566,7 +566,7 @@ def pbWait(duration)
 end
 
 #===============================================================================
-# Player/event movement in the field.
+# Overrides/event movement in the field.
 #===============================================================================
 def pbSlideOnIce
   if !$DEBUG || !Input.press?(Input::CTRL)

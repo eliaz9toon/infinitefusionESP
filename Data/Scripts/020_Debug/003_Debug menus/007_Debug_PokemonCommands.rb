@@ -920,7 +920,7 @@ MenuHandlers.add(:pokemon_debug_menu, :ownership, {
       gender_text = _INTL("Male") if pkmn.owner.male?
       gender_text = _INTL("Female") if pkmn.owner.female?
       public_id_text = sprintf("%05d", pkmn.owner.public_id)
-      msg = [_INTL("Player's Pokémon\n{1}\n{2}\n{3} ({4})",
+      msg = [_INTL("Overrides's Pokémon\n{1}\n{2}\n{3} ({4})",
                    pkmn.owner.name, gender_text, public_id_text, pkmn.owner.id),
              _INTL("Foreign Pokémon\n{1}\n{2}\n{3} ({4})",
                    pkmn.owner.name, gender_text, public_id_text, pkmn.owner.id)][pkmn.foreign?($player) ? 1 : 0]

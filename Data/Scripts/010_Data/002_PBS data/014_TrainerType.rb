@@ -44,7 +44,7 @@ module GameData
         ["ID",         ReadOnlyProperty,               _INTL("ID of this Trainer Type (used as a symbol like :XXX).")],
         ["Name",       StringProperty,                 _INTL("Name of this Trainer Type as displayed by the game.")],
         ["Gender",     EnumProperty.new(gender_array), _INTL("Gender of this Trainer Type.")],
-        ["BaseMoney",  LimitProperty.new(9999),        _INTL("Player earns this much money times the highest level among the trainer's Pokémon.")],
+        ["BaseMoney",  LimitProperty.new(9999),        _INTL("Overrides earns this much money times the highest level among the trainer's Pokémon.")],
         ["SkillLevel", LimitProperty2.new(9999),       _INTL("Skill level of this Trainer Type.")],
         ["PokeBall",   ItemProperty,                   _INTL("Default Poké Ball that all Pokémon of trainers of this Trainer Type are in.")],
         ["Flags",      StringListProperty,             _INTL("Words/phrases that can be used to make trainers of this type behave differently to others.")],

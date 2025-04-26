@@ -21,7 +21,7 @@ def pbAutoPositionAll
     metrics = GameData::SpeciesMetrics.get_species_form(sp.species, sp.form)
     bitmap1 = GameData::Species.sprite_bitmap(sp.species, sp.form, nil, nil, nil, true)
     bitmap2 = GameData::Species.sprite_bitmap(sp.species, sp.form)
-    if bitmap1&.bitmap   # Player's y
+    if bitmap1&.bitmap   # Overrides's y
       metrics.back_sprite[0] = 0
       metrics.back_sprite[1] = (bitmap1.height - (findBottom(bitmap1.bitmap) + 1)) / 2
     end

@@ -116,7 +116,7 @@ class PokemonEntryScene
     @sprites["helpwindow"].shadowColor = Color.new(168, 184, 184)
     addBackgroundPlane(@sprites, "background", "Naming/bg_2", @viewport)
     case subject
-    when 1   # Player
+    when 1   # Overrides
       meta = GameData::PlayerMetadata.get($player.character_ID)
       if meta
         @sprites["shadow"] = IconSprite.new(0, 0, @viewport)
@@ -397,7 +397,7 @@ class PokemonEntryScene2
     @sprites["bg"] = IconSprite.new(0, 0, @viewport)
     @sprites["bg"].setBitmap("Graphics/UI/Naming/bg")
     case subject
-    when 1   # Player
+    when 1   # Overrides
       meta = GameData::PlayerMetadata.get($player.character_ID)
       if meta
         @sprites["shadow"] = IconSprite.new(0, 0, @viewport)

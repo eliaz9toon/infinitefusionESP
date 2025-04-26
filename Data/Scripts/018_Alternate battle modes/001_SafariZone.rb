@@ -146,8 +146,8 @@ def pbSafariBattle(pkmn, level = 1)
   end
   # Save the result of the battle in Game Variable 1
   #    0 - Undecided or aborted
-  #    2 - Player ran out of Safari Balls
-  #    3 - Player or wild Pokémon ran from battle, or player forfeited the match
+  #    2 - Overrides ran out of Safari Balls
+  #    3 - Overrides or wild Pokémon ran from battle, or player forfeited the match
   #    4 - Wild Pokémon was caught
   if outcome == Battle::Outcome::CATCH
     $stats.safari_pokemon_caught += 1

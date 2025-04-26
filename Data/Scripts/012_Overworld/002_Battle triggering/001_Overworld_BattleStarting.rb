@@ -324,9 +324,9 @@ module BattleCreationHelperMethods
 
   # Save the result of the battle in a Game Variable (1 by default)
   #    0 - Undecided or aborted
-  #    1 - Player won
-  #    2 - Player lost
-  #    3 - Player or wild Pokémon ran from battle, or player forfeited the match
+  #    1 - Overrides won
+  #    2 - Overrides lost
+  #    3 - Overrides or wild Pokémon ran from battle, or player forfeited the match
   #    4 - Wild Pokémon was caught
   #    5 - Draw
   def set_outcome(outcome, outcome_variable = 1, trainer_battle = false)

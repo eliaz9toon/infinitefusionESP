@@ -880,12 +880,12 @@ module Compiler
         changed = true
       end
       # If the last page's Switch condition uses a Switch named 's:tsOff?("A")',
-      # check the penultimate page. If it contains exactly 1 "Transfer Player"
+      # check the penultimate page. If it contains exactly 1 "Transfer Overrides"
       # command and does NOT contain a "Change Transparent Flag" command, rewrite
       # both the penultimate page and the last page.
       if mapData.switchName(lastPage.condition.switch1_id) == 's:tsOff?("A")'
         list = event.pages[event.pages.length - 2].list
-        transferCommand = list.find_all { |cmd| cmd.code == 201 }   # Transfer Player
+        transferCommand = list.find_all { |cmd| cmd.code == 201 }   # Transfer Overrides
         if transferCommand.length == 1 && list.none? { |cmd| cmd.code == 208 }   # Change Transparent Flag
           # Rewrite penultimate page
           list.clear
@@ -913,7 +913,7 @@ module Compiler
           push_event(list, 223, [Tone.new(-255, -255, -255), 6])   # Change Screen Color Tone
           push_wait(list, 8)   # Wait
           push_event(list, 208, [1])   # Change Transparent Flag (visible)
-          push_event(list, transferCommand[0].code, transferCommand[0].parameters)   # Transfer Player
+          push_event(list, transferCommand[0].code, transferCommand[0].parameters)   # Transfer Overrides
           push_event(list, 223, [Tone.new(0, 0, 0), 6])   # Change Screen Color Tone
           push_end(list)
           # Rewrite last page
@@ -957,7 +957,7 @@ module Compiler
   end
 
   # Checks if the event has exactly 1 page, said page has no graphic, it has
-  # less than 12 commands and at least one is a Transfer Player, and the tiles
+  # less than 12 commands and at least one is a Transfer Overrides, and the tiles
   # to the left/right/upper left/upper right are not passable but the event's
   # tile is. Causes a second page to be added to the event which is the "is
   # player on me?" check that occurs when the map is entered.
@@ -966,7 +966,7 @@ module Compiler
     return false if thisEvent.pages.length != 1
     if thisEvent.pages[0].graphic.character_name == "" &&
        thisEvent.pages[0].list.length <= 12 &&
-       thisEvent.pages[0].list.any? { |cmd| cmd.code == 201 } &&   # Transfer Player
+       thisEvent.pages[0].list.any? { |cmd| cmd.code == 201 } &&   # Transfer Overrides
 #       mapData.isPassable?(mapID, thisEvent.x, thisEvent.y + 1) &&
        mapData.isPassable?(mapID, thisEvent.x, thisEvent.y) &&
        !mapData.isPassable?(mapID, thisEvent.x - 1, thisEvent.y) &&
@@ -1272,12 +1272,12 @@ module Compiler
             list.delete_at(i)
             changed = true
           end
-        when 201   # Transfer Player
+        when 201   # Transfer Overrides
           if list.length <= 8
 =begin
             if params[0]==0
               # Look for another event just above the position this Transfer
-              # Player command will transfer to - it may be a door, in which case
+              # Overrides command will transfer to - it may be a door, in which case
               # this command should transfer the player onto the door instead of
               # in front of it.
               e = mapData.getEventFromXY(params[1],params[2],params[3]-1)
@@ -1295,7 +1295,7 @@ module Compiler
                 mapData.saveMap(params[1])
                 changed = true
               end
-              # Checks if the found event is a simple Transfer Player one nestled
+              # Checks if the found event is a simple Transfer Overrides one nestled
               # between tiles that aren't passable - it is likely a door, so give
               # it a second page with an "is player on me?" check.
               if likely_passage?(e,params[1],mapData)   # Checks the first page
@@ -1339,30 +1339,30 @@ module Compiler
               # If the next event command is a Move Route that moves the player,
               # check whether all it does is turn the player in a direction (or
               # its first item is to move the player in a direction). If so, this
-              # Transfer Player command may as well set the player's direction
+              # Transfer Overrides command may as well set the player's direction
               # instead; make it do so and delete that Move Route.
               if params[4]==0 &&   # Retain direction
                  i+1<list.length && list[i+1].code==209 && list[i+1].parameters[0]==-1   # Set Move Route
                 route = list[i+1].parameters[1]
                 if route && route.list.length<=2
                   # Delete superfluous move route command if necessary
-                  if route.list[0].code==16      # Player Turn Down
+                  if route.list[0].code==16      # Overrides Turn Down
                     deleteMoveRouteAt.call(list,i+1)
                     params[4] = 2
                     changed = true
-                  elsif route.list[0].code==17   # Player Turn Left
+                  elsif route.list[0].code==17   # Overrides Turn Left
                     deleteMoveRouteAt.call(list,i+1)
                     params[4] = 4
                     changed = true
-                  elsif route.list[0].code==18   # Player Turn Right
+                  elsif route.list[0].code==18   # Overrides Turn Right
                     deleteMoveRouteAt.call(list,i+1)
                     params[4] = 6
                     changed = true
-                  elsif route.list[0].code==19   # Player Turn Up
+                  elsif route.list[0].code==19   # Overrides Turn Up
                     deleteMoveRouteAt.call(list,i+1)
                     params[4] = 8
                     changed = true
-                  elsif (route.list[0].code==1 || route.list[0].code==2 ||   # Player Move (4-dir)
+                  elsif (route.list[0].code==1 || route.list[0].code==2 ||   # Overrides Move (4-dir)
                      route.list[0].code==3 || route.list[0].code==4) && list.length==4
                     params[4] = [0,2,4,6,8][route.list[0].code]
                     deletedRoute = deleteMoveRouteAt.call(list,i+1)
@@ -1370,10 +1370,10 @@ module Compiler
                   end
                 end
               # If an event command before this one is a Move Route that just
-              # turns the player, delete it and make this Transfer Player command
+              # turns the player, delete it and make this Transfer Overrides command
               # set the player's direction instead.
               # (I don't know if it makes sense to do this, as there could be a
-              # lot of commands between then and this Transfer Player which this
+              # lot of commands between then and this Transfer Overrides which this
               # code can't recognise and deal with, so I've quoted this code out.)
               elsif params[4]==0 && i>3   # Retain direction
 #                for j in 0...i
@@ -1382,22 +1382,22 @@ module Compiler
 #                    if route && route.list.length<=2
 #                      oldlistlength = list.length
 #                      # Delete superfluous move route command if necessary
-#                      if route.list[0].code==16      # Player Turn Down
+#                      if route.list[0].code==16      # Overrides Turn Down
 #                        deleteMoveRouteAt.call(list,j)
 #                        params[4] = 2
 #                        changed = true
 #                        i -= (oldlistlength-list.length)
-#                      elsif route.list[0].code==17   # Player Turn Left
+#                      elsif route.list[0].code==17   # Overrides Turn Left
 #                        deleteMoveRouteAt.call(list,j)
 #                        params[4] = 4
 #                        changed = true
 #                        i -= (oldlistlength-list.length)
-#                      elsif route.list[0].code==18   # Player Turn Right
+#                      elsif route.list[0].code==18   # Overrides Turn Right
 #                        deleteMoveRouteAt.call(list,j)
 #                        params[4] = 6
 #                        changed = true
 #                        i -= (oldlistlength-list.length)
-#                      elsif route.list[0].code==19   # Player Turn Up
+#                      elsif route.list[0].code==19   # Overrides Turn Up
 #                        deleteMoveRouteAt.call(list,j)
 #                        params[4] = 8
 #                        changed = true
@@ -1408,7 +1408,7 @@ module Compiler
 #                end
               # If the next event command changes the screen color, and the one
               # after that is a Move Route which only turns the player in a
-              # direction, this Transfer Player command may as well set the
+              # direction, this Transfer Overrides command may as well set the
               # player's direction instead; make it do so and delete that Move
               # Route.
               elsif params[4]==0 &&   # Retain direction
@@ -1419,19 +1419,19 @@ module Compiler
                 route = list[i+2].parameters[1]
                 if route && route.list.length<=2
                   # Delete superfluous move route command if necessary
-                  if route.list[0].code==16      # Player Turn Down
+                  if route.list[0].code==16      # Overrides Turn Down
                     deleteMoveRouteAt.call(list,i+2)
                     params[4] = 2
                     changed = true
-                  elsif route.list[0].code==17   # Player Turn Left
+                  elsif route.list[0].code==17   # Overrides Turn Left
                     deleteMoveRouteAt.call(list,i+2)
                     params[4] = 4
                     changed = true
-                  elsif route.list[0].code==18   # Player Turn Right
+                  elsif route.list[0].code==18   # Overrides Turn Right
                     deleteMoveRouteAt.call(list,i+2)
                     params[4] = 6
                     changed = true
-                  elsif route.list[0].code==19   # Player Turn Up
+                  elsif route.list[0].code==19   # Overrides Turn Up
                     deleteMoveRouteAt.call(list,i+2)
                     params[4] = 8
                     changed = true

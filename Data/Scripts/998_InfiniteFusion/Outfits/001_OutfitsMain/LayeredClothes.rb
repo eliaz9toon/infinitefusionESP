@@ -113,7 +113,7 @@ def getEasterEggHeldItem()
   return "secrets/HOTDOG" if [141, 194].include?(map) #restaurant
   return "secrets/SNOWBALL" if [670, 693, 698, 694].include?(map)
   return "secrets/WALLET" if [432, 433, 434, 435, 436, 292].include?(map) #dept. store
-  return "secrets/ALARMCLOCK" if [43, 48, 67, 68, 69, 70, 71, 73].include?(map) #Player room
+  return "secrets/ALARMCLOCK" if [43, 48, 67, 68, 69, 70, 71, 73].include?(map) #Overrides room
   return "SAFARIBALL" if [445, 484, 485, 486, 107, 487, 488, 717, 82, 75, 74].include?(map) #Safari Zone
   return "secrets/WISP" if [401,402,403,467,468,469].include?(map) #Pokemon Tower
   return "secrets/SKULL" if [400].include?(map) #Pokemon Tower ground floor

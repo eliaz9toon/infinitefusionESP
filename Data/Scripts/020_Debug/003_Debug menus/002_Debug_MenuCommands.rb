@@ -842,11 +842,11 @@ MenuHandlers.add(:debug_menu, :empty_bag, {
 })
 
 #===============================================================================
-# Player options.
+# Overrides options.
 #===============================================================================
 
 MenuHandlers.add(:debug_menu, :player_menu, {
-  "name"        => _INTL("Player options..."),
+  "name"        => _INTL("Overrides options..."),
   "parent"      => :main,
   "description" => _INTL("Set money, badges, Pokédexes, player's appearance and name, etc."),
   "always_show" => false
@@ -1114,7 +1114,7 @@ MenuHandlers.add(:debug_menu, :change_outfit, {
     params.setRange(0, 99)
     params.setDefaultValue(oldoutfit)
     $player.outfit = pbMessageChooseNumber(_INTL("Set the player's outfit."), params)
-    pbMessage(_INTL("Player's outfit was changed.")) if $player.outfit != oldoutfit
+    pbMessage(_INTL("Overrides's outfit was changed.")) if $player.outfit != oldoutfit
   }
 })
 

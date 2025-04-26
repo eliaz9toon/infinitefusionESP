@@ -65,7 +65,7 @@ class Battle
           if !requireds[i] || requireds[i] == 0
             case side
             when 0
-              raise _INTL("Player-side trainer {1} has no battler position for their Pokémon to go (trying {2}v{3} battle)",
+              raise _INTL("Overrides-side trainer {1} has no battler position for their Pokémon to go (trying {2}v{3} battle)",
                           i + 1, @sideSizes[0], @sideSizes[1])
             when 1
               raise _INTL("Opposing trainer {1} has no battler position for their Pokémon to go (trying {2}v{3} battle)",
@@ -74,7 +74,7 @@ class Battle
           end
           next if requireds[i] <= sideCounts[i]   # Trainer has enough Pokémon to fill their positions
           if requireds[i] == 1
-            raise _INTL("Player-side trainer {1} has no able Pokémon", i + 1) if side == 0
+            raise _INTL("Overrides-side trainer {1} has no able Pokémon", i + 1) if side == 0
             raise _INTL("Opposing trainer {1} has no able Pokémon", i + 1) if side == 1
           end
           # Not enough Pokémon, try lowering the number of battler positions
@@ -393,7 +393,7 @@ class Battle
   def pbLoseMoney
     return if !@internalBattle || !@moneyGain
     return if $game_switches[Settings::NO_MONEY_LOSS]
-    maxLevel = pbMaxLevelInTeam(0, 0)   # Player's Pokémon only, not partner's
+    maxLevel = pbMaxLevelInTeam(0, 0)   # Overrides's Pokémon only, not partner's
     multiplier = [8, 16, 24, 36, 48, 64, 80, 100, 120]
     idxMultiplier = [pbPlayer.badge_count, multiplier.length - 1].min
     tMoney = maxLevel * multiplier[idxMultiplier]
@@ -417,7 +417,7 @@ class Battle
     case oldDecision
     when Outcome::WIN
       PBDebug.log("")
-      PBDebug.log_header("===== Player won =====")
+      PBDebug.log_header("===== Overrides won =====")
       PBDebug.log("")
       if trainerBattle?
         @scene.pbTrainerBattleSuccess
@@ -445,8 +445,8 @@ class Battle
       @scene.pbShowOpponent(@opponent.length) if trainerBattle? && @caughtPokemon.length > 0
     when Outcome::LOSE, Outcome::DRAW
       PBDebug.log("")
-      PBDebug.log_header("===== Player lost =====") if @decision == Outcome::LOSE
-      PBDebug.log_header("===== Player drew with opponent =====") if @decision == Outcome::DRAW
+      PBDebug.log_header("===== Overrides lost =====") if @decision == Outcome::LOSE
+      PBDebug.log_header("===== Overrides drew with opponent =====") if @decision == Outcome::DRAW
       PBDebug.log("")
       if @internalBattle
         if pbPlayerBattlerCount == 0

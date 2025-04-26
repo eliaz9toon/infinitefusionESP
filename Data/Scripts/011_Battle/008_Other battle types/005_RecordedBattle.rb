@@ -271,7 +271,7 @@ module RecordedBattle::PlaybackHelper
     return nil if !trainer
     ret = []
     trainer.each do |tr|
-      if tr.length == 4   # Player
+      if tr.length == 4   # Overrides
         t = Player.new(tr[1], tr[0])
         t.badges = tr[3]
       else   # NPCTrainer

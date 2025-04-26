@@ -194,7 +194,7 @@ class Battle
       end
     end
     # Choose actions for the round (player first, then AI)
-    pbCommandPhaseLoop(true)    # Player chooses their actions
+    pbCommandPhaseLoop(true)    # Overrides chooses their actions
     if decided?   # Battle ended, stop choosing actions
       @command_phase = false
       return
@@ -223,7 +223,7 @@ class Battle
         @battleAI.pbDefaultChooseEnemyCommand(idxBattler)
         next
       end
-      # Player chooses an action
+      # Overrides chooses an action
       actioned.push(idxBattler)
       commandsEnd = false   # Whether to cancel choosing all other actions this round
       loop do

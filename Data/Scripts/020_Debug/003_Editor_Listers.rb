@@ -269,7 +269,7 @@ class MetadataLister
   def commands
     @commands.clear
     @commands.push(_INTL("[GLOBAL METADATA]"))
-    @player_ids.each { |id| @commands.push(_INTL("Player {1}", id)) }
+    @player_ids.each { |id| @commands.push(_INTL("Overrides {1}", id)) }
     @commands.push(_INTL("[ADD NEW PLAYER]")) if @new_player
     return @commands
   end
@@ -277,7 +277,7 @@ class MetadataLister
   # Cancel: -1
   # New player: -2
   # Global metadata: 0
-  # Player character: 1+ (the player ID itself)
+  # Overrides character: 1+ (the player ID itself)
   def value(index)
     return index if index < 1
     return -2 if @new_player && index == @commands.length - 1

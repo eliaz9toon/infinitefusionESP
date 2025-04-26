@@ -222,7 +222,7 @@ def pbNoticePlayer(event, always_show_exclaim = false)
 end
 
 #===============================================================================
-# Player-related utilities, random name generator.
+# Overrides-related utilities, random name generator.
 #===============================================================================
 # Unused
 def pbGetPlayerGraphic

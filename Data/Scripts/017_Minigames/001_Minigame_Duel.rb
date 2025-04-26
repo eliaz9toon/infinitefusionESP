@@ -249,7 +249,7 @@ class PokemonDuel
         pbMoveRoute(event, [PBMoveRoute::FORWARD])
         pbMoveRoute($game_player, [PBMoveRoute::FORWARD])
         @hp[0] -= action    # Enemy action
-        @hp[1] -= command   # Player command
+        @hp[1] -= command   # Overrides command
         pbMessage(_INTL("You hit each other!"))
       elsif action == 2 && command == 0
         pbMoveRoute(event,

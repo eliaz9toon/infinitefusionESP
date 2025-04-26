@@ -53,14 +53,14 @@ class CharacterSelectionMenuView
     @sprites["select"].y = OPTIONS_START_Y
     @sprites["select"].visible = true
 
-    @sprites["leftarrow"] = AnimatedSprite.new("Graphics/Pictures/leftarrow", 8, 40, 28, 2, @viewport)
+    @sprites["leftarrow"] = AnimatedSprite.new(UI_FOLDER + "left_arrow", 8, 40, 28, 2, @viewport)
     @sprites["leftarrow"].x = ARROW_LEFT_X_POSITION
     @sprites["leftarrow"].y = 0
     @sprites["leftarrow"].visible = false
     @sprites["leftarrow"].play
 
 
-    @sprites["rightarrow"] = AnimatedSprite.new("Graphics/Pictures/rightarrow", 8, 40, 28, 2, @viewport)
+    @sprites["rightarrow"] = AnimatedSprite.new(UI_FOLDER + "right_arrow", 8, 40, 28, 2, @viewport)
     @sprites["rightarrow"].x = ARROW_RIGHT_X_POSITION
     @sprites["rightarrow"].y = 0
     @sprites["rightarrow"].visible = false

@@ -55,7 +55,7 @@ class Battle::Scene
       partyBar = pbAddSprite("partyBar_#{side}", 0, 0,
                              "Graphics/UI/Battle/overlay_lineup", @viewport)
       partyBar.z       = 10120
-      partyBar.mirror  = true if side == 0   # Player's lineup bar only
+      partyBar.mirror  = true if side == 0   # Overrides's lineup bar only
       partyBar.visible = false
       NUM_BALLS.times do |i|
         ball = pbAddSprite("partyBall_#{side}_#{i}", 0, 0, nil, @viewport)
@@ -67,7 +67,7 @@ class Battle::Scene
         @sprites["abilityBar_#{side}"] = AbilitySplashBar.new(side, @viewport)
       end
     end
-    # Player's and partner trainer's back sprite
+    # Overrides's and partner trainer's back sprite
     @battle.player.each_with_index do |p, i|
       pbCreateTrainerBackSprite(i, p.trainer_type, @battle.player.length)
     end
@@ -155,7 +155,7 @@ class Battle::Scene
   end
 
   def pbCreateTrainerBackSprite(idxTrainer, trainerType, numTrainers = 1)
-    if idxTrainer == 0   # Player's sprite
+    if idxTrainer == 0   # Overrides's sprite
       trainerFile = GameData::TrainerType.player_back_sprite_filename(trainerType)
     else   # Partner trainer's sprite
       trainerFile = GameData::TrainerType.back_sprite_filename(trainerType)

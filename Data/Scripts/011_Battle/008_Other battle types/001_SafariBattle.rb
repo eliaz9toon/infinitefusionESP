@@ -201,7 +201,7 @@ class Battle::Scene::Animation::ThrowRock < Battle::Scene::Animation
     # Show anger appearing
     delay = ball.totalDuration + 5
     2.times do
-      anger.setSE(delay, "Player jump")
+      anger.setSE(delay, "Overrides jump")
       anger.setVisible(delay, true)
       anger.moveZoom(delay, 3, 130)
       anger.moveZoom(delay + 3, 3, 100)

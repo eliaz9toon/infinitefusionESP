@@ -45,8 +45,11 @@ module Kernel
   end
 
   def echoln(string)
-    echo string
-    echo "\n"
+    caller_info = caller(1..1).first
+    file, line, method = caller_info.split(":")
+    echo "#{file}, #{line}:\t"
+    echo(string)
+    echo("\r\n")
   end
 end
 

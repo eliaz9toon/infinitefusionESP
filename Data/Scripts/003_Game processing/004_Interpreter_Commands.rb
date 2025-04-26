@@ -51,7 +51,7 @@ class Interpreter
     when 134 then return command_134   # Change Save Access
     when 135 then return command_135   # Change Menu Access
     when 136 then return command_136   # Change Encounter
-    when 201 then return command_201   # Transfer Player
+    when 201 then return command_201   # Transfer Overrides
     when 202 then return command_202   # Set Event Location
     when 203 then return command_203   # Scroll Map
     when 204 then return command_204   # Change Map Settings
@@ -731,7 +731,7 @@ class Interpreter
   end
 
   #-----------------------------------------------------------------------------
-  # * Transfer Player
+  # * Transfer Overrides
   #-----------------------------------------------------------------------------
   def command_201
     return true if $game_temp.in_battle

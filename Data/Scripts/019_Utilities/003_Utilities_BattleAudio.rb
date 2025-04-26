@@ -77,7 +77,7 @@ def pbPlayTrainerIntroBGM(trainer_type)
   pbBGMPlay(bgm)
 end
 
-# Can be a Player, NPCTrainer or an array of them.
+# Can be a Overrides, NPCTrainer or an array of them.
 def pbGetTrainerBattleBGM(trainer)
   return $PokemonGlobal.nextBattleBGM.clone if $PokemonGlobal.nextBattleBGM
   ret = nil
@@ -120,7 +120,7 @@ def pbGetTrainerBattleBGMFromType(trainertype)
   return ret
 end
 
-# Can be a Player, NPCTrainer or an array of them.
+# Can be a Overrides, NPCTrainer or an array of them.
 def pbGetTrainerVictoryBGM(trainer)
   if $PokemonGlobal.nextBattleVictoryBGM
     return $PokemonGlobal.nextBattleVictoryBGM.clone

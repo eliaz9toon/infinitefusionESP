@@ -118,7 +118,7 @@ class Game_Player < Game_Character
 
   def bump_into_object
     return if @bump_time_start && (System.uptime - @bump_time_start < @move_time)
-    pbSEPlay("Player bump") if !@move_route_forcing
+    pbSEPlay("Overrides bump") if !@move_route_forcing
     $stats.bump_count += 1
     @bump_time_start = System.uptime
   end
@@ -143,7 +143,7 @@ class Game_Player < Game_Character
         # Jump over ledges
         if pbFacingTerrainTag.ledge
           if jumpForward(2)
-            pbSEPlay("Player jump")
+            pbSEPlay("Overrides jump")
             increase_steps
           end
           return
@@ -389,7 +389,7 @@ class Game_Player < Game_Character
     x_offset = (dir == 4) ? -1 : (dir == 6) ? 1 : 0
     y_offset = (dir == 8) ? -1 : (dir == 2) ? 1 : 0
     $game_map.events.each_value do |event|
-      next if ![1, 2].include?(event.trigger)   # Player touch, event touch
+      next if ![1, 2].include?(event.trigger)   # Overrides touch, event touch
       # If event coordinates and triggers are consistent
       next if !event.at_coordinate?(@x + x_offset, @y + y_offset)
       if event.name[/(?:sight|trainer)\((\d+)\)/i]

@@ -1,9 +1,9 @@
 #===============================================================================
 # Results of battle (see module Outcome):
 #    0 - Undecided or aborted
-#    1 - Player won
-#    2 - Player lost
-#    3 - Player or wild Pokémon ran from battle, or player forfeited the match
+#    1 - Overrides won
+#    2 - Overrides lost
+#    3 - Overrides or wild Pokémon ran from battle, or player forfeited the match
 #    4 - Wild Pokémon was caught
 #    5 - Draw
 # Possible actions a battler can take in a round:
@@ -43,7 +43,7 @@ class Battle
     UNDECIDED = 0
     WIN       = 1
     LOSE      = 2   # Also used when player forfeits a trainer battle
-    FLEE      = 3   # Player or wild Pokémon ran away, count as a win
+    FLEE      = 3   # Overrides or wild Pokémon ran away, count as a win
     CATCH     = 4   # Counts as a win
     DRAW      = 5
 
@@ -75,7 +75,7 @@ class Battle
   attr_accessor :environment      # Battle surroundings (for mechanics purposes)
   attr_reader   :turnCount
   attr_accessor :decision         # Outcome of battle
-  attr_reader   :player           # Player trainer (or array of trainers)
+  attr_reader   :player           # Overrides trainer (or array of trainers)
   attr_reader   :opponent         # Opponent trainer (or array of trainers)
   attr_accessor :items            # Items held by opponents
   attr_accessor :ally_items       # Items held by allies
@@ -127,7 +127,7 @@ class Battle
     @scene             = scene
     @peer              = Peer.new
     @field             = ActiveField.new    # Whole field (gravity/rooms)
-    @sides             = [ActiveSide.new,   # Player's side
+    @sides             = [ActiveSide.new,   # Overrides's side
                           ActiveSide.new]   # Foe's side
     @positions         = []                 # Battler positions
     @battlers          = []
@@ -141,7 +141,7 @@ class Battle
     @caughtPokemon     = []
     player   = [player] if !player.nil? && !player.is_a?(Array)
     opponent = [opponent] if !opponent.nil? && !opponent.is_a?(Array)
-    @player            = player     # Array of Player/NPCTrainer objects, or nil
+    @player            = player     # Array of Overrides/NPCTrainer objects, or nil
     @opponent          = opponent   # Array of NPCTrainer objects, or nil
     @items             = nil
     @ally_items        = nil        # Array of items held by ally. This is just used for Mega Evolution for now.
@@ -288,7 +288,7 @@ class Battle
     idxTrainer = pbGetOwnerIndexFromBattlerIndex(idxBattler)
     return @opponent[idxTrainer].full_name if opposes?(idxBattler)   # Opponent
     return @player[idxTrainer].full_name if idxTrainer > 0   # Ally trainer
-    return @player[idxTrainer].name   # Player
+    return @player[idxTrainer].name   # Overrides
   end
 
   def pbGetOwnerItems(idxBattler)

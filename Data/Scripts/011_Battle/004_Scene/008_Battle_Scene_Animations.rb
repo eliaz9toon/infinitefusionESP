@@ -17,7 +17,7 @@ class Battle::Scene::Animation::Intro < Battle::Scene::Animation
     # Bases
     makeSlideSprite("base_0", 1, appearTime, PictureOrigin::BOTTOM)
     makeSlideSprite("base_1", -1, appearTime, PictureOrigin::CENTER)
-    # Player sprite, partner trainer sprite
+    # Overrides sprite, partner trainer sprite
     @battle.player.each_with_index do |_p, i|
       makeSlideSprite("player_#{i + 1}", 1, appearTime, PictureOrigin::BOTTOM)
     end
@@ -96,7 +96,7 @@ class Battle::Scene::Animation::LineupAppear < Battle::Scene::Animation
   def resetGraphics(sprites)
     bar = sprites["partyBar_#{@side}"]
     case @side
-    when 0   # Player's lineup
+    when 0   # Overrides's lineup
       barX  = Graphics.width - BAR_DISPLAY_WIDTH
       barY  = Graphics.height - 142
       ballX = barX + 44
@@ -124,7 +124,7 @@ class Battle::Scene::Animation::LineupAppear < Battle::Scene::Animation
   end
 
   def getPartyIndexFromBallIndex(idxBall)
-    # Player's lineup (just show balls for player's party)
+    # Overrides's lineup (just show balls for player's party)
     if @side == 0
       return idxBall if @partyStarts.length < 2
       return idxBall if idxBall < @partyStarts[1]

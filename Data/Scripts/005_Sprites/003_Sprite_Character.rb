@@ -111,6 +111,7 @@ class Sprite_Character < RPG::Sprite
     @charbitmap = nil
     @bushbitmap&.dispose
     @bushbitmap = nil
+
     if @tile_id >= 384
       @charbitmap = pbGetTileBitmap(@character.map.tileset_name, @tile_id,
                                     @character_hue, @character.width, @character.height)

@@ -753,7 +753,7 @@ def pbEditPlayerMetadata(player_id = 1)
     val = property[1].defaultValue if val.nil? && property[1].respond_to?(:defaultValue)
     data.push(val)
   end
-  if pbPropertyList(_INTL("Player {1}", metadata.id), data, properties, true)
+  if pbPropertyList(_INTL("Overrides {1}", metadata.id), data, properties, true)
     # Construct player metadata hash
     schema = GameData::PlayerMetadata.schema
     metadata_hash = {}

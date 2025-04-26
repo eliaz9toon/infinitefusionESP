@@ -9,7 +9,7 @@ class AnimationEditor
       else
         @settings = {
           :color_scheme       => :light,
-          :side_sizes         => [1, 1],   # Player's side, opposing side
+          :side_sizes         => [1, 1],   # Overrides's side, opposing side
           :user_index         => 0,        # 0, 2, 4
           :target_indices     => [1],      # There must be at least one valid target
           :user_opposes       => false,

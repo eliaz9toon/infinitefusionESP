@@ -35,6 +35,8 @@ module Game
   # Called when starting a new game. Initializes global variables
   # and transfers the player into the map scene.
   def start_new
+    # Essentials 21 renamed the global variable $Trainer
+    # It's still used everywhere in events, global events so this makes things simpler
     if $game_map&.events
       $game_map.events.each_value { |event| event.clear_starting }
     end
@@ -58,6 +60,11 @@ module Game
   # @param save_data [Hash] hash containing the save data
   # @raise [SaveData::InvalidValueError] if an invalid value is being loaded
   def load(save_data)
+    # Essentials 21 renamed the global variable $Trainer
+    # It's still used everywhere in events, global events so this makes things simpler
+    $Trainer = $player
+
+
     validate save_data => Hash
     SaveData.load_all_values(save_data)
     $game_temp.last_uptime_refreshed_play_time = System.uptime

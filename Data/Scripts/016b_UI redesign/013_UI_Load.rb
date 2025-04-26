@@ -146,7 +146,7 @@ class UI::LoadContinuePanel < UI::LoadPanel
     filename = pbGetPlayerCharset(meta.walk_charset, @save_data[:player], true)
     @sprites[:player] = TrainerWalkingCharSprite.new(filename, @viewport)
     if !@sprites[:player].bitmap
-      raise _INTL("Player character {1}'s walking charset was not found (filename: \"{2}\").",
+      raise _INTL("Overrides character {1}'s walking charset was not found (filename: \"{2}\").",
                   @save_data[:player].character_ID, filename)
     end
     @sprites[:player].x = 48 - (@sprites[:player].bitmap.width / 8)
@@ -223,7 +223,7 @@ class UI::LoadContinuePanel < UI::LoadPanel
     filename = pbGetPlayerCharset(meta.walk_charset, @save_data[:player], true)
     @sprites[:player].charset = filename
     if !@sprites[:player].bitmap
-      raise _INTL("Player character {1}'s walking charset was not found (filename: \"{2}\").",
+      raise _INTL("Overrides character {1}'s walking charset was not found (filename: \"{2}\").",
                   @save_data[:player].character_ID, filename)
     end
   end
@@ -255,7 +255,7 @@ class UI::LoadContinuePanel < UI::LoadPanel
     elsif @save_data[:player].female?
       gender_theme = :female
     end
-    # Player's name
+    # Overrides's name
     draw_text(@save_data[:player].name, 78, 66, theme: gender_theme)
     # Location
     map_id = @save_data[:map_factory].map.map_id

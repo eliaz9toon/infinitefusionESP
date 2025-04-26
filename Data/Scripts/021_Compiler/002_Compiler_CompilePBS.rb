@@ -1344,7 +1344,7 @@ module Compiler
           else
             validate_compiled_player_metadata(data_hash)
             if GameData::PlayerMetadata.exists?(data_hash[:id])
-              raise _INTL("Player metadata ID '{1}' is used twice.", data_hash[:id]) + "\n" + FileLineData.linereport
+              raise _INTL("Overrides metadata ID '{1}' is used twice.", data_hash[:id]) + "\n" + FileLineData.linereport
             end
           end
           # Add section's data to records

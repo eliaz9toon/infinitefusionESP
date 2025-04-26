@@ -1466,7 +1466,7 @@ module Transitions
       @rear_black_sprite.zoom_y  = 2.0
       @rear_black_sprite.opacity = 192
       @rear_black_sprite.visible = false
-      # Player's bar sprite
+      # Overrides's bar sprite
       @player_bar_x = -BAR_X_INDENT
       @player_bar_start_x = @player_bar_x - (@bar_bitmap.width / 2)
       @player_bar_y = BAR_Y_INDENT
@@ -1483,7 +1483,7 @@ module Transitions
       @foe_bar_sprite.src_rect.x = @bar_bitmap.width / 2
       @foe_bar_sprite.src_rect.width = @bar_bitmap.width / 2
       @foe_bar_sprite.src_rect.height = BAR_HEIGHT
-      # Player sprite
+      # Overrides sprite
       @player_sprite = new_sprite(@player_bar_sprite.x + TRAINER_X_OFFSET,
                                   @player_bar_sprite.y + BAR_HEIGHT - TRAINER_Y_OFFSET,
                                   @player_bitmap, @player_bitmap.width / 2, @player_bitmap.height)

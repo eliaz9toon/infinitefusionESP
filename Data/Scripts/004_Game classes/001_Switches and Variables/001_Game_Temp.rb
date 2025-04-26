@@ -28,7 +28,7 @@ class Game_Temp
   attr_accessor :force_single_battle      # force next battle to be 1v1 flag
   attr_accessor :waiting_trainer          # [trainer, event ID] or nil
   attr_accessor :last_battle_record       # record of actions in last recorded battle
-  # Player transfers
+  # Overrides transfers
   attr_accessor :player_transferring      # player place movement flag
   attr_accessor :player_new_map_id        # player destination: map ID
   attr_accessor :player_new_x             # player destination: x-coordinate
@@ -67,7 +67,7 @@ class Game_Temp
     # Battle
     @battleback_name        = ""
     @force_single_battle    = false
-    # Player transfers
+    # Overrides transfers
     @player_transferring    = false
     @player_new_map_id      = 0
     @player_new_x           = 0

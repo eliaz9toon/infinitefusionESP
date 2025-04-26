@@ -107,7 +107,7 @@ class TriadCard
     bitmap = Bitmap.new(80, 96)
     if owner == 2   # Opponent
       cardbitmap = AnimatedBitmap.new("Graphics/UI/Triple Triad/card_opponent")
-    else            # Player
+    else            # Overrides
       cardbitmap = AnimatedBitmap.new("Graphics/UI/Triple Triad/card_player")
     end
     typebitmap = AnimatedBitmap.new(_INTL("Graphics/UI/types"))
@@ -811,7 +811,7 @@ class TriadScreen
       triadCard = nil
       cardIndex = 0
       if playerTurn
-        # Player's turn
+        # Overrides's turn
         until position
           cardIndex = @scene.pbPlayerChooseCard(cards.length)
           triadCard = TriadCard.new(cards[cardIndex])

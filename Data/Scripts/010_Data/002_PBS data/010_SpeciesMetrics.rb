@@ -75,7 +75,7 @@ module GameData
     def apply_metrics_to_sprite(sprite, index, shadow = false)
       if shadow
         sprite.x += @shadow_x * 2 if (index & 1) == 1   # Foe Pokémon
-      elsif (index & 1) == 0   # Player's Pokémon
+      elsif (index & 1) == 0   # Overrides's Pokémon
         sprite.x += @back_sprite[0] * 2
         sprite.y += @back_sprite[1] * 2
       else                     # Foe Pokémon
