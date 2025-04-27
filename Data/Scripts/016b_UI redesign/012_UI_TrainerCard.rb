@@ -16,7 +16,8 @@ class UI::TrainerCardVisuals < UI::BaseVisuals
     # Trainer card
     add_icon_sprite(:card, 0, 0, graphics_folder + gendered_filename(_INTL("trainer_card")))
     # Overrides sprite (coordinates are the bottom middle of the sprite)
-    add_icon_sprite(:player, 400, 240, GameData::TrainerType.player_front_sprite_filename($player.trainer_type))
+    @sprites[:player] = IconSprite.new(400, 240, @viewport)
+    @sprites[:player].setBitmapDirectly(generate_front_trainer_sprite_bitmap())
     if !@sprites[:player].bitmap
       raise _INTL("No trainer front sprite exists for the player character, expected a file at {1}.",
                   "Graphics/Trainers/" + $player.trainer_type.to_s + ".png")

@@ -149,7 +149,6 @@ class TilemapRenderer
       # Try to load expanded autotile from cache first
       cached_path = File.join("Graphics", "Autotiles/ExpandedAutotiles", "#{filename}.png")
       if FileTest.exist?(cached_path)
-        echoln "Loading cached expanded autotile for #{filename}"
         bitmap = RPG::Cache.load_bitmap(EXPANDED_AUTOTILES_FOLDER, filename)
 
         duration = AUTOTILE_FRAME_DURATION

@@ -4,12 +4,13 @@ MenuHandlers.add(:pause_menu, :outfit, {
   "condition" => proc { $player.can_change_outfit },
   "effect"    => proc { |menu|
 
-    pbFadeOutIn do
-      #pbCommonEvent(COMMON_EVENT_OUTFIT)
-      #todo give Favorite outfit (used to be done through common event)
-      changeOutfit()
-      menu.silent_end_screen
-    end
+    changeOutfit()
+    # pbFadeOutIn do
+    #   #pbCommonEvent(COMMON_EVENT_OUTFIT)
+    #   #todo give Favorite outfit (used to be done through common event)
+    #   changeOutfit()
+    #   menu.silent_end_screen
+    # end
     next false
 
 

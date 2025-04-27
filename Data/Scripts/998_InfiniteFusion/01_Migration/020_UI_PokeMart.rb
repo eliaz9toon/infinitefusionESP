@@ -199,7 +199,7 @@ class Window_PokemonMart < Window_DrawableCommand
     @stock = stock
     @adapter = adapter
     super(x, y, width, height, viewport)
-    @selarrow = AnimatedBitmap.new("Graphics/Pictures/martSel")
+    @selarrow = AnimatedBitmap.new("Graphics/UI/Mart/martSel")
     @baseColor = Color.new(88, 88, 80)
     @shadowColor = Color.new(168, 184, 184)
     self.windowskin = nil
