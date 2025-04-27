@@ -561,3 +561,7 @@ def fossilsGuyBattle(level = 20, end_message = "")
   )
 
 end
+
+def isOnPinkanIsland()
+  return false
+end

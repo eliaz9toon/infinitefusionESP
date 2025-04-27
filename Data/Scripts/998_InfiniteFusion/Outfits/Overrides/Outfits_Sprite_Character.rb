@@ -136,7 +136,7 @@ class Sprite_Character
     return if @character.is_a?(Game_Event) && !@character.should_update?
     super
     refresh_graphic
-    #return if !@charbitmap
+    return if !@charbitmap
     @charbitmap.update if @charbitmapAnimated
     bushdepth = @character.bush_depth
     if bushdepth == 0
