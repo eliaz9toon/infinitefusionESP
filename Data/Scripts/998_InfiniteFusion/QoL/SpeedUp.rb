@@ -21,20 +21,6 @@ $GameSpeed = 0
 $CanToggle = true
 $RefreshEventsForTurbo = false
 #===============================================================================#
-# Set $CanToggle depending on the saved setting
-#===============================================================================#
-module Game
-  class << self
-    alias_method :original_load, :load unless method_defined?(:original_load)
-  end
-
-  def self.load(save_data)
-    original_load(save_data)
-    # echoln "UNSCALED #{System.unscaled_uptime} * #{SPEEDUP_STAGES[$GameSpeed]} - #{$GameSpeed}"
-    $CanToggle = true #$PokemonSystem.only_speedup_battles == 0
-  end
-end
-#===============================================================================#
 # Handle incrementing speed stages if $CanToggle allows it
 #===============================================================================#
 module Input
@@ -238,7 +224,6 @@ end
 # PokemonSystem Accessors
 #===============================================================================#
 class PokemonSystem
-  alias_method :original_initialize, :initialize unless method_defined?(:original_initialize)
   attr_accessor :only_speedup_battles
   attr_accessor :battle_speed
 
@@ -246,8 +231,9 @@ class PokemonSystem
   attr_accessor :speedup_speed
   attr_accessor :speedup_enabled
 
+  alias_method :original_initialize_forSpeedup, :initialize unless method_defined?(:original_initialize_forSpeedup)
   def initialize
-    original_initialize
+    original_initialize_forSpeedup
     @only_speedup_battles = 0 # Speed up setting (0=always, 1=battle_only)
     @battle_speed = 0 # Depends on the SPEEDUP_STAGES array size
     @speedup_type = SPEED_UP_TYPE_HOLD

@@ -13,11 +13,8 @@ module Game
     end
 
     def onLoadSaveFile
-      # Essentials 21 renamed the global variable $Trainer
-      # It's still used everywhere in events, global events so this makes things simpler
-      $Trainer = $player
-      $PokemonBag = $bag
-
+      initializeGlobalVariables
+      copyOldGlobalVariables()
       migrateOldSavesToCharacterCustomization()
       clear_all_images()
       loadDateSpecificChanges()
@@ -26,6 +23,19 @@ module Game
 end
 
 
+def initializeGlobalVariables()
+  $CanToggle = true #$PokemonSystem.only_speedup_battles == 0
+end
+
+
+# Essentials 21 renamed the global variable $Trainer
+# It's still used everywhere in events, global events
+# so this is a little hack to prevent all the old stuff
+# from breaking
+def copyOldGlobalVariables()
+  $Trainer = $player
+  $PokemonBag = $bag
+end
 
 def loadDateSpecificChanges()
   current_date = Time.new
