@@ -94,5 +94,18 @@ class TilemapRenderer
     refresh_tile_src_rect(tile, tile_id)
   end
 
+
+  def refresh_tile_z(tile, map, y, layer, tile_id)
+    if false#tile.shows_reflection
+      tile.z = -2000
+    elsif tile.bridge && $PokemonGlobal.bridge > 0
+      tile.z = 0
+    else
+      priority = tile.priority
+      tile.z = (priority == 0) ? 0 : (y * SOURCE_TILE_HEIGHT) + (priority * SOURCE_TILE_HEIGHT) + SOURCE_TILE_HEIGHT + 1
+    end
+  end
+
+
 end
 

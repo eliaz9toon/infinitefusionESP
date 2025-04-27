@@ -81,6 +81,10 @@ class Sprite_Player < Sprite_Character
 
 
   def generateClothedBitmap()
+    echoln "yo!"
+    echoln @charbitmap.path
+
+
     return if !@charbitmap
     @charbitmap.bitmap.clone #nekkid sprite
     baseBitmap = @charbitmap.bitmap.clone #nekkid sprite

@@ -5,6 +5,8 @@ class AnimatedBitmap
   def initialize(file, hue = 0)
     raise "Filename is nil (missing graphic)." if file.nil?
     path     = file
+    @path = path
+
     filename = ""
     if file.last != "/"   # Isn't just a directory
       split_file = file.split(/[\\\/]/)
@@ -31,6 +33,8 @@ class AnimatedBitmap
   def dispose;      @bitmap.dispose;                    end
   def deanimate;    @bitmap.deanimate;                  end
   def copy;         @bitmap.copy;                       end
+
+  def path;         @path end
 end
 
 #===============================================================================

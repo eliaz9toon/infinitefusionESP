@@ -86,8 +86,98 @@ class Sprite_Character
     end
   end
 
+  def refresh_graphic
+    return if !should_update?
+    @manual_refresh=false
+    @tile_id        = @character.tile_id
+    @character_name = @character.character_name
+    @character_hue  = @character.character_hue
+    @oldbushdepth   = @character.bush_depth
+    @charbitmap&.dispose
+    @charbitmap = nil
+    @bushbitmap&.dispose
+    @bushbitmap = nil
 
+    if @tile_id >= 384
+      @charbitmap = pbGetTileBitmap(@character.map.tileset_name, @tile_id,
+                                    @character_hue, @character.width, @character.height)
+      @charbitmapAnimated = false
+      @spriteoffset = false
+      @cw = Game_Map::TILE_WIDTH * @character.width
+      @ch = Game_Map::TILE_HEIGHT * @character.height
+      self.src_rect.set(0, 0, @cw, @ch)
+      self.ox = @cw / 2
+      self.oy = @ch
+    elsif @character_name != ""
 
+      @charbitmap = updateCharacterBitmap()
+
+      RPG::Cache.retain("Graphics/Characters/", @character_name, @character_hue) if @character == $game_player
+      @charbitmapAnimated = true
+
+      @spriteoffset = @character_name[/fish/i] ||  @character_name[/dive/i] ||  @character_name[/surf/i]
+
+      @cw = @charbitmap.width / 4
+      @ch = @charbitmap.height / 4
+      self.ox = @cw / 2
+    else
+      self.bitmap = nil
+      @cw = 0
+      @ch = 0
+      @reflection&.update
+    end
+    @character.sprite_size = [@cw, @ch]
+  end
+  def update
+    if self.pending_bitmap
+      self.bitmap = self.pending_bitmap
+      self.pending_bitmap = nil
+    end
+    return if @character.is_a?(Game_Event) && !@character.should_update?
+    super
+    refresh_graphic
+    #return if !@charbitmap
+    @charbitmap.update if @charbitmapAnimated
+    bushdepth = @character.bush_depth
+    if bushdepth == 0
+      if @character == $game_player
+        self.bitmap = getClothedPlayerSprite()
+      else
+        self.bitmap = (@charbitmapAnimated) ? @charbitmap.bitmap : @charbitmap
+      end
+    else
+      @bushbitmap = BushBitmap.new(@charbitmap, (@tile_id >= 384), bushdepth) if !@bushbitmap
+      self.bitmap = @bushbitmap.bitmap
+    end
+
+    self.visible = !@character.transparent
+    if @tile_id == 0
+      sx = @character.pattern * @cw
+      sy = ((@character.direction - 2) / 2) * @ch
+      self.src_rect.set(sx, sy, @cw, @ch)
+      self.oy = (@spriteoffset rescue false) ? @ch - 16 : @ch
+      self.oy -= @character.bob_height
+    end
+    if self.visible
+      applyDayNightTone()
+    end
+    this_x = @character.screen_x
+    this_x = ((this_x - (Graphics.width / 2)) * TilemapRenderer::ZOOM_X) + (Graphics.width / 2) if TilemapRenderer::ZOOM_X != 1
+    self.x = this_x
+    this_y = @character.screen_y
+    this_y = ((this_y - (Graphics.height / 2)) * TilemapRenderer::ZOOM_Y) + (Graphics.height / 2) if TilemapRenderer::ZOOM_Y != 1
+    self.y = this_y
+    self.z = @character.screen_z(@ch)
+    self.opacity = @character.opacity
+    self.blend_type = @character.blend_type
+    if @character.animation_id && @character.animation_id != 0
+      animation = $data_animations[@character.animation_id]
+      animation(animation, true, @character.animation_height || 3, @character.animation_regular_tone || false)
+      @character.animation_id = 0
+    end
+    @reflection&.update
+    @surfbase&.update
+  end
   # def update
   #   if self.pending_bitmap
   #     self.bitmap = self.pending_bitmap
