@@ -38,14 +38,14 @@ end
 
 def species_is_fusion(species_id)
   dex_number = get_dex_number(species_id)
-  return dex_number > NB_POKEMON && dex_number < Settings::ZAPMOLCUNO_NB
+  return dex_number > Settings::NB_POKEMON && dex_number < Settings::ZAPMOLCUNO_NB
 end
 
 def get_dex_number(species_id)
   return GameData::Species.get(species_id).id_number
 end
 
-def getBodyID(species, nb_pokemon = NB_POKEMON)
+def getBodyID(species, nb_pokemon = Settings::NB_POKEMON)
   if species.is_a?(Integer)
     dexNum = species
   else
@@ -57,7 +57,7 @@ def getBodyID(species, nb_pokemon = NB_POKEMON)
   return (dexNum / nb_pokemon).round
 end
 
-def getHeadID(species, bodyId = nil, nb_pokemon = NB_POKEMON)
+def getHeadID(species, bodyId = nil, nb_pokemon = Settings::NB_POKEMON)
   if species.is_a?(Integer)
     fused_dexNum = species
   else
@@ -406,5 +406,15 @@ def get_triple_fusion_components(species_id)
     return [000]
   end
 
+end
+
+def reverseFusionSpecies(species)
+  dexId = getDexNumberForSpecies(species)
+  return species if dexId <= NB_POKEMON
+  return species if dexId > (NB_POKEMON * NB_POKEMON) + NB_POKEMON
+  body = getBasePokemonID(dexId, true)
+  head = getBasePokemonID(dexId, false)
+  newspecies = (head) * NB_POKEMON + body
+  return getPokemon(newspecies)
 end
 

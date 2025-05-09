@@ -245,3 +245,271 @@ def oricorioEventPickFlower(flower_color)
   end
 
 end
+
+# frozen_string_literal: true
+
+def isInKantoGeneration(dexNumber)
+  return dexNumber <= 151
+end
+
+def isKantoPokemon(species)
+  dexNum = getDexNumberForSpecies(species)
+  poke = getPokemon(species)
+  head_dex = getDexNumberForSpecies(poke.get_head_species())
+  body_dex = getDexNumberForSpecies(poke.get_body_species())
+  return isInKantoGeneration(dexNum) || isInKantoGeneration(head_dex) || isInKantoGeneration(body_dex)
+end
+
+def isInJohtoGeneration(dexNumber)
+  return dexNumber > 151 && dexNumber <= 251
+end
+
+def isJohtoPokemon(species)
+  dexNum = getDexNumberForSpecies(species)
+  poke = getPokemon(species)
+  head_dex = getDexNumberForSpecies(poke.get_head_species())
+  body_dex = getDexNumberForSpecies(poke.get_body_species())
+  return isInJohtoGeneration(dexNum) || isInJohtoGeneration(head_dex) || isInJohtoGeneration(body_dex)
+end
+
+def isAlolaPokemon(species)
+  dexNum = getDexNumberForSpecies(species)
+  poke = getPokemon(species)
+  head_dex = getDexNumberForSpecies(poke.get_head_species())
+  body_dex = getDexNumberForSpecies(poke.get_body_species())
+  list = [
+    370, 373, 430, 431, 432, 433, 450, 451, 452,
+    453, 454, 455, 459, 460, 463, 464, 465, 469, 470,
+    471, 472, 473, 474, 475, 476, 477, 498, 499,
+  ]
+  return list.include?(dexNum) || list.include?(head_dex) || list.include?(body_dex)
+end
+
+def isKalosPokemon(species)
+  dexNum = getDexNumberForSpecies(species)
+  poke = getPokemon(species)
+  head_dex = getDexNumberForSpecies(poke.get_head_species())
+  body_dex = getDexNumberForSpecies(poke.get_body_species())
+  list =
+    [327, 328, 329, 339, 371, 372, 417, 418,
+     425, 426, 438, 439, 440, 441, 444, 445, 446,
+     456, 461, 462, 478, 479, 480, 481, 482, 483, 484, 485, 486, 487,
+     489, 490, 491, 492, 500,
+
+    ]
+  return list.include?(dexNum) || list.include?(head_dex) || list.include?(body_dex)
+end
+
+def isUnovaPokemon(species)
+  dexNum = getDexNumberForSpecies(species)
+  poke = getPokemon(species)
+  head_dex = getDexNumberForSpecies(poke.get_head_species())
+  body_dex = getDexNumberForSpecies(poke.get_body_species())
+  list =
+    [
+      330, 331, 337, 338, 348, 349, 350, 351, 359, 360, 361,
+      362, 363, 364, 365, 366, 367, 368, 369, 374, 375, 376, 377,
+      397, 398, 399, 406, 407, 408, 409, 410, 411, 412, 413, 414,
+      415, 416, 419, 420,
+      422, 423, 424, 434, 345,
+      466, 467, 494, 493,
+    ]
+  return list.include?(dexNum) || list.include?(head_dex) || list.include?(body_dex)
+end
+
+def isSinnohPokemon(species)
+  dexNum = getDexNumberForSpecies(species)
+  poke = getPokemon(species)
+  head_dex = getDexNumberForSpecies(poke.get_head_species())
+  body_dex = getDexNumberForSpecies(poke.get_body_species())
+  list =
+    [254, 255, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265,
+     266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 288, 294,
+     295, 296, 297, 298, 299, 305, 306, 307, 308, 315, 316, 317,
+     318, 319, 320, 321, 322, 323, 324, 326, 332, 343, 344, 345,
+     346, 347, 352, 353, 354, 358, 383, 384, 388, 389, 400, 402,
+     403, 429, 468]
+
+  return list.include?(dexNum) || list.include?(head_dex) || list.include?(body_dex)
+end
+
+def isHoennPokemon(species)
+  dexNum = getDexNumberForSpecies(species)
+  poke = getPokemon(species)
+  head_dex = getDexNumberForSpecies(poke.get_head_species())
+  body_dex = getDexNumberForSpecies(poke.get_body_species())
+  list = [252, 253, 276, 277, 278, 279, 280, 281, 282, 283, 284,
+          285, 286, 287, 289, 290, 291, 292, 293, 300, 301, 302, 303,
+          304, 309, 310, 311, 312, 313, 314, 333, 334, 335, 336, 340,
+          341, 342, 355, 356, 357, 378, 379, 380, 381, 382, 385, 386,
+          387, 390, 391, 392, 393, 394, 395, 396, 401, 404, 405, 421,
+          427, 428, 436, 437, 442, 443, 447, 448, 449, 457, 458, 488,
+          495, 496, 497, 501, 502, 503, 504, 505, 506, 507, 508, 509,
+          510, 511, 512, 513, 514, 515, 516, 517, 518, 519, 520, 521,
+          522, 523, 524, 525, 526, 527, 528, 529, 530, 531, 532, 533,
+          534, 535, 536, 537, 538, 539, 540, 541, 542, 543, 544, 545,
+          546, 547, 548, 549, 550, 551, 552, 553, 554, 555, 556, 557,
+          558, 559, 560, 561, 562, 563, 564, 565
+  ]
+  return list.include?(dexNum) || list.include?(head_dex) || list.include?(body_dex)
+end
+
+def Kernel.getRoamingMap(roamingArrayPos)
+  curmap = $PokemonGlobal.roamPosition[roamingArrayPos]
+  mapinfos = $RPGVX ? load_data("Data/MapInfos.rvdata") : load_data("Data/MapInfos.rxdata")
+  text = mapinfos[curmap].name #,(curmap==$game_map.map_id) ? _INTL("(this map)") : "")
+  return text
+end
+
+def get_default_moves_at_level(species, level)
+  moveset = GameData::Species.get(species).moves
+  knowable_moves = []
+  moveset.each { |m| knowable_moves.push(m[1]) if m[0] <= level }
+  # Remove duplicates (retaining the latest copy of each move)
+  knowable_moves = knowable_moves.reverse
+  knowable_moves |= []
+  knowable_moves = knowable_moves.reverse
+  # Add all moves
+  moves = []
+  first_move_index = knowable_moves.length - MAX_MOVES
+  first_move_index = 0 if first_move_index < 0
+  for i in first_move_index...knowable_moves.length
+    #moves.push(Pokemon::Move.new(knowable_moves[i]))
+    moves << knowable_moves[i]
+  end
+  return moves
+end
+
+def listPokemonIDs()
+  for id in 0..Settings::NB_POKEMON
+    pokemon = GameData::Species.get(id).species
+    echoln id.to_s + ": " + "\"" + pokemon.to_s + "\"" + ", "
+  end
+end
+
+def getAllNonLegendaryPokemon()
+  list = []
+  for i in 1..143
+    list.push(i)
+  end
+  for i in 147..149
+    list.push(i)
+  end
+  for i in 152..242
+    list.push(i)
+  end
+  list.push(246)
+  list.push(247)
+  list.push(248)
+  for i in 252..314
+    list.push(i)
+  end
+  for i in 316..339
+    list.push(i)
+  end
+  for i in 352..377
+    list.push(i)
+  end
+  for i in 382..420
+    list.push(i)
+  end
+  return list
+end
+
+def getPokemonEggGroups(species)
+  return GameData::Species.get(species).egg_groups
+end
+
+def getAbilityIndexFromID(abilityID, fusedPokemon)
+  abilityList = fusedPokemon.getAbilityList
+  for abilityArray in abilityList #ex: [:CHLOROPHYLL, 0]
+    ability = abilityArray[0]
+    index = abilityArray[1]
+    return index if ability == abilityID
+  end
+  return 0
+end
+
+def getSpecies(dexnum)
+  return getPokemon(dexnum.species) if dexnum.is_a?(Pokemon)
+  return getPokemon(dexnum)
+end
+
+def getPokemon(dexNum)
+  if dexNum.is_a?(Integer)
+    if dexNum > Settings::NB_POKEMON
+      body_id = getBodyID(dexNum)
+      head_id = getHeadID(dexNum, body_id)
+      pokemon_id = getFusedPokemonIdFromDexNum(body_id, head_id)
+    else
+      pokemon_id = dexNum
+    end
+  else
+    pokemon_id = dexNum
+  end
+
+  return GameData::Species.get(pokemon_id)
+end
+
+def CanLearnMove(pokemon, move)
+  species = getID(PBSpecies, pokemon)
+  return false if species <= 0
+  data = load_data("Data/tm.dat")
+  return false if !data[move]
+  return data[move].any? { |item| item == species }
+end
+
+def getID(pbspecies_unused, species)
+  if species.is_a?(String)
+    return nil
+  elsif species.is_a?(Symbol)
+    return GameData::Species.get(species).id_number
+  elsif species.is_a?(Pokemon)
+    id = species.dexNum
+  end
+end
+
+def pbAddPokemonID(pokemon_id, level = 1, see_form = true, skip_randomize = false)
+  return false if !pokemon_id
+  skip_randomize = true if $game_switches[SWITCH_CHOOSING_STARTER] #when choosing starters
+  if pbBoxesFull?
+    pbMessage(_INTL("There's no more room for Pokémon!\1"))
+    pbMessage(_INTL("The Pokémon Boxes are full and can't accept any more!"))
+    return false
+  end
+  if pokemon_id.is_a?(Integer) && level.is_a?(Integer)
+    pokemon = Pokemon.new(pokemon_id, level)
+    species_name = pokemon.speciesName
+  end
+
+  #random species if randomized gift pokemon &  wild poke
+  if $game_switches[SWITCH_RANDOM_GIFT_POKEMON] && $game_switches[SWITCH_RANDOM_WILD] && !skip_randomize
+    tryRandomizeGiftPokemon(pokemon, skip_randomize)
+  end
+
+  pbMessage(_INTL("{1} obtained {2}!\\me[Pkmn get]\\wtnp[80]\1", $Trainer.name, species_name))
+  pbNicknameAndStore(pokemon)
+  $Trainer.pokedex.register(pokemon) if see_form
+  return true
+end
+
+def pbHasSpecies?(species)
+  if species.is_a?(String) || species.is_a?(Symbol)
+    id = getID(PBSpecies, species)
+  elsif species.is_a?(Pokemon)
+    id = species.dexNum
+  end
+  for pokemon in $Trainer.party
+    next if pokemon.isEgg?
+    return true if pokemon.dexNum == id
+  end
+  return false
+end
+
+def pbPlayCry(pkmn, volume = 90, pitch = nil)
+  GameData::Species.play_cry(pkmn, volume, pitch)
+end
+
+def pbCryFrameLength(species, form = 0, pitch = 100)
+  return GameData::Species.cry_length(species, form, pitch)
+end

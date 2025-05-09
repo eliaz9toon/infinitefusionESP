@@ -565,3 +565,25 @@ end
 def isOnPinkanIsland()
   return false
 end
+
+def generateSimpleTrainerParty(teamSpecies, level)
+  team = []
+  for species in teamSpecies
+    poke = Pokemon.new(species, level)
+    team << poke
+  end
+  return team
+end
+
+def generateEggGroupTeam(eggGroup)
+  teamComplete = false
+  generatedTeam = []
+  while !teamComplete
+    species = rand(PBSpecies.maxValue)
+    if getPokemonEggGroups(species).include?(eggGroup)
+      generatedTeam << species
+    end
+    teamComplete = generatedTeam.length == 3
+  end
+  return generatedTeam
+end

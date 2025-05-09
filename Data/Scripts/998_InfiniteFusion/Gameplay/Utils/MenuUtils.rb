@@ -165,3 +165,16 @@ def swapReleaseCaughtPokemon(caughtPokemon)
   $player.party[-1] = tmp
   return true
 end
+
+def Kernel.getItemNamesAsString(list)
+  strList = ""
+  for i in 0..list.length - 1
+    id = list[i]
+    name = PBItems.getName(id)
+    strList += name
+    if i != list.length - 1 && list.length > 1
+      strList += ","
+    end
+  end
+  return strList
+end

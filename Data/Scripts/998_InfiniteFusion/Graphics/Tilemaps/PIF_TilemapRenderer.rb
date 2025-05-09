@@ -7,6 +7,9 @@ class TilemapRenderer
 
 
   #   Examples:
+  #
+  #   Normal tile IDs start at 384
+  #
   #    1 => [["Sand shore"], ["Flowers2"]],
   #    2 => [[], ["Flowers2", "Waterfall", "Waterfall crest", "Waterfall bottom"]],
   #    6 => [["Water rock", "Sea deep"], []]
@@ -30,7 +33,11 @@ class TilemapRenderer
             1023 => "flowers_red[10]",
             1031 => "flowers_grey[10]",
             1039 => "flowers_white[10]",
-    }
+    },
+    3 => {  #interior
+          385 => "tv_flicker_left",
+
+  }
   }
 
   def add_extra_autotiles(tileset_id)

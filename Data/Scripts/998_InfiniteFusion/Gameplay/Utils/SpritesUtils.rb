@@ -3,5 +3,5 @@
 # setForcedAltSprites(forced_sprites)
 #
 def setForcedAltSprites(forcedSprites_map)
-  $PokemonTemp.forced_alt_sprites = forcedSprites_map
+  $game_temp.forced_alt_sprites = forcedSprites_map
 end

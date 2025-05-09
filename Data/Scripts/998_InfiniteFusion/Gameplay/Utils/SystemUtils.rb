@@ -143,3 +143,68 @@ def change_game_difficulty(down_only = false)
   message = "The game is currently on " + get_difficulty_text() + " difficulty."
   pbMessage(message)
 end
+
+def find_newer_available_version
+  latest_Version = fetch_latest_game_version
+  return nil if !latest_Version
+  return nil if is_higher_version(Settings::GAME_VERSION_NUMBER, latest_Version)
+  return latest_Version
+end
+
+def is_higher_version(gameVersion, latestVersion)
+  gameVersion_parts = gameVersion.split('.').map(&:to_i)
+  latestVersion_parts = latestVersion.split('.').map(&:to_i)
+
+  # Compare each part of the version numbers from left to right
+  gameVersion_parts.each_with_index do |part, i|
+    return true if (latestVersion_parts[i].nil? || part > latestVersion_parts[i])
+    return false if part < latestVersion_parts[i]
+  end
+  return latestVersion_parts.length <= gameVersion_parts.length
+end
+
+def get_current_game_difficulty
+  return :EASY if $game_switches[SWITCH_GAME_DIFFICULTY_EASY]
+  return :HARD if $game_switches[SWITCH_GAME_DIFFICULTY_HARD]
+  return :NORMAL
+end
+
+def get_difficulty_text
+  if $game_switches[SWITCH_GAME_DIFFICULTY_EASY]
+    return "Easy"
+  elsif $game_switches[SWITCH_GAME_DIFFICULTY_HARD]
+    return "Hard"
+  else
+    return "Normal"
+  end
+end
+
+def getCurrentLevelCap()
+  current_max_level = Settings::LEVEL_CAPS[$Trainer.badge_count]
+  current_max_level *= Settings::HARD_MODE_LEVEL_MODIFIER if $game_switches[SWITCH_GAME_DIFFICULTY_HARD]
+  return current_max_level
+end
+
+def pokemonExceedsLevelCap(pokemon)
+  return false if $Trainer.badge_count >= Settings::NB_BADGES
+  current_max_level = getCurrentLevelCap()
+  return pokemon.level >= current_max_level
+end
+
+def getLatestSpritepackDate()
+  return Time.new(Settings::NEWEST_SPRITEPACK_YEAR, Settings::NEWEST_SPRITEPACK_MONTH)
+end
+
+def new_spritepack_was_released()
+  current_spritepack_date = $PokemonGlobal.current_spritepack_date
+  latest_spritepack_date = getLatestSpritepackDate()
+  if !current_spritepack_date || (current_spritepack_date < latest_spritepack_date)
+    $PokemonGlobal.current_spritepack_date = latest_spritepack_date
+    return true
+  end
+  return false
+end
+
+def pbGetSelfSwitch(eventId, switch)
+  return $game_self_switches[[@map_id, eventId, switch]]
+end

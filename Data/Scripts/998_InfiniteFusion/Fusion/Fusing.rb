@@ -9,28 +9,19 @@ end
 
 # don't remember why there's two Supersplicers arguments.... probably a mistake
 def pbDNASplicing(pokemon, scene, item = :DNASPLICERS)
+  echoln pokemon
+  echoln scene
+  echoln item
+
+
   is_supersplicer = isSuperSplicersMechanics(item)
 
   playingBGM = $game_system.getPlayingBGM
-  dexNumber = pokemon.species_data.id_number
-  if (pokemon.species_data.id_number <= NB_POKEMON)
-    if pokemon.fused != nil
-      if $player.party.length >= 6
-        scene.pbDisplay(_INTL("Your party is full! You can't unfuse {1}.", pokemon.name))
-        return false
-      else
-        $player.party[$player.party.length] = pokemon.fused
-        pokemon.fused = nil
-        pokemon.form = 0
-        scene.pbHardRefresh
-        scene.pbDisplay(_INTL("{1} changed Forme!", pokemon.name))
-        return true
-      end
-    else
+  if (pokemon.species_data.id_number <= Settings::NB_POKEMON)
       chosen = scene.pbChoosePokemon(_INTL("Fuse with which Pokémon?"))
       if chosen >= 0
         poke2 = $player.party[chosen]
-        if (poke2.species_data.id_number <= NB_POKEMON) && poke2 != pokemon
+        if (poke2.species_data.id_number <= Settings::NB_POKEMON) && poke2 != pokemon
           # check if fainted
 
           if pokemon.egg? || poke2.egg?
@@ -79,7 +70,7 @@ def pbDNASplicing(pokemon, scene, item = :DNASPLICERS)
       else
         return false
       end
-    end
+
   else
     # UNFUSE
     return true if pbUnfuse(pokemon, scene, is_supersplicer)
@@ -96,34 +87,10 @@ def selectFusion(pokemon, poke2, supersplicers = false)
   return selectedHead
 end
 
-# firstOptionSelected= selectedHead == pokemon
-# selectedBody = selectedHead == pokemon ? poke2 : pokemon
-# newid = (selectedBody.species_data.id_number) * NB_POKEMON + selectedHead.species_data.id_number
-
-# def pbFuse(pokemon, poke2, supersplicers = false)
-#   newid = (pokemon.species_data.id_number) * NB_POKEMON + poke2.species_data.id_number
-#   previewwindow = FusionPreviewScreen.new(pokemon, poke2)#PictureWindow.new(picturePath)
-#
-#   if (Kernel.pbConfirmMessage(_INTL("Fuse the two Pokémon?", newid)))
-#     previewwindow.dispose
-#     fus = PokemonFusionScene.new
-#     if (fus.pbStartScreen(pokemon, poke2, newid))
-#       returnItemsToBag(pokemon, poke2)
-#       fus.pbFusionScreen(false, supersplicers)
-#       $game_variables[126] += 1 #fuse counter
-#       fus.pbEndScreen
-#       return true
-#     end
-#   else
-#     previewwindow.dispose
-#     return false
-#   end
-# end
-
 def pbFuse(pokemon_body, pokemon_head, splicer_item)
   use_supersplicers_mechanics = isSuperSplicersMechanics(splicer_item)
 
-  newid = (pokemon_body.species_data.id_number) * NB_POKEMON + pokemon_head.species_data.id_number
+  newid = (pokemon_body.species_data.id_number) * Settings::NB_POKEMON + pokemon_head.species_data.id_number
   fus = PokemonFusionScene.new
 
   if (fus.pbStartScreen(pokemon_body, pokemon_head, newid, splicer_item))
@@ -137,7 +104,7 @@ end
 
 # Todo: refactor this, holy shit this is a mess
 def pbUnfuse(pokemon, scene, supersplicers, pcPosition = nil)
-  if pokemon.species_data.id_number > (NB_POKEMON * NB_POKEMON) + NB_POKEMON # triple fusion
+  if pokemon.species_data.id_number > (Settings::NB_POKEMON * Settings::NB_POKEMON) + Settings::NB_POKEMON # triple fusion
     scene.pbDisplay(_INTL("{1} cannot be unfused.", pokemon.name))
     return false
   end

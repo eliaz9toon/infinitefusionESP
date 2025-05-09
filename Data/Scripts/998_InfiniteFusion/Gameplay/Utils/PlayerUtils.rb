@@ -6,3 +6,5 @@ def isPlayerFemale()
   return pbGet(VAR_TRAINER_GENDER) == GENDER_FEMALE
 end# frozen_string_literal: true
 
+
+

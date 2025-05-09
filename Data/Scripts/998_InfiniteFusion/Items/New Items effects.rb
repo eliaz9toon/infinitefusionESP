@@ -114,79 +114,9 @@ ItemHandlers::UseFromBag.add(:LANTERN, proc { |item|
   next true
 })
 
-ItemHandlers::UseOnPokemon.add(:TRANSGENDERSTONE, proc { |item, pokemon, scene|
-  if pokemon.gender == 0
-    pokemon.makeFemale
-    scene.pbRefresh
-    scene.pbDisplay(_INTL("The Pokémon became female!"))
-    next true
-  elsif pokemon.gender == 1
-    pokemon.makeMale
-    scene.pbRefresh
-    scene.pbDisplay(_INTL("The Pokémon became male!"))
 
-    next true
-  else
-    scene.pbDisplay(_INTL("It won't have any effect."))
-    next false
-  end
-})
 
-# NOT FULLY IMPLEMENTED
-ItemHandlers::UseOnPokemon.add(:SECRETCAPSULE, proc { |item, poke, scene|
-  abilityList = poke.getAbilityList
-  numAbilities = abilityList[0].length
-
-  if numAbilities <= 2
-    scene.pbDisplay(_INTL("It won't have any effect."))
-    next false
-  elsif abilityList[0].length <= 3
-    if changeHiddenAbility1(abilityList, scene, poke)
-      next true
-    end
-    next false
-  else
-    if changeHiddenAbility2(abilityList, scene, poke)
-      next true
-    end
-    next false
-  end
-})
-
-def changeHiddenAbility1(abilityList, scene, poke)
-  abID1 = abilityList[0][2]
-  msg = _INTL("Change {1}'s ability to {2}?", poke.name, PBAbilities.getName(abID1))
-  if Kernel.pbConfirmMessage(_INTL(msg))
-    poke.setAbility(2)
-    abilName1 = PBAbilities.getName(abID1)
-    scene.pbDisplay(_INTL("{1}'s ability was changed to {2}!", poke.name, PBAbilities.getName(abID1)))
-    return true
-  else
-    return false
-  end
-end
-
-def changeHiddenAbility2(abilityList, scene, poke)
-  return false if !Kernel.pbConfirmMessage(_INTL("Change {1}'s ability?", poke.name))
-
-  abID1 = abilityList[0][2]
-  abID2 = abilityList[0][3]
-
-  abilName2 = PBAbilities.getName(abID1)
-  abilName3 = PBAbilities.getName(abID2)
-
-  if (Kernel.pbMessage("Choose an ability.", [_INTL("{1}", abilName2), _INTL("{1}", abilName3)], 2)) == 0
-    poke.setAbility(2)
-    scene.pbDisplay(_INTL("{1}'s ability was changed to {2}!", poke.name, abilName2))
-  else
-    return false
-  end
-  poke.setAbility(3)
-  scene.pbDisplay(_INTL("{1}'s ability was changed to {2}!", poke.name, abilName3))
-  return true
-end
-
-ItemHandlers::UseOnPokemon.add(:ROCKETMEAL, proc { |item, pokemon, scene|
+ItemHandlers::UseOnPokemon.add(:ROCKETMEAL, proc { |item, quantity, pokemon, scene|
   next pbHPItem(pokemon, 100, scene)
 })
 
@@ -194,7 +124,7 @@ ItemHandlers::BattleUseOnPokemon.add(:ROCKETMEAL, proc { |item, pokemon, battler
   next pbBattleHPItem(pokemon, battler, 100, scene)
 })
 
-ItemHandlers::UseOnPokemon.add(:FANCYMEAL, proc { |item, pokemon, scene|
+ItemHandlers::UseOnPokemon.add(:FANCYMEAL, proc { |item, quantity, pokemon, scene|
   next pbHPItem(pokemon, 100, scene)
 })
 
@@ -202,7 +132,7 @@ ItemHandlers::BattleUseOnPokemon.add(:FANCYMEAL, proc { |item, pokemon, battler,
   next pbBattleHPItem(pokemon, battler, 100, scene)
 })
 
-ItemHandlers::UseOnPokemon.add(:COFFEE, proc { |item, pokemon, scene|
+ItemHandlers::UseOnPokemon.add(:COFFEE, proc { |item, quantity, pokemon, scene|
   next pbHPItem(pokemon, 50, scene)
 })
 
@@ -210,7 +140,7 @@ ItemHandlers::BattleUseOnPokemon.add(:COFFEE, proc { |item, pokemon, battler, sc
   next pbBattleHPItem(pokemon, battler, 50, scene)
 })
 
-ItemHandlers::UseOnPokemon.add(:RAGECANDYBAR, proc { |item, pokemon, scene|
+ItemHandlers::UseOnPokemon.add(:RAGECANDYBAR, proc { |item, quantity, pokemon, scene|
   if pokemon.level <= 1
     scene.pbDisplay(_INTL("It won't have any effect."))
     next false
@@ -221,7 +151,7 @@ ItemHandlers::UseOnPokemon.add(:RAGECANDYBAR, proc { |item, pokemon, scene|
   end
 })
 
-ItemHandlers::UseOnPokemon.add(:INCUBATOR, proc { |item, pokemon, scene|
+ItemHandlers::UseOnPokemon.add(:INCUBATOR, proc { |item, quantity, pokemon, scene|
   if pokemon.egg?
     if pokemon.eggsteps <= 1
       scene.pbDisplay(_INTL("The egg is already ready to hatch!"))
@@ -240,7 +170,7 @@ ItemHandlers::UseOnPokemon.add(:INCUBATOR, proc { |item, pokemon, scene|
   end
 })
 
-ItemHandlers::UseOnPokemon.add(:MISTSTONE, proc { |item, pokemon, scene|
+ItemHandlers::UseOnPokemon.add(:MISTSTONE, proc { |item, quantity, pokemon, scene|
   next false if pokemon.egg?
   if pbForceEvo(pokemon)
     next true
@@ -610,7 +540,7 @@ def useSplicerFromField(item)
   return fusion_success
 end
 
-ItemHandlers::UseOnPokemon.add(:DNAREVERSER, proc { |item, pokemon, scene|
+ItemHandlers::UseOnPokemon.add(:DNAREVERSER, proc { |item, quantity, pokemon, scene|
   if !pokemon.isFusion?
     scene.pbDisplay(_INTL("It won't have any effect."))
     next false
@@ -651,7 +581,7 @@ def reverseFusion(pokemon)
   }
 end
 
-ItemHandlers::UseOnPokemon.add(:INFINITEREVERSERS, proc { |item, pokemon, scene|
+ItemHandlers::UseOnPokemon.add(:INFINITEREVERSERS, proc { |item, quantity, pokemon, scene|
   if !pokemon.isFusion?
     scene.pbDisplay(_INTL("It won't have any effect."))
     next false
@@ -681,127 +611,6 @@ ItemHandlers::UseOnPokemon.add(:INFINITEREVERSERS, proc { |item, pokemon, scene|
 
   next false
 })
-
-#
-# def pbDNASplicing(pokemon, scene, supersplicers = false, superSplicer = false)
-#   if (pokemon.species <= NB_POKEMON)
-#     if pokemon.fused != nil
-#       if $player.party.length >= 6
-#         scene.pbDisplay(_INTL("Your party is full! You can't unfuse {1}.", pokemon.name))
-#         return false
-#       else
-#         $player.party[$player.party.length] = pokemon.fused
-#         pokemon.fused = nil
-#         pokemon.form = 0
-#         scene.pbHardRefresh
-#         scene.pbDisplay(_INTL("{1} changed Forme!", pokemon.name))
-#         return true
-#       end
-#     else
-#       chosen = scene.pbChoosePokemon(_INTL("Fuse with which Pokémon?"))
-#       if chosen >= 0
-#         poke2 = $player.party[chosen]
-#         if (poke2.species <= NB_POKEMON) && poke2 != pokemon
-#           #check if fainted
-#           if pokemon.hp == 0 || poke2.hp == 0
-#             scene.pbDisplay(_INTL("A fainted Pokémon cannot be fused!"))
-#             return false
-#           end
-#           if pbFuse(pokemon, poke2, supersplicers)
-#             pbRemovePokemonAt(chosen)
-#           end
-#         elsif pokemon == poke2
-#           scene.pbDisplay(_INTL("{1} can't be fused with itself!", pokemon.name))
-#           return false
-#         else
-#           scene.pbDisplay(_INTL("{1} can't be fused with {2}.", poke2.name, pokemon.name))
-#           return false
-#
-#         end
-#
-#       else
-#         return false
-#       end
-#     end
-#   else
-#     return true if pbUnfuse(pokemon, scene, supersplicers)
-#
-#     #unfuse
-#   end
-# end
-#
-# def pbUnfuse(pokemon, scene, supersplicers, pcPosition = nil)
-#   #pcPosition nil   : unfusing from party
-#   #pcPosition [x,x] : unfusing from pc
-#   #
-#
-#   if (pokemon.obtain_method == 2 || pokemon.ot != $player.name) # && !canunfuse
-#     scene.pbDisplay(_INTL("You can't unfuse a Pokémon obtained in a trade!"))
-#     return false
-#   else
-#     if Kernel.pbConfirmMessageSerious(_INTL("Should {1} be unfused?", pokemon.name))
-#       if pokemon.species > (NB_POKEMON * NB_POKEMON) + NB_POKEMON #triple fusion
-#         scene.pbDisplay(_INTL("{1} cannot be unfused.", pokemon.name))
-#         return false
-#       elsif $player.party.length >= 6 && !pcPosition
-#         scene.pbDisplay(_INTL("Your party is full! You can't unfuse {1}.", pokemon.name))
-#         return false
-#       else
-#         scene.pbDisplay(_INTL("Unfusing ... "))
-#         scene.pbDisplay(_INTL(" ... "))
-#         scene.pbDisplay(_INTL(" ... "))
-#
-#         bodyPoke = getBasePokemonID(pokemon.species, true)
-#         headPoke = getBasePokemonID(pokemon.species, false)
-#
-#
-#         if pokemon.exp_when_fused_head == nil || pokemon.exp_when_fused_body == nil
-#           new_level = calculateUnfuseLevelOldMethod(pokemon, supersplicers)
-#           body_level = new_level
-#           head_level = new_level
-#           poke1 = Pokemon.new(bodyPoke, body_level)
-#           poke2 = Pokemon.new(headPoke, head_level)
-#         else
-#           exp_body = pokemon.exp_when_fused_body + pokemon.exp_gained_since_fused
-#           exp_head = pokemon.exp_when_fused_head + pokemon.exp_gained_since_fused
-#
-#           poke1 = Pokemon.new(bodyPoke, pokemon.level)
-#           poke2 = Pokemon.new(headPoke, pokemon.level)
-#           poke1.exp = exp_body
-#           poke2.exp = exp_head
-#         end
-#
-#         #poke1 = PokeBattle_Pokemon.new(bodyPoke, lev, $player)
-#         #poke2 = PokeBattle_Pokemon.new(headPoke, lev, $player)
-#
-#         if pcPosition == nil
-#           box = pcPosition[0]
-#           index = pcPosition[1]
-#           $PokemonStorage.pbStoreToBox(poke2, box, index)
-#         else
-#           Kernel.pbAddPokemonSilent(poke2, poke2.level)
-#         end
-#         #On ajoute l'autre dans le pokedex aussi
-#         $player.seen[poke1.species] = true
-#         $player.owned[poke1.species] = true
-#         $player.seen[poke2.species] = true
-#         $player.owned[poke2.species] = true
-#
-#         pokemon.species = poke1.species
-#         pokemon.level = poke1.level
-#         pokemon.name = poke1.name
-#         pokemon.moves = poke1.moves
-#         pokemon.obtain_method = 0
-#         poke1.obtain_method = 0
-#
-#         #scene.pbDisplay(_INTL(p1.to_s + " " + p2.to_s))
-#         scene.pbHardRefresh
-#         scene.pbDisplay(_INTL("Your Pokémon were successfully unfused! "))
-#         return true
-#       end
-#     end
-#   end
-# end
 
 def calculateUnfuseLevelOldMethod(pokemon, supersplicers)
   if pokemon.level > 1
@@ -847,9 +656,7 @@ def drawPokemonType(pokemon_id, x_pos = 192, y_pos = 264)
   return viewport
 end
 
-ItemHandlers::UseOnPokemon.add(:SUPERSPLICERS, proc { |item, pokemon, scene|
-  next true if pbDNASplicing(pokemon, scene, item)
-})
+
 
 def returnItemsToBag(pokemon, poke2)
 
@@ -865,120 +672,9 @@ def returnItemsToBag(pokemon, poke2)
   poke2.item = nil
 end
 
-# A AJOUTER: l'attribut dmgup ne modifie presentement pas
-#           le damage d'une attaque
-#
-ItemHandlers::UseOnPokemon.add(:DAMAGEUP, proc { |item, pokemon, scene|
-  move = scene.pbChooseMove(pokemon, _INTL("Boost Damage of which move?"))
-  if move >= 0
-    # if pokemon.moves[move].damage==0 ||  pokemon.moves[move].accuracy<=5 || pokemon.moves[move].dmgup >=3
-    #  scene.pbDisplay(_INTL("It won't have any effect."))
-    #  next false
-    # else
-    # pokemon.moves[move].dmgup+=1
-    # pokemon.moves[move].damage +=5
-    # pokemon.moves[move].accuracy -=5
-
-    # movename=PBMoves.getName(pokemon.moves[move].id)
-    # scene.pbDisplay(_INTL("{1}'s damage increased.",movename))
-    # next true
-    scene.pbDisplay(_INTL("This item has not been implemented into the game yet. It had no effect."))
-    next false
-    # end
-  end
-})
-
-##New "stones"
-# ItemHandlers::UseOnPokemon.add(:UPGRADE, proc { |item, pokemon, scene|
-#   if (pokemon.isShadow? rescue false)
-#     scene.pbDisplay(_INTL("It won't have any effect."))
-#     next false
-#   end
-#   newspecies = pbCheckEvolution(pokemon, item)
-#   if newspecies <= 0
-#     scene.pbDisplay(_INTL("It won't have any effect."))
-#     next false
-#   else
-#     pbFadeOutInWithMusic(99999) {
-#       evo = PokemonEvolutionScene.new
-#       evo.pbStartScreen(pokemon, newspecies)
-#       evo.pbEvolution(false)
-#       evo.pbEndScreen
-#       scene.pbRefreshAnnotations(proc { |p| pbCheckEvolution(p, item) > 0 })
-#       scene.pbRefresh
-#     }
-#     next true
-#   end
-# })
-#
-# ItemHandlers::UseOnPokemon.add(:DUBIOUSDISC, proc { |item, pokemon, scene|
-#   if (pokemon.isShadow? rescue false)
-#     scene.pbDisplay(_INTL("It won't have any effect."))
-#     next false
-#   end
-#   newspecies = pbCheckEvolution(pokemon, item)
-#   if newspecies <= 0
-#     scene.pbDisplay(_INTL("It won't have any effect."))
-#     next false
-#   else
-#     pbFadeOutInWithMusic(99999) {
-#       evo = PokemonEvolutionScene.new
-#       evo.pbStartScreen(pokemon, newspecies)
-#       evo.pbEvolution(false)
-#       evo.pbEndScreen
-#       scene.pbRefreshAnnotations(proc { |p| pbCheckEvolution(p, item) > 0 })
-#       scene.pbRefresh
-#     }
-#     next true
-#   end
-# })
-#
-# ItemHandlers::UseOnPokemon.add(:ICESTONE, proc { |item, pokemon, scene|
-#   if (pokemon.isShadow? rescue false)
-#     scene.pbDisplay(_INTL("It won't have any effect."))
-#     next false
-#   end
-#   newspecies = pbCheckEvolution(pokemon, item)
-#   if newspecies <= 0
-#     scene.pbDisplay(_INTL("It won't have any effect."))
-#     next false
-#   else
-#     pbFadeOutInWithMusic(99999) {
-#       evo = PokemonEvolutionScene.new
-#       evo.pbStartScreen(pokemon, newspecies)
-#       evo.pbEvolution(false)
-#       evo.pbEndScreen
-#       scene.pbRefreshAnnotations(proc { |p| pbCheckEvolution(p, item) > 0 })
-#       scene.pbRefresh
-#     }
-#     next true
-#   end
-# })
-# #
-# ItemHandlers::UseOnPokemon.add(:MAGNETSTONE, proc { |item, pokemon, scene|
-#   if (pokemon.isShadow? rescue false)
-#     scene.pbDisplay(_INTL("It won't have any effect."))
-#     next false
-#   end
-#   newspecies = pbCheckEvolution(pokemon, item)
-#   if newspecies <= 0
-#     scene.pbDisplay(_INTL("It won't have any effect."))
-#     next false
-#   else
-#     pbFadeOutInWithMusic(99999) {
-#       evo = PokemonEvolutionScene.new
-#       evo.pbStartScreen(pokemon, newspecies)
-#       evo.pbEvolution(false)
-#       evo.pbEndScreen
-#       scene.pbRefreshAnnotations(proc { |p| pbCheckEvolution(p, item) > 0 })
-#       scene.pbRefresh
-#     }
-#     next true
-#   end
-# })
 
 # easter egg for evolving shellder into slowbro's tail
-ItemHandlers::UseOnPokemon.add(:SLOWPOKETAIL, proc { |item, pokemon, scene|
+ItemHandlers::UseOnPokemon.add(:SLOWPOKETAIL, proc { |item, quantity, pokemon, scene|
   echoln pokemon.species
   next false if pokemon.species != :SHELLDER
   pbFadeOutInWithMusic(99999) {
@@ -992,51 +688,8 @@ ItemHandlers::UseOnPokemon.add(:SLOWPOKETAIL, proc { |item, pokemon, scene|
   next true
 
 })
-#
-# ItemHandlers::UseOnPokemon.add(:SHINYSTONE, proc { |item, pokemon, scene|
-#   if (pokemon.isShadow? rescue false)
-#     scene.pbDisplay(_INTL("It won't have any effect."))
-#     next false
-#   end
-#   newspecies = pbCheckEvolution(pokemon, item)
-#   if newspecies <= 0
-#     scene.pbDisplay(_INTL("It won't have any effect."))
-#     next false
-#   else
-#     pbFadeOutInWithMusic(99999) {
-#       evo = PokemonEvolutionScene.new
-#       evo.pbStartScreen(pokemon, newspecies)
-#       evo.pbEvolution(false)
-#       evo.pbEndScreen
-#       scene.pbRefreshAnnotations(proc { |p| pbCheckEvolution(p, item) > 0 })
-#       scene.pbRefresh
-#     }
-#     next true
-#   end
-# })
-#
-# ItemHandlers::UseOnPokemon.add(:DAWNSTONE, proc { |item, pokemon, scene|
-#   if (pokemon.isShadow? rescue false)
-#     scene.pbDisplay(_INTL("It won't have any effect."))
-#     next false
-#   end
-#   newspecies = pbCheckEvolution(pokemon, item)
-#   if newspecies <= 0
-#     scene.pbDisplay(_INTL("It won't have any effect."))
-#     next false
-#   else
-#     pbFadeOutInWithMusic(99999) {
-#       evo = PokemonEvolutionScene.new
-#       evo.pbStartScreen(pokemon, newspecies)
-#       evo.pbEvolution(false)
-#       evo.pbEndScreen
-#       scene.pbRefreshAnnotations(proc { |p| pbCheckEvolution(p, item) > 0 })
-#       scene.pbRefresh
-#     }
-#     next true
-#   end
-# })
-ItemHandlers::UseOnPokemon.add(:POISONMUSHROOM, proc { |item, pkmn, scene|
+
+ItemHandlers::UseOnPokemon.add(:POISONMUSHROOM, proc { |item, quantity, pokemon, scene|
   if pkmn.status != :POISON
     pkmn.status = :POISON
     scene.pbRefresh
@@ -1053,73 +706,24 @@ ItemHandlers::BattleUseOnPokemon.add(:POISONMUSHROOM, proc { |item, pokemon, bat
   pbBattleHPItem(pokemon, battler, 10, scene)
 })
 
-ItemHandlers::UseOnPokemon.add(:TINYMUSHROOM, proc { |item, pkmn, scene|
+ItemHandlers::UseOnPokemon.add(:TINYMUSHROOM, proc { |item, quantity, pokemon, scene|
   next pbHPItem(pkmn, 10, scene)
 })
 ItemHandlers::BattleUseOnPokemon.add(:TINYMUSHROOM, proc { |item, pokemon, battler, choices, scene|
   next pbBattleHPItem(pokemon, battler, 50, scene)
 })
-ItemHandlers::UseOnPokemon.add(:BIGMUSHROOM, proc { |item, pkmn, scene|
+ItemHandlers::UseOnPokemon.add(:BIGMUSHROOM, proc { |item, quantity, pokemon, scene|
   next pbHPItem(pkmn, 10, scene)
 })
 ItemHandlers::BattleUseOnPokemon.add(:BIGMUSHROOM, proc { |item, pokemon, battler, choices, scene|
   next pbBattleHPItem(pokemon, battler, 50, scene)
 })
-ItemHandlers::UseOnPokemon.add(:BALMMUSHROOM, proc { |item, pkmn, scene|
+ItemHandlers::UseOnPokemon.add(:BALMMUSHROOM, proc { |item, quantity, pokemon, scene|
   next pbHPItem(pkmn, 999, scene)
 })
 ItemHandlers::BattleUseOnPokemon.add(:BALMMUSHROOM, proc { |item, pokemon, battler, choices, scene|
   next pbBattleHPItem(pokemon, battler, 999, scene)
 })
-
-#
-# #TRACKER (for roaming legendaries)
-# ItemHandlers::UseInField.add(:REVEALGLASS, proc { |item|
-#   if Settings::ROAMING_SPECIES.length == 0
-#     Kernel.pbMessage(_INTL("No roaming Pokémon defined."))
-#   else
-#     text = "\\l[8]"
-#     min = $game_switches[350] ? 0 : 1
-#     for i in min...Settings::ROAMING_SPECIES.length
-#       poke = Settings::ROAMING_SPECIES[i]
-#       next if poke == PBSPecies::FEEBAS
-#       if $game_switches[poke[2]]
-#         status = $PokemonGlobal.roamPokemon[i]
-#         if status == true
-#           if $PokemonGlobal.roamPokemonCaught[i]
-#             text += _INTL("{1} has been caught.",
-#                           PBSpecies.getName(getID(PBSpecies, poke[0])))
-#           else
-#             text += _INTL("{1} has been defeated.",
-#                           PBSpecies.getName(getID(PBSpecies, poke[0])))
-#           end
-#         else
-#           curmap = $PokemonGlobal.roamPosition[i]
-#           if curmap
-#             mapinfos = $RPGVX ? load_data("Data/MapInfos.rvdata") : load_data("Data/MapInfos.rxdata")
-#
-#             if curmap == $game_map.map_id
-#               text += _INTL("Beep beep! {1} appears to be nearby!",
-#                             PBSpecies.getName(getID(PBSpecies, poke[0])))
-#             else
-#               text += _INTL("{1} is roaming around {3}",
-#                             PBSpecies.getName(getID(PBSpecies, poke[0])), curmap,
-#                             mapinfos[curmap].name, (curmap == $game_map.map_id) ? _INTL("(this route!)") : "")
-#             end
-#           else
-#             text += _INTL("{1} is roaming in an unknown area.",
-#                           PBSpecies.getName(getID(PBSpecies, poke[0])), poke[1])
-#           end
-#         end
-#       else
-#         #text+=_INTL("{1} does not appear to be roaming.",
-#         #   PBSpecies.getName(getID(PBSpecies,poke[0])),poke[1],poke[2])
-#       end
-#       text += "\n" if i < Settings::ROAMING_SPECIES.length - 1
-#     end
-#     Kernel.pbMessage(text)
-#   end
-# })
 
 ####EXP. ALL
 # Methodes relative a l'exp sont pas encore la et pas compatibles
@@ -1142,18 +746,18 @@ ItemHandlers::UseFromBag.add(:EXPALLOFF, proc { |item|
 ItemHandlers::BattleUseOnPokemon.add(:BANANA, proc { |item, pokemon, battler, scene|
   next pbBattleHPItem(pokemon, battler, 30, scene)
 })
-ItemHandlers::UseOnPokemon.add(:BANANA, proc { |item, pokemon, scene|
+ItemHandlers::UseOnPokemon.add(:BANANA, proc { |item, quantity, pokemon, scene|
   next pbHPItem(pokemon, 30, scene)
 })
 
 ItemHandlers::BattleUseOnPokemon.add(:GOLDENBANANA, proc { |item, pokemon, battler, scene|
   next pbBattleHPItem(pokemon, battler, 50, scene)
 })
-ItemHandlers::UseOnPokemon.add(:GOLDENBANANA, proc { |item, pokemon, scene|
+ItemHandlers::UseOnPokemon.add(:GOLDENBANANA, proc { |item, quantity, pokemon, scene|
   next pbHPItem(pokemon, 50, scene)
 })
 
-ItemHandlers::UseOnPokemon.add(:TRANSGENDERSTONE, proc { |item, pokemon, scene|
+ItemHandlers::UseOnPokemon.add(:TRANSGENDERSTONE, proc { |item, quantity, pokemon, scene|
   if pokemon.gender == 0
     pokemon.makeFemale
     scene.pbRefresh
@@ -1198,7 +802,7 @@ ItemHandlers::UseOnPokemon.add(:TRANSGENDERSTONE, proc { |item, pokemon, scene|
 # })
 
 # NOT FULLY IMPLEMENTED
-ItemHandlers::UseOnPokemon.add(:SECRETCAPSULE, proc { |item, poke, scene|
+ItemHandlers::UseOnPokemon.add(:SECRETCAPSULE,proc { |item, quantity, pokemon, scene|
   abilityList = poke.getAbilityList
   numAbilities = abilityList[0].length
 
@@ -1251,23 +855,23 @@ def changeHiddenAbility2(abilityList, scene, poke)
   return true
 end
 
-ItemHandlers::UseOnPokemon.add(:ROCKETMEAL, proc { |item, pokemon, scene|
+ItemHandlers::UseOnPokemon.add(:ROCKETMEAL,proc { |item, quantity, pokemon, scene|
   next pbHPItem(pokemon, 100, scene)
 })
 
-ItemHandlers::BattleUseOnPokemon.add(:ROCKETMEAL, proc { |item, pokemon, battler, scene|
+ItemHandlers::BattleUseOnPokemon.add(:ROCKETMEAL, proc { |item, pokemon, battler, choices, scene|
   next pbBattleHPItem(pokemon, battler, 100, scene)
 })
 
-ItemHandlers::UseOnPokemon.add(:FANCYMEAL, proc { |item, pokemon, scene|
+ItemHandlers::UseOnPokemon.add(:FANCYMEAL, proc { |item, quantity, pokemon, scene|
   next pbHPItem(pokemon, 100, scene)
 })
 
-ItemHandlers::BattleUseOnPokemon.add(:FANCYMEAL, proc { |item, pokemon, battler, scene|
+ItemHandlers::BattleUseOnPokemon.add(:FANCYMEAL,proc { |item, pokemon, battler, choices, scene|
   next pbBattleHPItem(pokemon, battler, 100, scene)
 })
 
-ItemHandlers::UseOnPokemon.add(:RAGECANDYBAR, proc { |item, pokemon, scene|
+ItemHandlers::UseOnPokemon.add(:RAGECANDYBAR, proc { |item, quantity, pokemon, scene|
   if pokemon.level <= 1
     scene.pbDisplay(_INTL("It won't have any effect."))
     next false
@@ -1278,7 +882,7 @@ ItemHandlers::UseOnPokemon.add(:RAGECANDYBAR, proc { |item, pokemon, scene|
   end
 })
 
-ItemHandlers::UseOnPokemon.add(:INCUBATOR, proc { |item, pokemon, scene|
+ItemHandlers::UseOnPokemon.add(:INCUBATOR, proc { |item, quantity, pokemon, scene|
   if pokemon.egg?
     if pokemon.steps_to_hatch <= 1
       scene.pbDisplay(_INTL("The egg is already ready to hatch!"))
@@ -1297,7 +901,7 @@ ItemHandlers::UseOnPokemon.add(:INCUBATOR, proc { |item, pokemon, scene|
   end
 })
 
-ItemHandlers::UseOnPokemon.add(:INCUBATOR_NORMAL, proc { |item, pokemon, scene|
+ItemHandlers::UseOnPokemon.add(:INCUBATOR_NORMAL, proc { |item, quantity, pokemon, scene|
   if pokemon.egg?
     steps = pokemon.steps_to_hatch
     steps = (steps / 1.5).ceil
@@ -1336,7 +940,7 @@ ItemHandlers::UseOnPokemon.add(:INCUBATOR_NORMAL, proc { |item, pokemon, scene|
   end
 })
 
-ItemHandlers::UseOnPokemon.add(:MISTSTONE, proc { |item, pokemon, scene|
+ItemHandlers::UseOnPokemon.add(:MISTSTONE, proc { |item, quantity, pokemon, scene|
   next false if pokemon.egg?
   if pbForceEvo(pokemon)
     next true
@@ -1394,49 +998,26 @@ end
 ##  DNA SPLICERS  #######
 #########################
 
-ItemHandlers::UseOnPokemon.add(:INFINITESPLICERS, proc { |item, pokemon, scene|
+ItemHandlers::UseOnPokemon.add(:INFINITESPLICERS, proc { |item, quantity, pokemon, scene|
   next true if pbDNASplicing(pokemon, scene, item)
   next false
 })
 
-ItemHandlers::UseOnPokemon.add(:INFINITESPLICERS2, proc { |item, pokemon, scene|
+ItemHandlers::UseOnPokemon.add(:INFINITESPLICERS2,proc { |item, quantity, pokemon, scene|
   next true if pbDNASplicing(pokemon, scene, item)
   next false
 })
 
-ItemHandlers::UseOnPokemon.add(:DNASPLICERS, proc { |item, pokemon, scene|
+ItemHandlers::UseOnPokemon.add(:DNASPLICERS, proc { |item, quantity, pokemon, scene|
   next true if pbDNASplicing(pokemon, scene, item)
   next false
 })
 
-ItemHandlers::UseOnPokemon.add(:SUPERSPLICERS, proc { |item, pokemon, scene|
+ItemHandlers::UseOnPokemon.add(:SUPERSPLICERS, proc { |item, quantity, pokemon, scene|
   next true if pbDNASplicing(pokemon, scene, item)
 })
 
 
-
-# A AJOUTER: l'attribut dmgup ne modifie presentement pas
-#           le damage d'une attaque
-#
-ItemHandlers::UseOnPokemon.add(:DAMAGEUP, proc { |item, pokemon, scene|
-  move = scene.pbChooseMove(pokemon, _INTL("Boost Damage of which move?"))
-  if move >= 0
-    # if pokemon.moves[move].damage==0 ||  pokemon.moves[move].accuracy<=5 || pokemon.moves[move].dmgup >=3
-    #  scene.pbDisplay(_INTL("It won't have any effect."))
-    #  next false
-    # else
-    # pokemon.moves[move].dmgup+=1
-    # pokemon.moves[move].damage +=5
-    # pokemon.moves[move].accuracy -=5
-
-    # movename=PBMoves.getName(pokemon.moves[move].id)
-    # scene.pbDisplay(_INTL("{1}'s damage increased.",movename))
-    # next true
-    scene.pbDisplay(_INTL("This item has not been implemented into the game yet. It had no effect."))
-    next false
-    # end
-  end
-})
 
 
 ItemHandlers::UseFromBag.add(:DEVONSCOPE, proc { |item|
@@ -1480,7 +1061,7 @@ ItemHandlers::UseFromBag.add(:EXPALLOFF, proc { |item|
 ItemHandlers::BattleUseOnPokemon.add(:BANANA, proc { |item, pokemon, battler, scene|
   next pbBattleHPItem(pokemon, battler, 30, scene)
 })
-ItemHandlers::UseOnPokemon.add(:BANANA, proc { |item, pokemon, scene|
+ItemHandlers::UseOnPokemon.add(:BANANA, proc { |item, quantity, pokemon, scene|
   next pbHPItem(pokemon, 30, scene)
 })
 

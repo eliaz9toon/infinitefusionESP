@@ -42,10 +42,16 @@ module Input
       $PokemonSystem.speedup_speed = 0 if !$PokemonSystem.speedup_speed || $PokemonSystem.speedup_speed == 0
       $GameSpeed = $PokemonSystem.speedup_speed
       $PokemonSystem.battle_speed = $GameSpeed
+
+      # Allow input to work during animations
+      if $PokemonSystem.only_speedup_battles == 1
+        Battle::AnimationHandler.process_speedup
+      end
     else
       $GameSpeed = 0
     end
   end
+
 
   def self.speed_up_toggle
     $PokemonSystem.speedup_enabled = !$PokemonSystem.speedup_enabled
@@ -195,29 +201,37 @@ end
 # Fix for animation index crash
 #===============================================================================#
 class SpriteAnimation
-  def update_animation
-    new_index = ((System.uptime - @_animation_timer_start) / @_animation_time_per_frame).to_i
-    if new_index >= @_animation_duration
-      dispose_animation
-      return
-    end
-    quick_update = (@_animation_index == new_index)
-    @_animation_index = new_index
-    frame_index = @_animation_index
-    current_frame = @_animation.frames[frame_index]
-    unless current_frame
-      dispose_animation
-      return
-    end
-    cell_data = current_frame.cell_data
-    position = @_animation.position
-    animation_set_sprites(@_animation_sprites, cell_data, position, quick_update)
-    return if quick_update
-    @_animation.timings.each do |timing|
-      next if timing.frame != frame_index
-      animation_process_timing(timing, @_animation_hit)
+  class SpriteAnimation
+    def update_animation
+      # Speed up the animation by reducing the wait time between frames
+      if $PokemonSystem.speedup_enabled && $GameSpeed > 1
+        @_animation_time_per_frame *= 1.0 / $GameSpeed
+      end
+
+      new_index = ((System.uptime - @_animation_timer_start) / @_animation_time_per_frame).to_i
+      if new_index >= @_animation_duration
+        dispose_animation
+        return
+      end
+      quick_update = (@_animation_index == new_index)
+      @_animation_index = new_index
+      frame_index = @_animation_index
+      current_frame = @_animation.frames[frame_index]
+      unless current_frame
+        dispose_animation
+        return
+      end
+      cell_data = current_frame.cell_data
+      position = @_animation.position
+      animation_set_sprites(@_animation_sprites, cell_data, position, quick_update)
+      return if quick_update
+      @_animation.timings.each do |timing|
+        next if timing.frame != frame_index
+        animation_process_timing(timing, @_animation_hit)
+      end
     end
   end
+
 end
 
 #===============================================================================#
