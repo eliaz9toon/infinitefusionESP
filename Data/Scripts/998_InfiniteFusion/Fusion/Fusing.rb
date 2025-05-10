@@ -54,7 +54,7 @@ def pbDNASplicing(pokemon, scene, item = :DNASPLICERS)
 
           if (Kernel.pbConfirmMessage(_INTL("Fuse {1} and {2}?", selectedHead.name, selectedBase.name)))
             pbFuse(selectedHead, selectedBase, item)
-            pbRemovePokemonAt(chosen)
+            $Trainer.remove_pokemon_at_index(chosen)
             scene.pbHardRefresh
             pbBGMPlay(playingBGM)
             return true

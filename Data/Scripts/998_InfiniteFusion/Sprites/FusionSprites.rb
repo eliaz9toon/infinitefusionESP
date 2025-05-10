@@ -13,8 +13,6 @@ module GameData
       return ret
     end
 
-
-
     def self.sprite_bitmap_from_pokemon_id(id, back = false, shiny = false, bodyShiny = false, headShiny = false)
       if back
         ret = self.back_sprite_bitmap(id,  shiny, bodyShiny, headShiny)
@@ -23,6 +21,16 @@ module GameData
       end
       return ret
     end
+
+    def self.sprite_bitmap(species, form = 0, gender = 0, shiny = false, shadow = false, back = false, egg = false)
+      return self.egg_sprite_bitmap(species, form) if egg
+
+      dex_number= GameData::Species.get(species).id_number
+
+      return self.back_sprite_bitmap(dex_number, shiny) if back
+      return self.front_sprite_bitmap(dex_number, shiny)
+    end
+
 
     MAX_SHIFT_VALUE = 360
     MINIMUM_OFFSET = 40
@@ -79,6 +87,7 @@ module GameData
 
 
   # species can be either a number, a Species objet of a symbol
+  #
     def self.front_sprite_bitmap(species, isShiny = false, bodyShiny = false, headShiny = false)
       dex_number = getDexNumberForSpecies(species)
       if species.is_a?(Species)
@@ -126,12 +135,6 @@ module GameData
     # end
 
     def self.back_sprite_bitmap(dex_number, isShiny = false, bodyShiny = false, headShiny = false)
-      # filename = self.sprite_filename(dex_number)
-      # sprite = (filename) ? AnimatedBitmap.new(filename) : nil
-      # if isShiny
-      #   sprite.shiftColors(self.calculateShinyHueOffset(dex_number, bodyShiny, headShiny))
-      # end
-      # return sprite
       sprite = self.front_sprite_bitmap(dex_number,isShiny,bodyShiny,headShiny)
       return sprite#.mirror
     end

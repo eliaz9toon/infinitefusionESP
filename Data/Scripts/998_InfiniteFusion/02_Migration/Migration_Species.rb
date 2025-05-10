@@ -32,6 +32,19 @@ module GameData
       return self.types.include?(type)
     end
 
+    def self.get_species_form(species, form)
+      return nil if !species || !form
+      return GameData::Species.get(species)
+
+      validate species => [Symbol, self, String]
+      validate form => Integer
+      species = species.species if species.is_a?(self)
+      species = species.to_sym if species.is_a?(String)
+      trial = sprintf("%s_%d", species, form).to_sym
+      species_form = (DATA[trial].nil?) ? species : trial
+      return (DATA.has_key?(species_form)) ? DATA[species_form] : nil
+    end
+
   end
 end
 

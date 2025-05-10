@@ -453,6 +453,47 @@ class PokemonFusionScene
 
   end
 
+  def pbChooseAbility(ability1Id,ability2Id)
+    ability1 = GameData::Ability.get(ability1Id)
+    ability2 = GameData::Ability.get(ability2Id)
+    availableNatures = []
+    availableNatures << @pokemon1.nature
+    availableNatures << @pokemon2.nature
+
+    setAbilityAndNatureAndNickname([ability1,ability2], availableNatures)
+  end
+
+
+  def setAbilityAndNatureAndNickname(abilitiesList, naturesList)
+    return  #todo
+    clearUIForMoves
+    if $game_switches[SWITCH_DOUBLE_ABILITIES]
+      scene = FusionSelectOptionsScene.new(nil, naturesList, @pokemon1, @pokemon2)
+      screen = PokemonOptionScreen.new(scene)
+      screen.pbStartScreen
+
+      @pokemon1.ability = abilitiesList[0]
+      @pokemon1.ability2 = abilitiesList[1]
+    else
+      scene = FusionSelectOptionsScene.new(abilitiesList, naturesList, @pokemon1, @pokemon2)
+      screen = PokemonOptionScreen.new(scene)
+      screen.pbStartScreen
+
+      selectedAbility = scene.selectedAbility
+      @pokemon1.body_original_ability_index = @pokemon1.ability_index
+      @pokemon1.head_original_ability_index = @pokemon2.ability_index
+
+      @pokemon1.ability = selectedAbility
+      @pokemon1.ability_index = getAbilityIndexFromID(selectedAbility.id,@pokemon1)
+    end
+
+    @pokemon1.nature = scene.selectedNature
+    if scene.hasNickname
+      @pokemon1.name = scene.nickname
+    end
+  end
+
+
   #NEW FUSION ANIMATION (WIP)
   # def pbGenerateMetafiles(nb_seconds,ellipse_center_x,ellipse_center_y,ellipse_major_axis_length,ellipse_minor_axis_length)
   #   sprite_head = SpriteMetafile.new
@@ -670,7 +711,7 @@ class PokemonFusionScene
     @pokemon1 = pokemon_body
     @pokemon2 = pokemon_head
 
-    @newspecies = newspecies
+    @fused_pokemon_dex_number = newspecies
     addBackgroundOrColoredPlane(@sprites, "background", "DNAbg",
                                 Color.new(248, 248, 248), @viewport)
 
@@ -693,7 +734,7 @@ class PokemonFusionScene
     @fusion_pif_sprite = spriteLoader.obtain_fusion_pif_sprite(poke_head_number,poke_body_number)
 
     #this will use the sprite that is set when we call obtain_fusion_pif_sprite, and apply the shiny effect
-    @sprites["rsprite2"].setPokemonBitmapFromId(@newspecies, false, pokemon_head.shiny? || pokemon_body.shiny?, pokemon_head.shiny?, pokemon_body.shiny?)
+    @sprites["rsprite2"].setPokemonBitmapFromId(@fused_pokemon_dex_number, false, pokemon_head.shiny? || pokemon_body.shiny?, pokemon_head.shiny?, pokemon_body.shiny?)
 
     splicer_bitmap = _INTL("Graphics/Items/{1}",splicerItem)
     @sprites["dnasplicer"].setBitmap(splicer_bitmap)
@@ -850,15 +891,15 @@ class PokemonFusionScene
       @pbEndScreen
       _INTL("Huh? The fusion was cancelled!")
     else
-      frames = pbCryFrameLength(@newspecies)
+      frames = pbCryFrameLength(@fused_pokemon_dex_number).to_i
       pbBGMStop()
-      pbPlayCry(@newspecies)
+      pbPlayCry(@fused_pokemon_dex_number)
       frames.times do
         Graphics.update
       end
       #pbMEPlay("Voltorb Flip Win")
-      newSpecies = GameData::Species.get(@newspecies)
-      newspeciesname = newSpecies.real_name
+      fused_pokemon_species = GameData::Species.get(@fused_pokemon_dex_number)
+      fused_pokemon_name = fused_pokemon_species.real_name
       oldspeciesname = GameData::Species.get(@pokemon1.species).real_name
 
       overlay = BitmapSprite.new(Graphics.width, Graphics.height, @viewport).bitmap
@@ -866,9 +907,9 @@ class PokemonFusionScene
       sprite_bitmap = @sprites["rsprite2"].getBitmap
 
       drawSpriteCredits(@fusion_pif_sprite, @viewport)
-      pbBGMPlay(pbGetWildVictoryME)
+      pbBGMPlay(pbGetWildVictoryBGM)
       Kernel.pbMessageDisplay(@sprites["msgwindow"],
-                              _INTL("\\se[]Congratulations! Your Pokémon were fused into {2}!\\wt[80]", @pokemon1.name, newspeciesname))
+                              _INTL("\\se[]Congratulations! Your Pokémon were fused into {2}!\\wt[80]", @pokemon1.name, fused_pokemon_name))
 
       #exp
       @pokemon1.exp_when_fused_head = @pokemon2.exp
@@ -885,47 +926,26 @@ class PokemonFusionScene
 
       setFusionIVs(superSplicer)
       #add to pokedex
-      if !$Trainer.pokedex.owned?(newSpecies)
-        $Trainer.pokedex.set_seen(newSpecies)
-        $Trainer.pokedex.set_owned(newSpecies)
+      if !$Trainer.pokedex.owned?(fused_pokemon_species)
+        $Trainer.pokedex.set_seen(fused_pokemon_species)
+        $Trainer.pokedex.set_owned(fused_pokemon_species)
         Kernel.pbMessageDisplay(@sprites["msgwindow"],
-                                _INTL("{1}'s data was added to the Pokédex", newspeciesname))
-        @scene.pbShowPokedex(@newspecies)
+                                _INTL("{1}'s data was added to the Pokédex", fused_pokemon_name))
+
+        @scene.pbShowPokedex(fused_pokemon_species.species)
       end
       overlay.dispose
-      #first check if hidden ability
-      # getAbilityList format: [[:ABILITY, index],...]
-      # hiddenAbility1 = @pokemon1.ability == @pokemon1.getAbilityList[-1][0]
-      # hiddenAbility2 = @pokemon2.ability == @pokemon2.getAbilityList[-1][0]
-
-      # ability1 = @pokemon1.ability_index
-      # ability2 = @pokemon2.ability_index
-
       #change species
       ability1 = @pokemon1.ability
       ability2 = @pokemon2.ability
 
-      @pokemon1.species = newSpecies
+      @pokemon1.species = fused_pokemon_species
       if @pokemon2.egg? || @pokemon1.egg?
         @pokemon1.steps_to_hatch = @pokemon1.species_data.hatch_steps
       end
-      #@pokemon1.ability = pbChooseAbility(@pokemon1, hiddenAbility1, hiddenAbility2)
-      #
       pbChooseAbility(ability1,ability2)
 
       setFusionMoves(@pokemon1, @pokemon2, firstOptionSelected) if !noMoves
-
-      # if superSplicer
-      #   @pokemon1.nature = pbChooseNature(@pokemon1.nature, @pokemon2.nature)
-      # end
-      #Check moves for new species
-      # movelist = @pokemon1.getMoveList
-      # for i in movelist
-      #   if i[0] == @pokemon1.level
-      #     pbLearnMove(@pokemon1, i[1]) if !noMoves #(pokemon,move,ignoreifknown=true, byTM=false , quick =true)
-      #   end
-      # end
-      #@pokemon1.ability = pbChooseAbility(@pokemon1,@pokemon2)
       removeItem = false
       if @pokemon2.isShiny? || @pokemon1.isShiny?
         @pokemon1.makeShiny
@@ -938,15 +958,15 @@ class PokemonFusionScene
       @pokemon1.obtain_method = 0
       @pokemon1.owner = Pokemon::Owner.new_from_trainer($Trainer)
 
-      pbSEPlay("Voltorb Flip Point")
+      #pbSEPlay("Voltorb Flip Point")
 
-      @pokemon1.name = newspeciesname if @pokemon1.name == oldspeciesname
+      @pokemon1.name = fused_pokemon_name if @pokemon1.name == oldspeciesname
 
       @pokemon1.level = setPokemonLevel(@pokemon1.level, @pokemon2.level, superSplicer)
       @pokemon1.calc_stats
       @pokemon1.obtain_method = 0
       pbBGMStop
-      pbBGMPlay($PokemonTemp.cueBGM)
+      pbBGMPlay($game_temp.cue_bgm)
     end
   end
 end
@@ -1088,32 +1108,32 @@ def pbShowPokedex(species)
     screen.pbDexEntry(species)
   }
 end
-
-def pbChooseAbility(poke, hidden1 = false, hidden2 = false)
-  abilityList = poke.getAbilityList
-  #pas sur de l'ordre pour les hidden (3 et 4) peut-être a inverser
-  #Mais les fusions ont tjrs 4 hidden abilities
-  #2. l'autre ability du poke 1
-  #3. l'autre ability du poke 2
-  #4. hidden du poke 1
-  #5. hidden du poke2
-
-  abID1 = hidden1 ? abilityList[4][0] : abilityList[0][0]
-  abID2 = hidden2 ? abilityList[5][0] : abilityList[1][0]
-
-  ability1_name = GameData::Ability.get(abID1).name
-  ability2_name = GameData::Ability.get(abID2).name
-  availableNatures = []
-  availableNatures << @pokemon1.nature
-  availableNatures << @pokemon2.nature
-
-  setAbilityAndNatureAndNickname([GameData::Ability.get(abID1), GameData::Ability.get(abID2)], availableNatures)
-
-  # if (Kernel.pbMessage("Choose an ability. ???", [_INTL("{1}", ability1_name), _INTL("{1}", ability2_name)], 2)) == 0
-  #   return abID1 #hidden1 ? 4 : 0
-  # end
-  # return abID2 #hidden2 ? 5 : 1
-end
+#
+# def pbChooseAbility(poke, hidden1 = false, hidden2 = false)
+#   abilityList = poke.getAbilityList
+#   #pas sur de l'ordre pour les hidden (3 et 4) peut-être a inverser
+#   #Mais les fusions ont tjrs 4 hidden abilities
+#   #2. l'autre ability du poke 1
+#   #3. l'autre ability du poke 2
+#   #4. hidden du poke 1
+#   #5. hidden du poke2
+#
+#   abID1 = hidden1 ? abilityList[4][0] : abilityList[0][0]
+#   abID2 = hidden2 ? abilityList[5][0] : abilityList[1][0]
+#
+#   ability1_name = GameData::Ability.get(abID1).name
+#   ability2_name = GameData::Ability.get(abID2).name
+#   availableNatures = []
+#   availableNatures << @pokemon1.nature
+#   availableNatures << @pokemon2.nature
+#
+#   setAbilityAndNatureAndNickname([GameData::Ability.get(abID1), GameData::Ability.get(abID2)], availableNatures)
+#
+#   # if (Kernel.pbMessage("Choose an ability. ???", [_INTL("{1}", ability1_name), _INTL("{1}", ability2_name)], 2)) == 0
+#   #   return abID1 #hidden1 ? 4 : 0
+#   # end
+#   # return abID2 #hidden2 ? 5 : 1
+# end
 
 def pbChooseNature(species1_nature, species2_nature)
   nature1 = GameData::Nature.get(species1_nature)

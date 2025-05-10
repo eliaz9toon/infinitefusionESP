@@ -23,7 +23,7 @@ class PokemonEvolutionScene
 
   def pbStartScreen(pokemon, newspecies)
     @pokemon = pokemon
-    @newspecies = newspecies
+    @fused_pokemon_dex_number = newspecies
     @sprites = {}
     @bgviewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
     @bgviewport.z = 99999
@@ -40,7 +40,7 @@ class PokemonEvolutionScene
     rsprite1.y = (Graphics.height - 64) / 2
     rsprite2 = PokemonSprite.new(@viewport)
     rsprite2.setOffset(PictureOrigin::CENTER)
-    rsprite2.setPokemonBitmapSpecies(@pokemon, @newspecies, false)
+    rsprite2.setPokemonBitmapSpecies(@pokemon, @fused_pokemon_dex_number, false)
     rsprite2.x       = rsprite1.x
     rsprite2.y       = rsprite1.y
     rsprite2.visible = false
@@ -197,8 +197,8 @@ class PokemonEvolutionScene
   def pbEvolutionSuccess
     $stats.evolution_count += 1
     # Play cry of evolved species
-    cry_time = GameData::Species.cry_length(@newspecies, @pokemon.form)
-    Pokemon.play_cry(@newspecies, @pokemon.form)
+    cry_time = GameData::Species.cry_length(@fused_pokemon_dex_number, @pokemon.form)
+    Pokemon.play_cry(@fused_pokemon_dex_number, @pokemon.form)
     timer_start = System.uptime
     loop do
       Graphics.update
@@ -208,7 +208,7 @@ class PokemonEvolutionScene
     pbBGMStop
     # Success jingle/message
     pbMEPlay("Evolution success")
-    newspeciesname = GameData::Species.get(@newspecies).name
+    newspeciesname = GameData::Species.get(@fused_pokemon_dex_number).name
     pbMessageDisplay(@sprites["msgwindow"],
                      "\\se[]" + _INTL("Congratulations! Your {1} evolved into {2}!",
                                       @pokemon.name, newspeciesname) + "\\wt[80]") { pbUpdate }
@@ -217,14 +217,14 @@ class PokemonEvolutionScene
     pbEvolutionMethodAfterEvolution
     # Modify Pokémon to make it evolved
     was_fainted = @pokemon.fainted?
-    @pokemon.species = @newspecies
+    @pokemon.species = @fused_pokemon_dex_number
     @pokemon.hp = 0 if was_fainted
     @pokemon.calc_stats
     @pokemon.ready_to_evolve = false
     # See and own evolved species
-    was_owned = $player.owned?(@newspecies)
+    was_owned = $player.owned?(@fused_pokemon_dex_number)
     $player.pokedex.register(@pokemon)
-    $player.pokedex.set_owned(@newspecies)
+    $player.pokedex.set_owned(@fused_pokemon_dex_number)
     moves_to_learn = []
     movelist = @pokemon.getMoveList
     movelist.each do |i|
@@ -252,7 +252,7 @@ class PokemonEvolutionScene
   end
 
   def pbEvolutionMethodAfterEvolution
-    @pokemon.action_after_evolution(@newspecies)
+    @pokemon.action_after_evolution(@fused_pokemon_dex_number)
   end
 
   def pbUpdate(animating = false)
