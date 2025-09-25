@@ -144,6 +144,14 @@ Nintendo
 GameFreak
 
 
+########################
+###			Translations			  #
+########################
+French translation:
+anthonygourmand
+locpic_
+blood.wolf58 (Willi)
+
 #######################################################################
 The following ressources were also used 
 with their respective authors' consent
