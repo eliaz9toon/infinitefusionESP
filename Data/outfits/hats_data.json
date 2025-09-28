@@ -70,6 +70,13 @@
         "howToGet": "regional set"
     },
     {
+        "id": "BirthdayCake",
+        "name": "Birthday Cake",
+        "description": "A tasty birthday cake full of frosting! Wear it on your head a statement.",
+        "price": 4000,
+        "tags": "hat,"
+    },
+    {
         "id": "blaineGlasses",
         "name": "Fake Mustache",
         "description": "Small, round sunglasses with a fake mustache attached.",
@@ -454,6 +461,13 @@
         "description": "A snug black beanie with bright, flickering flame patterns licking the sides.",
         "price": 12000,
         "tags": "hat,weather-cold,"
+    },
+    {
+        "id": "FlareonHat",
+        "name": "Flareon Hood",
+        "description": "An oversized hood featuring large fluffy fur and long ears, resembling a Flareon.",
+        "price": 8000,
+        "tags": "hat,weather-cold,pokemon-flareon,"
     },
     {
         "id": "froghat",
