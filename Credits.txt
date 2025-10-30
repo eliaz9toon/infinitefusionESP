@@ -107,9 +107,9 @@ casinoluck<s>ymirbot
 
 
 ###################################
-###	Custom Pokedex entries					###
+###	Custom Pok?dex entries					###
 ###################################
-### Pokedex entries quality control (Unown)
+### Pok?dex entries quality control (Unown)
 luvischlo<s>char_latte3412<s>strawbearycandy
 bobosmith01<s>griddle<s>.izik
 knilk<s>lordjoostmeister<s>.realthree
@@ -127,10 +127,6 @@ Maruno (http://pokemonessentials.wikia.com/wiki/Pok%C3%A9mon_Essentials_Wiki)
 ###########################################################
 Playtesting was done by various members of the Discord channel. 
 Special thanks to all of you!
-
-Elite 4 rematch teams
-duskrd<s>anaconja
-
 ###########################################################
 ###			Graphics			  #
 ###########################################################
@@ -143,14 +139,6 @@ Gen 4 Legendary trio eggs by calicorn
 Nintendo
 GameFreak
 
-
-########################
-###			Translations			  #
-########################
-French translation:
-anthonygourmand
-locpic_
-blood.wolf58 (Willi)
 
 #######################################################################
 The following ressources were also used 
@@ -170,6 +158,7 @@ with their respective authors' consent
 		zender1752 (Sabrina OW sprite)	https://www.deviantart.com/zender1752/art/Pokemon-Anime-Delia-Ketchum-Overworld-sprite-840038766
 		wesleyfg (Hoenn overworld NPCs) https://www.deviantart.com/wesleyfg/art/Hoenn-People-OW-in-BW-style-274475232
 		Wergan https://www.deviantart.com/wergan/art/Pokemon-Random-characters-002-959395621
+		TooManyLuigis, Mortedes, Billla,WolfPP: Golurk overworld sprite https://www.deviantart.com/wolfang62/art/Golurk-Sprite-Overworld-834611476
 	Battle sprites: 
 		Custom graphics:
 		Kiwikelly, UnworthyPie
@@ -244,12 +233,7 @@ Move animations:
 ###			RPG Maker Scripts		###
 ###########################################################
 
-#Custom Infinite fusion scripts: 
-Improved Shinies: anthonygourmand
-andracass (Pok?on Reborn)	Compiler optimization (legacy)
-
-#Public use scripts:
-
+andracass (Pokémon Reborn)	Compiler optimization
 Luka S.J.			Elite Battle System
 				Animated Title Screen (modified):
 shiney570 			BW2 Summary script (+ graphics)	http://reliccastle.com/forums/showthread.php?tid=1090
