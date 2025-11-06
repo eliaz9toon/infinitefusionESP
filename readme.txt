@@ -6,7 +6,7 @@ Este repositorio reúne a traductores que quieren colaborar para traducir todo e
 
 ---
 
-## 🔹 Como colaborar
+## 🔹 Como colaborar o probar la version en español.
 
 Únete a nuestro servidor de Discord: 
 
